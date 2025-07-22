@@ -3,6 +3,7 @@ import HomePage from "./components/HomePage/HomePage";
 import StudentLogin from "./components/StudentLogin/StudentLogin";
 import StudentSignup from "./components/StudentSignUp/StudentSignUp";
 import StudentDashboard from "./components/StudentDashboard";
+import AdminDashboardPage from "./components/AdminDashboardPage";
 import "./style.css";
 
 export default function App() {
@@ -20,6 +21,8 @@ export default function App() {
         return <StudentDashboard onNavigate={setCurrentPage} />;
       case "admin-login":
         return <div>Admin Login Page (Coming Soon)</div>;
+      case "admin-dashboard":
+        return <AdminDashboardPage />;
       case "about":
         return <div>About Page (Coming Soon)</div>;
       case "contact":
