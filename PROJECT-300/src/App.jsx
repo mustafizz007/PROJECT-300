@@ -2,7 +2,7 @@ import { useState } from "react";
 import HomePage from "./components/HomePage/HomePage";
 import StudentLogin from "./components/StudentLogin/StudentLogin";
 import StudentSignup from "./components/StudentSignUp/StudentSignUp";
-import StudentDashboard from "./components/StudentDashboard"; 
+import StudentDashboard from "./components/StudentDashboard";
 import "./style.css";
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
         return <StudentLogin onNavigate={setCurrentPage} />;
       case "signup":
         return <StudentSignup onNavigate={setCurrentPage} />;
-      case "dashboard": 
+      case "dashboard":
         return <StudentDashboard onNavigate={setCurrentPage} />;
       case "admin-login":
         return <div>Admin Login Page (Coming Soon)</div>;
