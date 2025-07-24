@@ -1,181 +1,180 @@
-import { useState } from "react";
+import React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Button } from "../components/ui/button";
+import { Card } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Progress } from "../components/ui/progress";
 import {
-  Home,
-  BookOpen,
-  Users,
-  FileText,
-  GraduationCap,
   LogOut,
-  User,
-  Plus,
-  Search,
-  FileCheck,
+  Award,
+  CalendarDays,
+  Book,
+  ExternalLink,
+  Upload,
+  FileText,
 } from "lucide-react";
+import { Separator } from "../components/ui/separator";
 
-export default function StudentDashboard({ onNavigate }) {
-  const [activeTab, setActiveTab] = useState("Overview");
+/**
+ * @param {{ title: string, value: string, subtitle: string, icon: React.ElementType, bgColor: string }} props
+ */
+function InfoCard({ title, value, subtitle, icon: Icon, bgColor }) {
+  return (
+    <Card
+      className={`flex flex-col items-start p-4 rounded-lg shadow-lg ${bgColor} text-white`}
+    >
+      <div className="flex items-center justify-between w-full mb-2">
+        <h3 className="text-sm font-medium">{title}</h3>
+        <Icon className="w-5 h-5" />
+      </div>
+      <div className="text-2xl font-bold">{value}</div>
+      <p className="text-xs opacity-80">{subtitle}</p>
+    </Card>
+  );
+}
 
-  const sidebarItems = [
-    { name: "Overview", icon: Home },
-    { name: "Course Management", icon: BookOpen },
-    { name: "Student Management", icon: Users },
-    { name: "Results Management", icon: FileText },
-    { name: "Credit Management", icon: GraduationCap },
-  ];
-
-  const statsCards = [
-    {
-      title: "Total Students",
-      value: "1247",
-      change: "+12% from last semester",
-      changeType: "positive",
-      icon: "👥",
-    },
-    {
-      title: "Active Courses",
-      value: "64",
-      change: "+2% new courses added",
-      changeType: "positive",
-      icon: "📚",
-    },
-    {
-      title: "Average CGPA",
-      value: "3.52",
-      change: "+0.1% improved",
-      changeType: "positive",
-      icon: "🏆",
-    },
-  ];
-
-  const quickActions = [
-    { title: "Add New Student", icon: Plus },
-    { title: "Search Records", icon: Search },
-    { title: "Generate Report", icon: FileCheck },
-  ];
-
-  const handleLogout = () => {
-    if (onNavigate) {
-      onNavigate("home"); // Navigate back to home page on logout
-    }
-  };
+/**
+ * @param {{ year: string, credits: number, status: "Complete" | "InProgress" }} props
+ */
+function AcademicYearItem({ year, credits, status }) {
+  const badgeVariant = status === "Complete" ? "default" : "secondary";
+  const badgeColor = status === "Complete" ? "bg-green-500" : "bg-yellow-500";
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b px-6 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-gray-800">
-              <span className="text-blue-600">Mu</span>Portal
-              <span className="ml-2 text-gray-600 font-normal">Admin</span>
-            </div>
-          </div>
+    <div className="flex items-center justify-between p-4 rounded-lg bg-gray-800 mb-2">
+      <span className="text-sm font-medium">{year}</span>
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-gray-400">{credits} credits</span>
+        <Badge className={`${badgeColor} text-white`}>{status}</Badge>
+      </div>
+    </div>
+  );
+}
 
-          {/* User Info and Logout */}
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center border-2 border-gray-300">
-                <User className="w-5 h-5 text-gray-600" />
-              </div>
-              <div>
-                <div className="text-sm font-semibold text-gray-800">
-                  Admin User
-                </div>
-                <div className="text-xs text-gray-500">Administrator</div>
-              </div>
-            </div>
-            <button
-              className="bg-gray-800 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-gray-700 transition-colors"
-              onClick={handleLogout}
-            >
-              <span>Log Out</span>
-              <LogOut className="w-4 h-4" />
-            </button>
+export function StudentDashboard() {
+  const academicYears = [
+    { year: "Year 1 (2022-23)", credits: 48, status: "Complete" },
+    { year: "Year 2 (2023-24)", credits: 32, status: "Complete" },
+    { year: "Year 3 (2024-25)", credits: 45, status: "InProgress" },
+  ];
+
+  const graduationProgress = 88.75;
+
+  return (
+    <div className="flex flex-col flex-1">
+      {/* Header */}
+      <header className="flex items-center justify-between p-4 border-b border-gray-800 bg-gray-900">
+        <div className="flex items-center gap-4">
+          <img
+            src="/placeholder.svg?height=32&width=32"
+            alt="MuPortal Logo"
+            className="h-8 w-auto"
+          />
+          <span className="text-xl font-bold">MuPortal</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <Avatar className="h-9 w-9">
+            <AvatarImage
+              src="/placeholder.svg?height=36&width=36"
+              alt="Abira Haydar"
+            />
+            <AvatarFallback>AH</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <span className="font-medium">Abira Haydar</span>
+            <span className="text-sm text-gray-400">CSE</span>
           </div>
+          <Button
+            variant="outline"
+            className="bg-gray-800 text-white hover:bg-gray-700"
+          >
+            Log Out <LogOut className="ml-2 h-4 w-4" />
+          </Button>
         </div>
       </header>
 
-      <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-80 bg-gray-800 min-h-screen p-6">
-          <nav className="space-y-4">
-            {sidebarItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.name}
-                  onClick={() => setActiveTab(item.name)}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
-                    activeTab === item.name
-                      ? "bg-gray-200 text-gray-800"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                  }`}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.name}</span>
-                </button>
-              );
-            })}
-          </nav>
-        </aside>
+      {/* Main Content */}
+      <div className="flex-1 p-6 overflow-auto">
+        {/* Info Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <InfoCard
+            title="Current CGPA"
+            value="3.85"
+            subtitle="Out of 4.00"
+            icon={Award}
+            bgColor="bg-blue-600"
+          />
+          <InfoCard
+            title="Current Semester"
+            value="6th"
+            subtitle="Summer 2025"
+            icon={CalendarDays}
+            bgColor="bg-purple-600"
+          />
+          <InfoCard
+            title="Total Credits"
+            value="142"
+            subtitle="Out of 160"
+            icon={Book}
+            bgColor="bg-pink-600"
+          />
+        </div>
 
-        {/* Main Content */}
-        <main className="flex-1 bg-gray-800 text-white p-8">
-          {/* Dashboard Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
-            <p className="text-gray-300 text-lg">
-              Manage courses, students, and academic data
-            </p>
-          </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {statsCards.map((card, index) => (
-              <div
-                key={index}
-                className="bg-gray-700 rounded-lg p-6 border border-gray-600"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-300 text-sm font-medium">
-                    {card.title}
-                  </h3>
-                  <span className="text-2xl">{card.icon}</span>
-                </div>
-                <div className="mb-2">
-                  <span className="text-3xl font-bold text-white">
-                    {card.value}
-                  </span>
-                </div>
-                <div className="text-sm text-green-400">{card.change}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Quick Actions */}
-          <div className="bg-gray-700 rounded-lg p-6 border border-gray-600">
-            <h2 className="text-xl font-semibold mb-6 text-white">
-              Quick Actions
+        {/* Credits and Graduation Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Credits by Academic Year */}
+          <Card className="p-6 bg-gray-900 border border-gray-800">
+            <h2 className="text-lg font-semibold mb-4">
+              Credits by Academic Year
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {quickActions.map((action, index) => {
-                const Icon = action.icon;
-                return (
-                  <button
-                    key={index}
-                    className="bg-gray-600 hover:bg-gray-500 rounded-lg p-6 text-center transition-colors border border-gray-500"
-                  >
-                    <Icon className="w-8 h-8 mx-auto mb-3 text-gray-300" />
-                    <span className="text-white font-medium">
-                      {action.title}
-                    </span>
-                  </button>
-                );
-              })}
+            {academicYears.map((item, index) => (
+              <AcademicYearItem key={index} {...item} />
+            ))}
+          </Card>
+
+          {/* Expected Graduation */}
+          <Card className="p-6 bg-emerald-700 text-white rounded-lg shadow-lg">
+            <h2 className="text-lg font-semibold mb-4">May 2025</h2>
+            <p className="text-sm mb-4">Expected Graduation</p>
+            <Separator className="bg-emerald-600 mb-4" />
+            <div className="text-sm mb-4">
+              <p>
+                Current Semester: <span className="font-bold">Fall 2024</span>
+              </p>
+              <p>
+                Credits This Semester:{" "}
+                <span className="font-bold">10 credits</span>
+              </p>
+              <p>
+                Credits Next Semester:{" "}
+                <span className="font-bold">8 credits</span>
+              </p>
             </div>
-          </div>
-        </main>
+            <Separator className="bg-emerald-600 mb-4" />
+            <div className="text-sm mb-2">
+              <p>Progress to Graduation</p>
+              <p className="font-bold">{graduationProgress}%</p>
+            </div>
+            <Progress
+              value={graduationProgress}
+              className="w-full h-2 bg-emerald-600 [&::-webkit-progress-bar]:bg-emerald-600 [&::-webkit-progress-value]:bg-white"
+            />
+            <p className="text-xs mt-1 opacity-80">{160 - 142} credits left</p>
+          </Card>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Button className="bg-gray-800 text-white hover:bg-gray-700 py-6 text-base">
+            View Courses <ExternalLink className="ml-2 h-5 w-5" />
+          </Button>
+          <Button className="bg-gray-800 text-white hover:bg-gray-700 py-6 text-base">
+            Study Resources <Upload className="ml-2 h-5 w-5" />
+          </Button>
+          <Button className="bg-gray-800 text-white hover:bg-gray-700 py-6 text-base">
+            View results <FileText className="ml-2 h-5 w-5" />
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -1,3 +1,56 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 0 0% 3.9%;
+        /* Dark background */
+        --foreground: 0 0% 98%;
+        /* Light foreground */
+        --card: 0 0% 3.9%;
+        /* Dark card background */
+        --card-foreground: 0 0% 98%;
+        /* Light card foreground */
+        --popover: 0 0% 98%;
+        --popover-foreground: 240 5.9% 10%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 240 5.9% 10%;
+        --secondary: 240 3.7% 15.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 240 3.7% 15.9%;
+        --muted-foreground: 240 5% 64.9%;
+        --accent: 240 3.7% 15.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 3.7% 15.9%;
+        --input: 240 3.7% 15.9%;
+        --ring: 240 4.9% 83.9%;
+        --radius: 0.5rem;
+
+        /* Sidebar specific variables from shadcn/ui docs */
+        --sidebar-background: 240 5.9% 10%;
+        /* Darker sidebar background */
+        --sidebar-foreground: 240 4.8% 95.9%;
+        /* Lighter sidebar foreground */
+        --sidebar-primary: 0 0% 98%;
+        --sidebar-primary-foreground: 240 5.9% 10%;
+        --sidebar-accent: 240 3.7% 15.9%;
+        /* Accent for hover/active states */
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
+        --sidebar-border: 240 3.7% 15.9%;
+        /* Border color */
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
