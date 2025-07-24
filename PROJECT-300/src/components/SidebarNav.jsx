@@ -12,12 +12,17 @@ export function SidebarNav() {
     <aside className="w-64 bg-gray-900 text-white flex flex-col h-full p-4">
       <div className="flex items-center gap-2 mb-8 px-2">
         <img
-          src="/muportal-logo.png"
+          src="/public/mu_portal_logo_2.png"
           alt="MuPortal Logo"
           width={90}
           height={24}
         />
-        <img src="/admin-logo.png" alt="Admin Logo" width={60} height={24} />
+        <img
+          src="/public/admin-logo.png"
+          alt="Admin Logo"
+          width={60}
+          height={24}
+        />
       </div>
       <nav className="space-y-2">
         <Link

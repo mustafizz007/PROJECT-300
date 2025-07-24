@@ -64,29 +64,26 @@ export function StudentDashboard() {
     <div className="flex flex-col flex-1">
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b border-gray-800 bg-gray-900">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           <img
             src="/public/mu_portal_logo_2.png"
             alt="MuPortal Logo"
             className="h-8 w-auto"
           />
-          <span className="text-xl font-bold">MuPortal</span>
+          <span className="text-xl font-bold">Student's Profile</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-space-between gap-10">
           <Avatar className="h-9 w-9">
-            <AvatarImage
-              src="/placeholder.svg?height=36&width=36"
-              alt="Abira Haydar"
-            />
-            <AvatarFallback>AH</AvatarFallback>
+            <AvatarImage src="/public/mu_portal_logo_2.png" alt="Joy Shib" />
+            <AvatarFallback>JS</AvatarFallback>
           </Avatar>
-          <div className="flex flex-col">
-            <span className="font-medium">Abira Haydar</span>
+          <div className="flex flex-col ">
+            <span className="font-medium">Joy Shib</span>
             <span className="text-sm text-gray-400">CSE</span>
           </div>
           <Button
             variant="outline"
-            className="bg-gray-800 text-white hover:bg-gray-700"
+            className="bg-blue-700 text-white hover:bg-gray-700"
           >
             Log Out <LogOut className="ml-2 h-4 w-4" />
           </Button>
@@ -94,9 +91,9 @@ export function StudentDashboard() {
       </header>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="flex-1 p-8 overflow-auto mb-5">
         {/* Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20">
           <InfoCard
             title="Current CGPA"
             value="3.85"
@@ -121,7 +118,7 @@ export function StudentDashboard() {
         </div>
 
         {/* Credits and Graduation Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           {/* Credits by Academic Year */}
           <Card className="p-6 bg-gray-900 border border-gray-800">
             <h2 className="text-lg font-semibold mb-4">

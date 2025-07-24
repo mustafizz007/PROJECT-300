@@ -1,3 +1,4 @@
+import animatePlugin from "tailwindcss-animate";
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
@@ -69,6 +70,21 @@ export default {
           700: "#3f3f3f",
           400: "#a3a3a3",
         },
+        // Sidebar specific colors (added back)
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: {
+            DEFAULT: "hsl(var(--sidebar-primary))",
+            foreground: "hsl(var(--sidebar-primary-foreground))",
+          },
+          accent: {
+            DEFAULT: "hsl(var(--sidebar-accent))",
+            foreground: "hsl(var(--sidebar-accent-foreground))",
+          },
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -91,5 +107,5 @@ export default {
       },
     },
   },
-  plugins: [], // You might have 'tailwindcss-animate' here already
+  plugins: [animatePlugin], // Replaced require with import to fix ESLint no-undef
 }
