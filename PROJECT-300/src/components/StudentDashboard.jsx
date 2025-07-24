@@ -66,7 +66,7 @@ export function StudentDashboard() {
       <header className="flex items-center justify-between p-4 border-b border-gray-800 bg-gray-900">
         <div className="flex items-center gap-4">
           <img
-            src="/placeholder.svg?height=32&width=32"
+            src="/public/mu_portal_logo_2.png"
             alt="MuPortal Logo"
             className="h-8 w-auto"
           />
