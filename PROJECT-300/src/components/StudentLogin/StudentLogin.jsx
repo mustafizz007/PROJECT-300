@@ -1,7 +1,7 @@
 import { useState } from "react";
 import logo from "../../assets/mu_portal_logo.png";
 
-export default function StudentLogin({ onNavigate }) {
+export default function StudentLogin({ onNavigate, onLoginSuccess }) {
   const [formData, setFormData] = useState({
     student_id: "",
     password: "",
@@ -35,7 +35,10 @@ export default function StudentLogin({ onNavigate }) {
 
       if (response.ok) {
         alert("Login successful!");
-        onNavigate("dashboard"); // Navigate to dashboard after successful login
+
+        onLoginSuccess(formData.student_id); // Pass student ID to App
+
+        
       } else {
         alert(data.error || "Login failed.");
       }

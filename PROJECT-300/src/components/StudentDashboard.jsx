@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
@@ -20,9 +20,7 @@ import { Separator } from "../components/ui/separator";
  */
 function InfoCard({ title, value, subtitle, icon: Icon, bgColor }) {
   return (
-    <Card
-      className={`flex flex-col items-start p-4 rounded-lg shadow-lg ${bgColor} text-white`}
-    >
+    <Card className={`flex flex-col items-start p-4 rounded-lg shadow-lg ${bgColor} text-white`}>
       <div className="flex items-center justify-between w-full mb-2">
         <h3 className="text-sm font-medium">{title}</h3>
         <Icon className="w-5 h-5" />
@@ -37,9 +35,7 @@ function InfoCard({ title, value, subtitle, icon: Icon, bgColor }) {
  * @param {{ year: string, credits: number, status: "Complete" | "InProgress" }} props
  */
 function AcademicYearItem({ year, credits, status }) {
-  const badgeVariant = status === "Complete" ? "default" : "secondary";
   const badgeColor = status === "Complete" ? "bg-green-500" : "bg-yellow-500";
-
   return (
     <div className="flex items-center justify-between p-4 rounded-lg bg-gray-800 mb-2">
       <span className="text-sm font-medium">{year}</span>
@@ -51,7 +47,9 @@ function AcademicYearItem({ year, credits, status }) {
   );
 }
 
-export function StudentDashboard() {
+export function StudentDashboard({ studentId , onNavigate, onLogout }) {
+  const [studentName, setStudentName] = useState("Loading...");
+
   const academicYears = [
     { year: "Year 1 (2022-23)", credits: 48, status: "Complete" },
     { year: "Year 2 (2023-24)", credits: 32, status: "Complete" },
@@ -60,33 +58,53 @@ export function StudentDashboard() {
 
   const graduationProgress = 88.75;
 
+  useEffect(() => {
+    // If no studentId (e.g., direct URL visit), redirect or show fallback
+    if (!studentId) {
+      setStudentName("Unknown Student (ID missing)");
+      return;
+    }
+
+    async function fetchStudentName() {
+      try {
+        const res = await fetch(`http://localhost:3000/api/student/${studentId}`);
+        if (!res.ok) throw new Error("Failed to fetch student name");
+        const data = await res.json();
+        setStudentName(data.name || "Unknown Student");
+      } catch (error) {
+        console.error("Error fetching student name:", error);
+        setStudentName("Unknown Student");
+      }
+    }
+
+    fetchStudentName();
+  }, [studentId]);
+
+
   return (
     <div className="flex flex-col flex-1">
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b border-gray-800 bg-gray-900">
         <div className="flex items-center gap-5">
-          <img
-            src="/public/mu_portal_logo_2.png"
-            alt="MuPortal Logo"
-            className="h-8 w-auto"
-          />
+          <img src="/public/mu_portal_logo_2.png" alt="MuPortal Logo" className="h-8 w-auto" />
           <span className="text-xl font-bold">Student's Profile</span>
         </div>
         <div className="flex items-center justify-space-between gap-10">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="/public/mu_portal_logo_2.png" alt="Joy Shib" />
-            <AvatarFallback>JS</AvatarFallback>
+            <AvatarImage src="/public/mu_portal_logo_2.png" alt={studentName} />
+            <AvatarFallback>ST</AvatarFallback>
           </Avatar>
-          <div className="flex flex-col ">
-            <span className="font-medium">Joy Shib</span>
+          <div className="flex flex-col">
+            <span className="font-medium">{studentName}</span>
             <span className="text-sm text-gray-400">CSE</span>
           </div>
-          <Button
-            variant="outline"
-            className="bg-blue-700 text-white hover:bg-gray-700"
-          >
-            Log Out <LogOut className="ml-2 h-4 w-4" />
-          </Button>
+            <Button
+              variant="outline"
+              className="bg-blue-700 text-white hover:bg-gray-700"
+              onClick={onLogout}
+            >
+              Log Out <LogOut className="ml-2 h-4 w-4" />
+            </Button>
         </div>
       </header>
 
@@ -94,36 +112,16 @@ export function StudentDashboard() {
       <div className="flex-1 p-8 overflow-auto mb-5">
         {/* Info Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20">
-          <InfoCard
-            title="Current CGPA"
-            value="3.85"
-            subtitle="Out of 4.00"
-            icon={Award}
-            bgColor="bg-blue-600"
-          />
-          <InfoCard
-            title="Current Semester"
-            value="6th"
-            subtitle="Summer 2025"
-            icon={CalendarDays}
-            bgColor="bg-purple-600"
-          />
-          <InfoCard
-            title="Total Credits"
-            value="142"
-            subtitle="Out of 160"
-            icon={Book}
-            bgColor="bg-pink-600"
-          />
+          <InfoCard title="Current CGPA" value="3.85" subtitle="Out of 4.00" icon={Award} bgColor="bg-blue-600" />
+          <InfoCard title="Current Semester" value="6th" subtitle="Summer 2025" icon={CalendarDays} bgColor="bg-purple-600" />
+          <InfoCard title="Total Credits" value="142" subtitle="Out of 160" icon={Book} bgColor="bg-pink-600" />
         </div>
 
         {/* Credits and Graduation Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           {/* Credits by Academic Year */}
           <Card className="p-6 bg-gray-900 border border-gray-800">
-            <h2 className="text-lg font-semibold mb-4">
-              Credits by Academic Year
-            </h2>
+            <h2 className="text-lg font-semibold mb-4">Credits by Academic Year</h2>
             {academicYears.map((item, index) => (
               <AcademicYearItem key={index} {...item} />
             ))}
@@ -135,17 +133,9 @@ export function StudentDashboard() {
             <p className="text-sm mb-4">Expected Graduation</p>
             <Separator className="bg-emerald-600 mb-4" />
             <div className="text-sm mb-4">
-              <p>
-                Current Semester: <span className="font-bold">Fall 2024</span>
-              </p>
-              <p>
-                Credits This Semester:{" "}
-                <span className="font-bold">10 credits</span>
-              </p>
-              <p>
-                Credits Next Semester:{" "}
-                <span className="font-bold">8 credits</span>
-              </p>
+              <p>Current Semester: <span className="font-bold">Fall 2024</span></p>
+              <p>Credits This Semester: <span className="font-bold">10 credits</span></p>
+              <p>Credits Next Semester: <span className="font-bold">8 credits</span></p>
             </div>
             <Separator className="bg-emerald-600 mb-4" />
             <div className="text-sm mb-2">

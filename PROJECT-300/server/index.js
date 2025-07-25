@@ -10,6 +10,12 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
+// Import routes
+const studentRoutes = require('./routes/student'); //Import student route
+
+// Mount routes
+app.use('/api/student', studentRoutes); //Base path for student info APIs
+
 //  Signup Route
 app.post('/signup', async (req, res) => {
   const { name, student_id, password, department } = req.body;
