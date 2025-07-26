@@ -22,8 +22,7 @@ const menuItems = [
   { icon: Upload, label: "Resources" },
 ];
 
-export default function Sidebar({ onNavigate }) {
-  const [collapsed, setCollapsed] = useState(false);
+export default function Sidebar({ onNavigate, collapsed, setCollapsed }) {
 
   return (
     <aside
@@ -35,11 +34,7 @@ export default function Sidebar({ onNavigate }) {
       <div>
         {/* Toggle Button */}
         <div className="flex items-center justify-between px-4 py-4">
-          <img
-            src="/public/mu_portal_logo_2.png"
-            alt="MuPortal"
-            className={clsx("transition-all duration-300", collapsed ? "h-8 w-8" : "h-10")}
-          />
+          
           <Button
             variant="ghost"
             className="text-white p-1"

@@ -14,7 +14,7 @@ import {
   FileText,
 } from "lucide-react";
 import { Separator } from "../components/ui/separator";
-import Sidebar from "../components/Sidebar"; // ✅ new import
+import Sidebar from "../components/Sidebar";
 
 function InfoCard({ title, value, subtitle, icon: Icon, bgColor }) {
   return (
@@ -44,6 +44,7 @@ function AcademicYearItem({ year, credits, status }) {
 
 export function StudentDashboard({ studentId, onNavigate, onLogout }) {
   const [studentName, setStudentName] = useState("Loading...");
+  const [collapsed, setCollapsed] = useState(false); // ✅ Sidebar toggle state
 
   const academicYears = [
     { year: "Year 1 (2022-23)", credits: 48, status: "Complete" },
@@ -74,15 +75,18 @@ export function StudentDashboard({ studentId, onNavigate, onLogout }) {
     fetchStudentName();
   }, [studentId]);
 
+  const sidebarWidth = collapsed ? "ml-20" : "ml-64"; // ✅ Adjust margin dynamically
+
   return (
     <div className="flex">
-      <Sidebar onNavigate={onNavigate} />
-        <div className="flex flex-col flex-1 ml-20 md:ml-64 transition-all duration-300">
+      <Sidebar onNavigate={onNavigate} collapsed={collapsed} setCollapsed={setCollapsed} />
+
+      <div className={`flex flex-col flex-1 transition-all duration-300 ${sidebarWidth}`}>
         {/* Header */}
         <header className="flex items-center justify-between p-4 border-b border-gray-800 bg-gray-900">
           <div className="flex items-center gap-5">
             <img src="/public/mu_portal_logo_2.png" alt="MuPortal Logo" className="h-8 w-auto" />
-            <span className="text-xl font-bold">Student's Profile</span>
+            <span className="text-xl font-bold text-white">Student's Profile</span>
           </div>
           <div className="flex items-center gap-10">
             <Avatar className="h-9 w-9">
@@ -90,7 +94,7 @@ export function StudentDashboard({ studentId, onNavigate, onLogout }) {
               <AvatarFallback>ST</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="font-medium">{studentName}</span>
+              <span className="font-medium text-white">{studentName}</span>
               <span className="text-sm text-gray-400">CSE</span>
             </div>
             <Button
@@ -114,7 +118,6 @@ export function StudentDashboard({ studentId, onNavigate, onLogout }) {
 
           {/* Credits and Graduation Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-            {/* Academic Year Credits */}
             <Card className="p-6 bg-gray-900 border border-gray-800">
               <h2 className="text-lg font-semibold mb-4">Credits by Academic Year</h2>
               {academicYears.map((item, index) => (
@@ -122,7 +125,6 @@ export function StudentDashboard({ studentId, onNavigate, onLogout }) {
               ))}
             </Card>
 
-            {/* Graduation Info */}
             <Card className="p-6 bg-emerald-700 text-white rounded-lg shadow-lg">
               <h2 className="text-lg font-semibold mb-4">May 2025</h2>
               <p className="text-sm mb-4">Expected Graduation</p>
@@ -137,10 +139,7 @@ export function StudentDashboard({ studentId, onNavigate, onLogout }) {
                 <p>Progress to Graduation</p>
                 <p className="font-bold">{graduationProgress}%</p>
               </div>
-              <Progress
-                value={graduationProgress}
-                className="w-full h-2 bg-emerald-600 [&::-webkit-progress-bar]:bg-emerald-600 [&::-webkit-progress-value]:bg-white"
-              />
+              <Progress value={graduationProgress} className="w-full h-2 bg-emerald-600" />
               <p className="text-xs mt-1 opacity-80">{160 - 142} credits left</p>
             </Card>
           </div>
