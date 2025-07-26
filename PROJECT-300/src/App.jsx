@@ -38,8 +38,8 @@ export default function App() {
             // Called when login is successful
             onLoginSuccess={(id) => {
               localStorage.setItem("studentId", id); // Save to localStorage
-              setStudentId(id);                      // Save to state
-              setCurrentPage("dashboard");           // Navigate
+setStudentId(id);                      // Save to state
+setCurrentPage("dashboard");           // Navigate
             }}
           />
         );
@@ -49,23 +49,19 @@ export default function App() {
             onNavigate={setCurrentPage}
           />
         );
-        
       case "dashboard":
         return (
           <StudentDashboard
             studentId={studentId}
-            onNavigate={setCurrentPage} // This makes logout work
-            onLogout={handleLogout}     // Pass logout handler
+            onLogout={handleLogout}
           />
         );
-      case "admin-login":
-        return <div>Admin Login Page (Coming Soon)</div>;
       case "admin-dashboard":
-        return <AdminDashboardPage />;
-      case "about":
-        return <div>About Page (Coming Soon)</div>;
-      case "contact":
-        return <div>Contact Page (Coming Soon)</div>;
+        return (
+          <AdminDashboardPage
+            onNavigate={setCurrentPage}
+          />
+        );
       default:
         return <HomePage onNavigate={setCurrentPage} />;
     }

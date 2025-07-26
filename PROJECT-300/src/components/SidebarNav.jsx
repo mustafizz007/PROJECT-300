@@ -1,64 +1,61 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Home,
-  BookOpen,
-  Users,
+  User,
   ClipboardList,
-  GraduationCap,
+  Award,
+  BookOpen,
+  FolderOpen,
 } from "lucide-react";
 
 export function SidebarNav() {
+  const location = useLocation();
+
+  // Helper to set active link style - matching your exact design
+  const linkClass = (path) =>
+    `flex items-center gap-3 rounded-lg px-4 py-3 mx-4 mb-3 transition-all duration-200 ${
+      location.pathname === path
+        ? "bg-gray-200 text-gray-900 font-medium"
+        : "text-gray-300 hover:bg-gray-800 hover:text-white"
+    }`;
+
   return (
-    <aside className="w-64 bg-gray-900 text-white flex flex-col h-full p-4">
-      <div className="flex items-center gap-2 mb-8 px-2">
-        <img
-          src="/public/mu_portal_logo_2.png"
-          alt="MuPortal Logo"
-          width={90}
-          height={24}
-        />
-        <img
-          src="/public/admin-logo.png"
-          alt="Admin Logo"
-          width={60}
-          height={24}
-        />
+    <aside className="w-80 bg-gray-900 min-h-screen flex flex-col py-8">
+      {/* Logo placeholder - matching your design */}
+      <div className="px-6 mb-12">
+        <div className="w-16 h-16 bg-gray-700 rounded-lg"></div>
       </div>
-      <nav className="space-y-2">
-        <Link
-          to="/admin/overview" // Example path for react-router-dom
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-200 transition-all hover:bg-gray-800 bg-gray-700 text-white"
-        >
+
+      {/* Navigation items - exactly as shown in your design */}
+      <nav className="flex flex-col">
+        <Link to="/dashboard" className={linkClass("/dashboard")}>
           <Home className="h-5 w-5" />
-          Overview
+          Dashboard
         </Link>
-        <Link
-          to="/admin/courses" // Example path
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-200 transition-all hover:bg-gray-800"
-        >
-          <BookOpen className="h-5 w-5" />
-          Course Management
+
+        <Link to="/profile" className={linkClass("/profile")}>
+          <User className="h-5 w-5" />
+          Profile
         </Link>
-        <Link
-          to="/admin/students" // Example path
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-200 transition-all hover:bg-gray-800"
-        >
-          <Users className="h-5 w-5" />
-          Student Management
-        </Link>
-        <Link
-          to="/admin/results" // Example path
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-200 transition-all hover:bg-gray-800"
-        >
+
+        <Link to="/results" className={linkClass("/results")}>
           <ClipboardList className="h-5 w-5" />
-          Results Management
+          Results
         </Link>
-        <Link
-          to="/admin/credits" // Example path
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-200 transition-all hover:bg-gray-800"
-        >
-          <GraduationCap className="h-5 w-5" />
-          Credit Management
+
+        <Link to="/cgpa" className={linkClass("/cgpa")}>
+          <Award className="h-5 w-5" />
+          CGPA
+        </Link>
+
+        <Link to="/courses" className={linkClass("/courses")}>
+          <BookOpen className="h-5 w-5" />
+          Courses
+        </Link>
+
+        <Link to="/resources" className={linkClass("/resources")}>
+          <FolderOpen className="h-5 w-5" />
+          Resources
         </Link>
       </nav>
     </aside>

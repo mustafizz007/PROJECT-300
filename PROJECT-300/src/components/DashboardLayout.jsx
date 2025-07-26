@@ -1,22 +1,15 @@
-"use client"; // If this component uses client-side hooks like useState or useEffect
+"use client";
 
 import { LogOut } from "lucide-react";
-
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-
-// You might need to adjust the path to your global CSS file
-import "../index.css"; // Assuming your main CSS is index.css or style.css
+import { AppSidebar } from "../components/app-sidebar";
+import { cn } from "../lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Button } from "../components/ui/button";
+import "../index.css";
 
 export default function DashboardLayout({ children }) {
-  // In a non-Next.js App Router setup, you might not have `cookies()` directly here.
-  // If you need to persist sidebar state, you'd typically use client-side storage (localStorage)
-  // or a custom server-side solution if you have a backend.
-  // For now, we'll default to true for demonstration.
-  const defaultOpen = true; // Or retrieve from localStorage if applicable
+  const defaultOpen = true;
 
   return (
     <div
@@ -26,7 +19,7 @@ export default function DashboardLayout({ children }) {
     >
       <SidebarProvider defaultOpen={defaultOpen}>
         {/* This is the main flex container */}
-        <AppSidebar /> {/* This will take its width: w-[--sidebar-width] */}
+        <AppSidebar />
         <div className="flex flex-col flex-1">
           {/* This will take the remaining space */}
           {/* Header */}
@@ -38,14 +31,11 @@ export default function DashboardLayout({ children }) {
             {/* User info and logout button */}
             <div className="flex items-center gap-4 ml-auto">
               <Avatar className="h-9 w-9">
-                <AvatarImage
-                  src="/placeholder.svg?height=36&width=36"
-                  alt="Abira Haydar"
-                />
-                <AvatarFallback>AH</AvatarFallback>
+                <AvatarImage src="/public/favicon.ico" alt="Joy Shib" />
+                <AvatarFallback>JS</AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
-                <span className="font-medium">Abira Haydar</span>
+                <span className="font-medium">Joy Shib</span>
                 <span className="text-sm text-gray-400">CSE</span>
               </div>
               <Button

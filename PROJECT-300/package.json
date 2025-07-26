@@ -23,7 +23,11 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
+<<<<<<< HEAD
     "tailwind-merge": "^3.3.1",
+=======
+    "tailwind-variants": "^1.0.0",
+>>>>>>> 3065398 (design the student dashboard page)
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
