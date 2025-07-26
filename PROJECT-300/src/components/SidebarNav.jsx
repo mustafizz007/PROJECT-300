@@ -1,15 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
-import {
-  Home,
-  User,
-  ClipboardList,
-  Award,
-  BookOpen,
-  FolderOpen,
-} from "lucide-react";
+import { Link, useLocation } from "react-router-dom"
+import { Home, User, ClipboardList, Award, BookOpen, FolderOpen } from "lucide-react"
 
 export function SidebarNav() {
-  const location = useLocation();
+  const location = useLocation()
 
   // Enhanced link styling with beautiful gradients and animations
   const linkClass = (path) =>
@@ -17,17 +10,17 @@ export function SidebarNav() {
       location.pathname === path
         ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25"
         : "text-gray-300 hover:bg-gradient-to-r hover:from-gray-700 hover:to-gray-600 hover:text-white hover:shadow-md"
-    }`;
+    }`
 
   const iconClass = (path) =>
     `h-5 w-5 transition-all duration-300 ${
       location.pathname === path
         ? "text-white drop-shadow-sm"
         : "text-gray-400 group-hover:text-white group-hover:drop-shadow-sm"
-    }`;
+    }`
 
   return (
-    <aside className="w-80 bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen flex flex-col py-8 shadow-2xl">
+    <aside className="w-80 bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen flex flex-col py-8 shadow-2xl fixed left-0 top-0 z-10">
       {/* Navigation items with beautiful design */}
       <nav className="flex flex-col space-y-2">
         <Link to="/dashboard" className={linkClass("/dashboard")}>
@@ -91,15 +84,8 @@ export function SidebarNav() {
         </Link>
       </nav>
 
-      {/* Decorative element at bottom */}
-      <div className="mt-auto mx-4 p-4 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-600/20 backdrop-blur-sm border border-white/10">
-        <div className="text-center">
-          <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
-            <Award className="w-4 h-4 text-white" />
-          </div>
-          <p className="text-xs text-gray-300 font-medium">Academic Portal</p>
-        </div>
-      </div>
+      
+      
     </aside>
-  );
+  )
 }
