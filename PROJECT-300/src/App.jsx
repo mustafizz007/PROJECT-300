@@ -10,22 +10,23 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [studentId, setStudentId] = useState(null);
 
-  // Load studentId from localStorage when the app first loads
+  // On mount, check for existing studentId but do NOT auto-navigate to dashboard
   useEffect(() => {
     const storedId = localStorage.getItem("studentId");
     if (storedId) {
       setStudentId(storedId);
-      // Do not auto-navigate to dashboard
+      // Do not setCurrentPage("dashboard")
     }
   }, []);
 
-  // Handle logout
+  // Logout handler
   const handleLogout = () => {
-    localStorage.removeItem("studentId"); // Clear from localStorage
-    setStudentId(null); // Clear from state
-    setCurrentPage("home"); // Navigate to home page
+    localStorage.removeItem("studentId");
+    setStudentId(null);
+    setCurrentPage("home");
   };
 
+  // Page rendering logic
   const renderPage = () => {
     switch (currentPage) {
       case "home":
@@ -35,9 +36,9 @@ export default function App() {
           <StudentLogin
             onNavigate={setCurrentPage}
             onLoginSuccess={(id) => {
-              localStorage.setItem("studentId", id); // Save to localStorage
-              setStudentId(id); // Save to state
-              setCurrentPage("dashboard"); // Navigate
+              localStorage.setItem("studentId", id);
+              setStudentId(id);
+              setCurrentPage("dashboard");
             }}
           />
         );
