@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // Import routes
-const studentRoutes = require('./routes/student'); //Import student route
+import studentRoutes from './routes/student.js'; // Import student route
 
 // Mount routes
 app.use('/api/student', studentRoutes); //Base path for student info APIs

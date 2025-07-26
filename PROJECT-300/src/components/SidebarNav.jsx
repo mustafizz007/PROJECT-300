@@ -11,53 +11,95 @@ import {
 export function SidebarNav() {
   const location = useLocation();
 
-  // Helper to set active link style - matching your exact design
+  // Enhanced link styling with beautiful gradients and animations
   const linkClass = (path) =>
-    `flex items-center gap-3 rounded-lg px-4 py-3 mx-4 mb-3 transition-all duration-200 ${
+    `group flex items-center gap-4 rounded-xl px-5 py-4 mx-4 mb-3 transition-all duration-300 transform hover:scale-105 ${
       location.pathname === path
-        ? "bg-gray-200 text-gray-900 font-medium"
-        : "text-gray-300 hover:bg-gray-800 hover:text-white"
+        ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25"
+        : "text-gray-300 hover:bg-gradient-to-r hover:from-gray-700 hover:to-gray-600 hover:text-white hover:shadow-md"
+    }`;
+
+  const iconClass = (path) =>
+    `h-5 w-5 transition-all duration-300 ${
+      location.pathname === path
+        ? "text-white drop-shadow-sm"
+        : "text-gray-400 group-hover:text-white group-hover:drop-shadow-sm"
     }`;
 
   return (
-    <aside className="w-80 bg-gray-900 min-h-screen flex flex-col py-8">
-      {/* Logo placeholder - matching your design */}
-      <div className="px-6 mb-12">
-        <div className="w-16 h-16 bg-gray-700 rounded-lg"></div>
-      </div>
-
-      {/* Navigation items - exactly as shown in your design */}
-      <nav className="flex flex-col">
+    <aside className="w-80 bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen flex flex-col py-8 shadow-2xl">
+      {/* Navigation items with beautiful design */}
+      <nav className="flex flex-col space-y-2">
         <Link to="/dashboard" className={linkClass("/dashboard")}>
-          <Home className="h-5 w-5" />
-          Dashboard
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <Home className={iconClass("/dashboard")} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Dashboard</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </Link>
 
         <Link to="/profile" className={linkClass("/profile")}>
-          <User className="h-5 w-5" />
-          Profile
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <User className={iconClass("/profile")} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Profile</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </Link>
 
         <Link to="/results" className={linkClass("/results")}>
-          <ClipboardList className="h-5 w-5" />
-          Results
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <ClipboardList className={iconClass("/results")} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Results</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </Link>
 
         <Link to="/cgpa" className={linkClass("/cgpa")}>
-          <Award className="h-5 w-5" />
-          CGPA
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <Award className={iconClass("/cgpa")} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">CGPA</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </Link>
 
         <Link to="/courses" className={linkClass("/courses")}>
-          <BookOpen className="h-5 w-5" />
-          Courses
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <BookOpen className={iconClass("/courses")} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Courses</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </Link>
 
         <Link to="/resources" className={linkClass("/resources")}>
-          <FolderOpen className="h-5 w-5" />
-          Resources
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <FolderOpen className={iconClass("/resources")} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Resources</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </Link>
       </nav>
+
+      {/* Decorative element at bottom */}
+      <div className="mt-auto mx-4 p-4 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-600/20 backdrop-blur-sm border border-white/10">
+        <div className="text-center">
+          <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
+            <Award className="w-4 h-4 text-white" />
+          </div>
+          <p className="text-xs text-gray-300 font-medium">Academic Portal</p>
+        </div>
+      </div>
     </aside>
   );
 }

@@ -15,18 +15,17 @@ export default function App() {
     const storedId = localStorage.getItem("studentId");
     if (storedId) {
       setStudentId(storedId);
-      setCurrentPage("dashboard");
+      // Do not auto-navigate to dashboard
     }
   }, []);
 
   // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("studentId"); // Clear from localStorage
-    setStudentId(null);                   // Clear from state
-    setCurrentPage("home");               // Navigate to home page
+    setStudentId(null); // Clear from state
+    setCurrentPage("home"); // Navigate to home page
   };
 
-  
   const renderPage = () => {
     switch (currentPage) {
       case "home":
@@ -35,33 +34,21 @@ export default function App() {
         return (
           <StudentLogin
             onNavigate={setCurrentPage}
-            // Called when login is successful
             onLoginSuccess={(id) => {
               localStorage.setItem("studentId", id); // Save to localStorage
-setStudentId(id);                      // Save to state
-setCurrentPage("dashboard");           // Navigate
+              setStudentId(id); // Save to state
+              setCurrentPage("dashboard"); // Navigate
             }}
           />
         );
       case "signup":
-        return (
-          <StudentSignup
-            onNavigate={setCurrentPage}
-          />
-        );
+        return <StudentSignup onNavigate={setCurrentPage} />;
       case "dashboard":
         return (
-          <StudentDashboard
-            studentId={studentId}
-            onLogout={handleLogout}
-          />
+          <StudentDashboard studentId={studentId} onLogout={handleLogout} />
         );
       case "admin-dashboard":
-        return (
-          <AdminDashboardPage
-            onNavigate={setCurrentPage}
-          />
-        );
+        return <AdminDashboardPage onNavigate={setCurrentPage} />;
       default:
         return <HomePage onNavigate={setCurrentPage} />;
     }
