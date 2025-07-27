@@ -105,7 +105,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
 
       {/* Login Form */}
       <main className="login-main">
-        <div className="login-container">
+        <div className="login-container text-left">
           <div className="login-card">
             <h2 className="login-title">Student Login</h2>
             <p className="login-subtitle">

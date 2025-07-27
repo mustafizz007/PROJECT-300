@@ -20,7 +20,7 @@ export function SidebarNav() {
     }`
 
   return (
-    <aside className="w-80 bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen flex flex-col py-8 shadow-2xl fixed left-0 top-0 z-10">
+    <aside className="w-80 bg-gradient-to-b from-gray-900 to-gray-800 min-h-full flex flex-col py-8 shadow-2xl">
       {/* Navigation items with beautiful design */}
       <nav className="flex flex-col space-y-2">
         <Link to="/dashboard" className={linkClass("/dashboard")}>

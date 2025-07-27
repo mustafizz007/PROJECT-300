@@ -101,26 +101,26 @@ const handleSubmit = async (e) => {
           </nav>
           <div className="auth-buttons">
             <button
-              className="px-4 py-1 rounded-lg font-semibold text-pink-600 border border-pink-500 hover:bg-pink-50 transition"
+              className="px-4 py-1 rounded-lg font-semibold text-gray-600 border border-gray-500 hover:bg-gray-50 transition"
               onClick={() => onNavigate("login")}
             >
               Login
             </button>
             <button
-              className="px-4 py-1 rounded-lg font-semibold bg-pink-500 text-white hover:bg-pink-600 transition"
+              className="px-4 py-1 rounded-lg font-semibold bg-gray-900 text-white hover:bg-gray-700 transition"
               disabled
             >Sign Up</button>
           </div>
         </div>
       </header>
-
+        <br></br>
       {/* Signup Form */}
       <main className="flex-1 flex items-center justify-center">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold mb-1 text-gray-800 text-center">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 text-left">
+          <h2 className="text-2xl font-bold mb-1 text-gray-800 ">
             Student Signup
           </h2>
-          <p className="text-gray-500 mb-6 text-center">
+          <p className="text-gray-500 mb-6">
             Create your account to access MuPortal resources
           </p>
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -206,20 +206,21 @@ const handleSubmit = async (e) => {
                 </select>
               </div>
 
-              <button type="submit" className="w-full py-2 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-lg transition">
+              <button type="submit" className="w-full py-2 bg-gray-900 hover:bg-gray-700 text-white font-semibold rounded-lg transition">
                 Create Account
               </button>
             </form>
 
             <p className="signup-footer">
               Already have an account?{" "}
-              <button className="text-pink-600 hover:underline font-medium" onClick={() => onNavigate("login")}>
+              <button className="text-gray-700 hover:underline font-medium" onClick={() => onNavigate("login")}>
                 Login
               </button>
             </p>
           </div>
         
       </main>
+      <br></br>
     </div>
   );
 }

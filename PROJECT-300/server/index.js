@@ -3,6 +3,12 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const pool = require('./db'); // Your PostgreSQL pool connection
 
+//import express from 'express';
+//import cors from 'cors';
+//import bcrypt from 'bcrypt';
+//import pool from './db.js';
+//import studentRoutes from './routes/student.js';
+
 const app = express();
 const PORT = 3000;
 

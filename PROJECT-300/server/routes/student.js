@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
+//import express from 'express';
+//import pool from '../db.js'; // Make sure you added .js extension
+//const router = express.Router();
+
 // GET /api/student/:studentId - Fetch student name by ID
 router.get('/:studentId', async (req, res) => {
   const studentId = req.params.studentId;
@@ -23,3 +27,4 @@ router.get('/:studentId', async (req, res) => {
 });
 
 module.exports = router;
+//export default router;

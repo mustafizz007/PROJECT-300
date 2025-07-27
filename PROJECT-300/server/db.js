@@ -1,5 +1,8 @@
 const { Pool } = require('pg');
 
+//import pkg from 'pg';
+//const { Pool } = pkg;
+
 const pool = new Pool({
   user: 'postgres', // your username
   host: 'localhost',
