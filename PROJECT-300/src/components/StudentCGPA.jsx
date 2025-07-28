@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { FaStar, FaTrophy } from "react-icons/fa";
 
 export function StudentCGPA({ studentId }) {
   const [cgpaData, setCgpaData] = useState({
@@ -29,31 +30,39 @@ export function StudentCGPA({ studentId }) {
   }, [studentId]);
 
   return (
-    <div className="flex-1 p-8 bg-gray-100">
-      <div className="bg-white rounded-2xl p-8 shadow-sm max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">
+    <div className="flex-1 p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 min-h-screen">
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <div className="bg-white rounded-3xl p-10 shadow-xl max-w-4xl mx-auto">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-10 text-center tracking-tight">
           CGPA Progression
         </h1>
-        <div className="space-y-6">
-          <div className="bg-gray-300 rounded-2xl p-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Current CGPA Card */}
+          <div className="bg-gradient-to-br from-blue-300 to-blue-500 rounded-2xl p-8 flex flex-col items-center shadow-lg">
+            <FaStar className="text-yellow-300 text-5xl mb-4 drop-shadow" />
+            <h2 className="text-xl font-semibold text-white mb-2 tracking-wide">
               Current CGPA
             </h2>
-            <div className="text-4xl font-bold text-gray-900 mb-2">
+            <div className="text-5xl font-extrabold text-white mb-2 drop-shadow-lg">
               {cgpaData.currentCGPA}
             </div>
-            <p className="text-lg text-gray-700">
+            <p className="text-lg text-blue-100">
               Out of {cgpaData.scale} scale
             </p>
           </div>
-          <div className="bg-gray-300 rounded-2xl p-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+          {/* Highest CGPA Card */}
+          <div className="bg-gradient-to-br from-green-300 to-green-500 rounded-2xl p-8 flex flex-col items-center shadow-lg">
+            <FaTrophy className="text-yellow-200 text-5xl mb-4 drop-shadow" />
+            <h2 className="text-xl font-semibold text-white mb-2 tracking-wide">
               Highest CGPA
             </h2>
-            <div className="text-4xl font-bold text-gray-900 mb-2">
+            <div className="text-5xl font-extrabold text-white mb-2 drop-shadow-lg">
               {cgpaData.highestCGPA}
             </div>
-            <p className="text-lg text-gray-700">{cgpaData.highestSemester}</p>
+            <p className="text-lg text-pink-100">{cgpaData.highestSemester}</p>
           </div>
         </div>
       </div>

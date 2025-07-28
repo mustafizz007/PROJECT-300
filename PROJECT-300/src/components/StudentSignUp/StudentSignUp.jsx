@@ -63,7 +63,7 @@ const handleSubmit = async (e) => {
 
 
   return (
- <div className="min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 flex flex-col">      {/* Header */}
+ <div className="min-h-screen bg-gradient-to-br from-violet-100 to-blue-100 flex flex-col">      {/* Header */}
       <header className="header">
         <div className="header-content">
           <div className="logo">

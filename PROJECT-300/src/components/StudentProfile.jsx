@@ -79,7 +79,7 @@ export function StudentProfile({ studentId }) {
   };
 
   return (
-    <div className="flex-1 p-8 bg-gray-100">
+    <div className="flex-1 p-8 bg-gray-900">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {/* Profile Card - Left */}
         <div className="bg-white rounded-2xl p-8 shadow-sm">
@@ -144,7 +144,7 @@ export function StudentProfile({ studentId }) {
             </h3>
             <div className="space-y-4">
               <div>
-                <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                <Label className="text-sm font-medium text-gray-700 mb-2 block text-left">
                   Full Name
                 </Label>
                 <Input
@@ -156,7 +156,7 @@ export function StudentProfile({ studentId }) {
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                <Label className="text-sm font-medium text-gray-700 mb-2 block text-left">
                   Email
                 </Label>
                 <Input
@@ -169,31 +169,20 @@ export function StudentProfile({ studentId }) {
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                <Label className="text-sm font-medium text-gray-700 mb-2 block text-left">
                   Phone
                 </Label>
-                <div className="grid grid-cols-2 gap-3">
-                  <Input
-                    placeholder="Country code"
-                    value={studentData.phoneCountry}
-                    onChange={(e) =>
-                      handleInputChange("phoneCountry", e.target.value)
-                    }
-                    disabled={!isEditing}
-                    className="bg-gray-300 border-0 rounded-md h-10"
-                  />
-                  <Input
-                    placeholder="Phone number"
-                    value={studentData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
-                    disabled={!isEditing}
-                    className="bg-gray-300 border-0 rounded-md h-10"
-                  />
-                </div>
+                <Input
+                  placeholder="Phone number"
+                  value={studentData.phone}
+                  onChange={(e) => handleInputChange("phone", e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full bg-gray-300 border-0 rounded-md h-10"
+                />
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                <Label className="text-sm font-medium text-gray-700 mb-2 block text-left">
                   Address
                 </Label>
                 <Input
@@ -214,18 +203,18 @@ export function StudentProfile({ studentId }) {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block text-left">
                     Major
                   </Label>
                   <Input
                     value={studentData.major}
                     onChange={(e) => handleInputChange("major", e.target.value)}
                     disabled={!isEditing}
-                    className="bg-gray-300 border-0 rounded-md h-10"
+                    className="w-full bg-gray-300 border-0 rounded-md h-10"
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block text-left">
                     Specification
                   </Label>
                   <Input
@@ -234,14 +223,14 @@ export function StudentProfile({ studentId }) {
                       handleInputChange("specification", e.target.value)
                     }
                     disabled={!isEditing}
-                    className="bg-gray-300 border-0 rounded-md h-10"
+                    className="w-full bg-gray-300 border-0 rounded-md h-10"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block text-left">
                     Expected Graduation
                   </Label>
                   <Input
@@ -250,11 +239,11 @@ export function StudentProfile({ studentId }) {
                       handleInputChange("expectedGraduation", e.target.value)
                     }
                     disabled={!isEditing}
-                    className="bg-gray-300 border-0 rounded-md h-10"
+                    className="w-full bg-gray-300 border-0 rounded-md h-10"
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block text-left">
                     Academic advisor
                   </Label>
                   <Input
@@ -263,7 +252,7 @@ export function StudentProfile({ studentId }) {
                       handleInputChange("academicAdvisor", e.target.value)
                     }
                     disabled={!isEditing}
-                    className="bg-gray-300 border-0 rounded-md h-10"
+                    className="w-full bg-gray-300 border-0 rounded-md h-10"
                   />
                 </div>
               </div>
