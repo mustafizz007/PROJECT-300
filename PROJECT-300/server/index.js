@@ -1,7 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const bcrypt = require('bcrypt');
-const pool = require('./db'); // Your PostgreSQL pool connection
+import express from 'express';
+import cors from 'cors';
+import bcrypt from 'bcrypt';
+import pool from './db.js'; // Your PostgreSQL pool connection
 
 //import express from 'express';
 //import cors from 'cors';
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // Import routes
-const studentRoutes = require('./routes/student'); //Import student route
+import studentRoutes from './routes/student.js'; //Import student route
 
 // Mount routes
 app.use('/api/student', studentRoutes); //Base path for student info APIs
@@ -74,7 +74,7 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid student ID or password' });
     }
 
-    // ✅ Successful login
+    
     res.status(200).json({ message: 'Login successful', name: user.name });
   } catch (err) {
     console.error('❌ Login error:', err);

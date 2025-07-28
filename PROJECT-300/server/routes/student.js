@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
+import pool from '../db.js'; // Make sure you added .js extension
 const router = express.Router();
-const pool = require('../db');
 
 //import express from 'express';
 //import pool from '../db.js'; // Make sure you added .js extension
@@ -26,5 +26,4 @@ router.get('/:studentId', async (req, res) => {
   }
 });
 
-module.exports = router;
-//export default router;
+export default router;
