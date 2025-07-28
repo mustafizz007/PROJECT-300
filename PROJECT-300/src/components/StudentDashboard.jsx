@@ -3,10 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
-import { Progress } from "../components/ui/progress";
 import { StudentProfile } from "./StudentProfile";
+import { StudentResults } from "./StudentResults";
 import {
-  LogOut,
   Award,
   CalendarDays,
   Book,
@@ -14,7 +13,6 @@ import {
   Upload,
   FileText,
 } from "lucide-react";
-import { Separator } from "../components/ui/separator";
 import { SidebarNav } from "./SidebarNav";
 
 function InfoCard({ title, value, subtitle, icon: Icon, bgColor }) {
@@ -49,7 +47,7 @@ function AcademicYearItem({ year, credits, status }) {
 
 export function StudentDashboard({ studentId, onLogout }) {
   const [studentName, setStudentName] = useState("dashboard");
-  const [dashboardView, setDashboardView] = useState("dashboard"); // NEW: controls which view to show
+  const [dashboardView, setDashboardView] = useState("dashboard");
 
   const academicYears = [
     { year: "Year 1 (2022-23)", credits: 48, status: "Complete" },
@@ -83,12 +81,12 @@ export function StudentDashboard({ studentId, onLogout }) {
   }, [studentId]);
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="w-full min-h-screen bg-gray-900 flex flex-col">
       {/* Header at the top */}
       <header className="flex items-center justify-between p-6 border-b border-white bg-white w-full">
         <div className="flex items-center gap-6">
           <img
-            src="/public/mu_portal_logo_2.png"
+            src="/src/assets/mu_portal_logo.png"
             alt="MuPortal Logo"
             className="h-8 w-auto"
           />
@@ -107,21 +105,21 @@ export function StudentDashboard({ studentId, onLogout }) {
           </div>
           <Button
             variant="outline"
-            className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg"
+            className="bg-blue-500 text-black border-black-300 hover:bg-gray-100"
             onClick={onLogout}
           >
-            Log Out <LogOut className="ml-2 h-4 w-4" />
+            Logout
           </Button>
         </div>
       </header>
       {/* Main area: sidebar + content */}
-      <div className="flex flex-1 min-h-0">
+      <div className="flex flex-1 min-h-0 w-full">
         <SidebarNav
           studentId={studentId}
           onNavigate={setDashboardView}
           onLogout={onLogout}
         />
-        <div className="flex-1 p-8 overflow-auto mb-5">
+        <main className="flex-1 p-8 overflow-auto">
           {dashboardView === "dashboard" && (
             <>
               {/* Info Cards */}
@@ -217,8 +215,15 @@ export function StudentDashboard({ studentId, onLogout }) {
               onLogout={onLogout}
             />
           )}
+          {dashboardView === "results" && (
+            <StudentResults
+              studentId={studentId}
+              onNavigate={setDashboardView}
+              onLogout={onLogout}
+            />
+          )}
           {/* Add more views here as needed */}
-        </div>
+        </main>
       </div>
     </div>
   );
