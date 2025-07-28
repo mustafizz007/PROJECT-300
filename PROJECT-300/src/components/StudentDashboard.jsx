@@ -5,7 +5,9 @@ import { Card } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { StudentProfile } from "./StudentProfile";
 import { StudentResults } from "./StudentResults";
-import { StudentCGPA } from "./StudentCGPA"; // <-- Import StudentCGPA
+import { StudentCGPA } from "./StudentCGPA";
+import { CoursesPage } from "./CoursesPage";
+import { CourseDetailPage } from "./course-details-page";
 import {
   Award,
   CalendarDays,
@@ -49,6 +51,7 @@ function AcademicYearItem({ year, credits, status }) {
 export function StudentDashboard({ studentId, onLogout }) {
   const [studentName, setStudentName] = useState("dashboard");
   const [dashboardView, setDashboardView] = useState("dashboard");
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
 
   const academicYears = [
     { year: "Year 1 (2022-23)", credits: 48, status: "Complete" },
@@ -81,6 +84,18 @@ export function StudentDashboard({ studentId, onLogout }) {
     fetchStudentName();
   }, [studentId]);
 
+  // Handler to open course detail
+  const handleCourseSelect = (courseId) => {
+    setSelectedCourseId(courseId);
+    setDashboardView("courseDetail");
+  };
+
+  // Handler to go back to courses list
+  const handleBackToCourses = () => {
+    setSelectedCourseId(null);
+    setDashboardView("courses");
+  };
+
   return (
     <div className="w-full min-h-screen bg-gray-900 flex flex-col">
       {/* Header at the top */}
@@ -91,7 +106,9 @@ export function StudentDashboard({ studentId, onLogout }) {
             alt="MuPortal Logo"
             className="logo-image"
           />
-          <span className="text-xl font-semibold text-black-500"></span>
+          <span className="text-xl font-semibold text-black-500">
+            Student's Profile
+          </span>
         </div>
         <div className="flex items-center gap-10">
           <Avatar className="h-9 w-9">
@@ -236,7 +253,22 @@ export function StudentDashboard({ studentId, onLogout }) {
             />
           )}
           {dashboardView === "cgpa" && <StudentCGPA studentId={studentId} />}
-          {/* Add more views here as needed */}
+          {dashboardView === "courses" && (
+            <CoursesPage
+              studentId={studentId}
+              onNavigate={setDashboardView}
+              onLogout={onLogout}
+              onCourseSelect={handleCourseSelect}
+            />
+          )}
+          {dashboardView === "courseDetail" && selectedCourseId && (
+            <CourseDetailPage
+              courseId={selectedCourseId}
+              studentId={studentId}
+              onBack={handleBackToCourses}
+              onLogout={onLogout}
+            />
+          )}
         </main>
       </div>
     </div>
