@@ -5,6 +5,7 @@ import { Card } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { StudentProfile } from "./StudentProfile";
 import { StudentResults } from "./StudentResults";
+import { StudentCGPA } from "./StudentCGPA"; // <-- Import StudentCGPA
 import {
   Award,
   CalendarDays,
@@ -222,6 +223,7 @@ export function StudentDashboard({ studentId, onLogout }) {
               onLogout={onLogout}
             />
           )}
+          {dashboardView === "cgpa" && <StudentCGPA studentId={studentId} />}
           {/* Add more views here as needed */}
         </main>
       </div>
