@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from 'axios';
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
@@ -31,8 +32,19 @@ function InfoCard({ title, value, subtitle, icon: Icon, bgColor }) {
 }
 
 function AcademicYearItem({ year, credits, status }) {
-  const badgeColor = status === "Complete" ? "bg-green-500" : "bg-blue-500";
-  const badgeText = status === "Complete" ? "Complete" : "InProgress";
+  let badgeColor = "bg-gray-500";
+  let badgeText = status;
+
+  if (status === "Completed") {
+    badgeColor = "bg-green-500";
+    badgeText = "Completed";
+  } else if (status === "In Progress") {
+    badgeColor = "bg-yellow-500";
+    badgeText = "In Progress";
+  } else if (status === "Not Started") {
+    badgeColor = "bg-red-500";
+    badgeText = "Not Started";
+  }
 
   return (
     <div className="flex items-center justify-between p-4 rounded-lg bg-gray-700 mb-3">
@@ -47,46 +59,96 @@ function AcademicYearItem({ year, credits, status }) {
   );
 }
 
+
 export function StudentDashboard({ studentId, onNavigate, onLogout }) {
   const [studentName, setStudentName] = useState("Loading...");
-  const [collapsed, setCollapsed] = useState(false); // ✅ Sidebar toggle state
-
-  const academicYears = [
-    { year: "Year 1 (2022-23)", credits: 48, status: "Complete" },
-    { year: "Year 2 (2023-24)", credits: 32, status: "Complete" },
-    { year: "Year 3 (2024-25)", credits: 45, status: "InProgress" },
-  ];
-
-  const graduationProgress = 88.75;
+  const [cgpa, setCgpa] = useState("Loading...");
+  const [collapsed, setCollapsed] = useState(false);
+  const [totalCredits, setTotalCredits] = useState(null);
+  const [semesters, setSemesters] = useState([]);
+  const [academicYears, setAcademicYears] = useState([]);
+  
 
   useEffect(() => {
-    if (!studentId) {
-      setStudentName("Unknown Student (ID missing)");
-      return;
+  const fetchAcademicYears = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/student/academic-years-status/${studentId}`);
+      setAcademicYears(response.data);
+      console.log("Academic Years:", response.data);
+    } catch (error) {
+      console.error("Failed to fetch academic years:", error);
+      setAcademicYears([]);
     }
+  };
 
-    async function fetchStudentName() {
-      try {
-        const res = await fetch(
-          `http://localhost:3000/api/student/${studentId}`
-        );
-        if (!res.ok) throw new Error("Failed to fetch student name");
-        const data = await res.json();
-        setStudentName(data.name || "Unknown Student");
-      } catch (error) {
-        console.error("Error fetching student name:", error);
-        setStudentName("Unknown Student");
+  if (studentId) fetchAcademicYears();
+}, [studentId]);
+
+
+  const T_credit = totalCredits !== null ? totalCredits : 0;
+  const graduationProgress = ((T_credit / 160) * 100).toFixed(2);;
+  
+
+  useEffect(() => {
+  const fetchName = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/student/${studentId}`);
+      const data = await res.json();
+      console.log("Student name response:", data);
+      setStudentName(data.name || "Unknown Student");
+    } catch (error) {
+      console.error("Failed to fetch student name:", error);
+      setStudentName("Unknown Student");
+    }
+  };
+
+  if (studentId) fetchName();
+}, [studentId]);
+
+useEffect(() => {
+  const fetchCgpa = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/student/result/${studentId}`);
+      const data = await res.json();
+      console.log("CGPA response:", data);
+      setCgpa(data.cgpa ? parseFloat(data.cgpa).toFixed(2) : "N/A");
+      setTotalCredits(data.total_credits || 0);
+      console.log("Total Credits:", data.total_credits);
+    } catch (error) {
+      console.error("Failed to fetch CGPA:", error);
+      setCgpa("N/A");
+    }
+  };
+
+  if (studentId) fetchCgpa();
+}, [studentId]);
+
+useEffect(() => {
+  const fetchSemesters = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/student/semesters/${studentId}`);
+      const semesterArray = response.data.semesters; // destructure correctly
+
+      if (Array.isArray(semesterArray)) {
+        setSemesters(semesterArray);
+      } else {
+        console.warn('Unexpected semester data format:', response.data);
+        setSemesters([]);
       }
+    } catch (error) {
+      console.error('Failed to fetch semesters:', error);
+      setSemesters([]);
     }
+  };
 
-    fetchStudentName();
-  }, [studentId]);
+  if (studentId) fetchSemesters();
+}, [studentId]);
 
-  const sidebarWidth = collapsed ? "ml-20" : "ml-64"; // ✅ Adjust margin dynamically
+  const sidebarWidth = collapsed ? "ml-20" : "ml-64";
+  console.log("Dashboard loaded for studentId:", studentId);
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col">
-      {/* Header at the top */}
       <header className="flex items-center justify-between p-6 border-b border-white bg-white w-full">
         <div className="flex items-center gap-6">
           <img
@@ -116,44 +178,47 @@ export function StudentDashboard({ studentId, onNavigate, onLogout }) {
           </Button>
         </div>
       </header>
-      {/* Main area: sidebar + content */}
+
       <div className="flex flex-1 min-h-0">
         <SidebarNav />
         <div className="flex-1 p-8 overflow-auto mb-5">
-          {/* Info Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20">
             <InfoCard
               title="Current CGPA"
-              value="3.85"
+              value={cgpa}
               subtitle="Out of 4.00"
               icon={Award}
               bgColor="bg-blue-600"
             />
             <InfoCard
               title="Current Semester"
-              value="6th"
-              subtitle="Summer 2025"
+              value={semesters.length > 0 ? `${semesters.length}th` : "N/A"}
+              subtitle={semesters.length > 0 ? `Year ${semesters[semesters.length - 1]}` : "No semesters available"}
               icon={CalendarDays}
               bgColor="bg-purple-600"
             />
+
             <InfoCard
               title="Total Credits"
-              value="142"
+              value={totalCredits !== null ? totalCredits : "N/A"}
               subtitle="Out of 160"
               icon={Book}
               bgColor="bg-pink-600"
             />
           </div>
-          {/* Credits and Graduation Section */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
             <Card className="p-6 bg-gray-900 border border-gray-800">
-              <h2 className="text-lg font-semibold mb-4">
-                Credits by Academic Year
-              </h2>
-              {academicYears.map((item, index) => (
-                <AcademicYearItem key={index} {...item} />
-              ))}
+              <h2 className="text-lg font-semibold mb-4">Credits by Academic Year</h2>
+              {academicYears.length === 0 ? (
+                <p className="text-gray-400">Loading academic years...</p>
+              ) : (
+                academicYears.map((item, index) => (
+                  <AcademicYearItem key={index} {...item} />
+                ))
+              )}
             </Card>
+
             <Card className="p-6 bg-teal-600 text-white border-0 rounded-xl">
               <h2 className="text-2xl font-bold mb-2 text-center">May 2025</h2>
               <p className="text-lg mb-6 opacity-90 text-center">
@@ -161,8 +226,15 @@ export function StudentDashboard({ studentId, onNavigate, onLogout }) {
               </p>
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
-                  <span>Current Semester:</span>
-                  <span className="font-bold">Fall 2024</span>
+                  <span>Current Year:</span>
+                    <span className="font-bold">
+                      {semesters.length > 0
+                        ? (() => {
+                            const [year, sem] = semesters[semesters.length - 1].split('-');
+                            return `Year ${year}, Semester ${sem}`;
+                          })()
+                        : "N/A"}
+                    </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Credits This Semester:</span>
@@ -185,12 +257,12 @@ export function StudentDashboard({ studentId, onNavigate, onLogout }) {
                   ></div>
                 </div>
                 <p className="text-xs opacity-80 text-center">
-                  {160 - 142} credits left
+                  {160 - T_credit} credits left
                 </p>
               </div>
             </Card>
           </div>
-          {/* Action Buttons */}
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Button className="bg-gray-800 text-white hover:bg-gray-700 py-6 text-base border-0 rounded-xl">
               View Courses <ExternalLink className="ml-2 h-5 w-5" />

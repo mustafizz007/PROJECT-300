@@ -35,9 +35,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
 
       if (response.ok) {
         alert("Login successful!");
-
-        onLoginSuccess(formData.student_id); // Pass student ID to App
-
+        onLoginSuccess(formData.student_id); // This sets localStorage correctly via App.jsx
         
       } else {
         alert(data.error || "Login failed.");
