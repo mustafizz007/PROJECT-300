@@ -71,7 +71,7 @@ export function StudentResults({ studentId }) {
   }, [studentId]);
 
   return (
-    <div className="flex-1 p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 min-h-screen">
+    <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
       <div className="bg-white rounded-3xl p-10 shadow-xl max-w-5xl mx-auto">
         {/* Title */}
         <h1 className="text-3xl font-extrabold text-gray-900 mb-10 text-center tracking-tight">

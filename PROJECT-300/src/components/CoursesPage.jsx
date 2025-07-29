@@ -102,8 +102,12 @@ export function CoursesPage({ onCourseSelect }) {
   );
 
   return (
-    <div className="w-full bg-gray-100 p-8">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+    <div className="w-full h-full bg-gray-100 p-8 overflow-auto">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="w-full h-full"
+      >
         <TabsList className="grid w-full grid-cols-3 bg-transparent border-b border-gray-300 rounded-none h-auto p-0">
           <TabsTrigger
             value="completed"

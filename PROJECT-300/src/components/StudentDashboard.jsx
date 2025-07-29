@@ -97,9 +97,9 @@ export function StudentDashboard({ studentId, onLogout }) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-900 flex flex-col">
+    <div className="fixed top-0 left-0 w-screen h-screen bg-gray-100 flex flex-col overflow-hidden">
       {/* Header at the top */}
-      <header className="flex items-center justify-between p-6 border-b border-white bg-white w-full">
+      <header className="flex items-center justify-between p-6 border-b border-white bg-white w-full flex-shrink-0">
         <div className="flex items-center gap-6">
           <img
             src="/src/assets/mu_portal_logo.png"
@@ -143,13 +143,13 @@ export function StudentDashboard({ studentId, onLogout }) {
         </div>
       </header>
       {/* Main area: sidebar + content */}
-      <div className="flex flex-1 min-h-0 w-full">
+      <div className="flex flex-1 min-h-0 w-full overflow-hidden">
         <SidebarNav
           studentId={studentId}
           onNavigate={setDashboardView}
           onLogout={onLogout}
         />
-        <main className="flex-1 p-8 overflow-auto">
+        <main className="flex-1 overflow-auto p-6 bg-white w-full h-full">
           {dashboardView === "dashboard" && (
             <>
               {/* Info Cards */}

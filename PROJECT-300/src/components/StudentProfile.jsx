@@ -79,7 +79,7 @@ export function StudentProfile({ studentId }) {
   };
 
   return (
-    <div className="flex-1 p-8 bg-gray-900">
+    <div className="w-full h-full p-8 bg-gray-100 overflow-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {/* Profile Card - Left */}
         <div className="bg-white rounded-2xl p-8 shadow-sm">

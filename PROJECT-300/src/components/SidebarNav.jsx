@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 
 export function SidebarNav({ onNavigate }) {
   return (
-    <div className="w-80 bg-black flex flex-col min-h-screen">
+    <div className="w-80 bg-black flex flex-col h-full flex-shrink-0 m-0 p-0">
       {/* Top section: Avatar and Logout */}
       <div className="flex flex-col items-center mb-0">
         <Avatar className="h-16 w-16 mb-2">

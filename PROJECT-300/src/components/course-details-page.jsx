@@ -400,7 +400,7 @@ export function CourseDetailPage({ courseId, onBack }) {
   };
 
   return (
-    <div className="w-full bg-gray-100 p-8">
+    <div className="w-full h-full bg-gray-100 p-8 overflow-auto">
       {/* Back Button and Course Header */}
       <div className="mb-6">
         <Button

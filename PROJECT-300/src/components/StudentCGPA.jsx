@@ -30,7 +30,7 @@ export function StudentCGPA({ studentId }) {
   }, [studentId]);
 
   return (
-    <div className="flex-1 p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 min-h-screen">
+    <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
       <br></br>
       <br></br>
       <br></br>
