@@ -73,61 +73,62 @@ export function CoursesPage({ onCourseSelect }) {
   };
 
   const CourseCard = ({ course }) => (
-    <Card
-      className="bg-gray-200 border border-gray-300 mb-4 hover:bg-gray-100 transition-colors cursor-pointer"
-      onClick={() => onCourseSelect && onCourseSelect(course.id)}
-    >
-      <CardContent className="p-6">
-        <div className="flex justify-between items-start">
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              {course.title}
-            </h3>
-            <p className="text-gray-700 mb-1">{course.instructor}</p>
-            {course.grade && (
-              <p className="text-gray-700">
-                <span className="font-medium">Grade: {course.grade}</span>
-              </p>
-            )}
-          </div>
-          <div className="text-right">
-            <div className="text-lg font-semibold text-gray-900 mb-1">
-              {course.code}
-            </div>
-            <div className="text-gray-700">{course.credits} Credits</div>
-          </div>
+  <Card
+    className="bg-white/90 border border-gray-200 shadow-lg hover:shadow-xl hover:scale-[1.025] transition-all duration-200 cursor-pointer rounded-2xl"
+    onClick={() => onCourseSelect && onCourseSelect(course.id)}
+  >
+    <CardContent className="p-6 md:p-8">
+      <div className="flex justify-between items-start">
+        <div className="flex-1">
+          <h3 className="text-xl font-bold text-gray-900 mb-1">
+            {course.title}
+          </h3>
+          <p className="text-gray-700 mb-1">{course.instructor}</p>
+          {course.grade && (
+            <p className="text-violet-700 font-semibold">
+              Grade: {course.grade}
+            </p>
+          )}
         </div>
-      </CardContent>
-    </Card>
-  );
+        <div className="text-right">
+          <div className="text-lg font-bold text-blue-700 mb-1">
+            {course.code}
+          </div>
+          <div className="text-gray-700 font-medium">{course.credits} Credits</div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
 
   return (
-    <div className="w-full h-full bg-gray-100 p-8 overflow-auto">
+    <div className="w-full h-full min-h-screen bg-gradient-to-br from-violet-100 to-blue-100 p-4 md:p-8 flex justify-center items-start overflow-auto">
+    <div className="w-full max-w-6xl bg-white/80 rounded-3xl shadow-2xl p-0 md:p-8 backdrop-blur-md border border-gray-200">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
         className="w-full h-full"
       >
-        <TabsList className="grid w-full grid-cols-3 bg-transparent border-b border-gray-300 rounded-none h-auto p-0">
-          <TabsTrigger
-            value="completed"
-            className="text-gray-600 border-b-2 border-transparent data-[state=active]:border-black data-[state=active]:text-black bg-transparent rounded-none py-4 px-6 text-lg font-medium"
-          >
-            Completed Courses
-          </TabsTrigger>
-          <TabsTrigger
-            value="running"
-            className="text-gray-600 border-b-2 border-transparent data-[state=active]:border-black data-[state=active]:text-black bg-transparent rounded-none py-4 px-6 text-lg font-medium"
-          >
-            Running Courses
-          </TabsTrigger>
-          <TabsTrigger
-            value="remaining"
-            className="text-gray-600 border-b-2 border-transparent data-[state=active]:border-black data-[state=active]:text-black bg-transparent rounded-none py-4 px-6 text-lg font-medium"
-          >
-            Remaining Courses
-          </TabsTrigger>
-        </TabsList>
+        <TabsList className="grid w-full grid-cols-3 bg-transparent rounded-none h-auto p-0">
+    <TabsTrigger
+      value="completed"
+      className="text-gray-600 border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:text-blue-700 bg-transparent rounded-none py-4 px-6 text-lg font-semibold tracking-wide transition-colors"
+    >
+      Completed Courses
+    </TabsTrigger>
+    <TabsTrigger
+      value="running"
+      className="text-gray-600 border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:text-blue-700 bg-transparent rounded-none py-4 px-6 text-lg font-semibold tracking-wide transition-colors"
+    >
+      Running Courses
+    </TabsTrigger>
+    <TabsTrigger
+      value="remaining"
+      className="text-gray-600 border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:text-blue-700 bg-transparent rounded-none py-4 px-6 text-lg font-semibold tracking-wide transition-colors"
+    >
+      Remaining Courses
+    </TabsTrigger>
+  </TabsList>
 
         <div className="mt-8">
           <TabsContent value="completed" className="mt-0">
@@ -155,6 +156,7 @@ export function CoursesPage({ onCourseSelect }) {
           </TabsContent>
         </div>
       </Tabs>
+    </div>
     </div>
   );
 }

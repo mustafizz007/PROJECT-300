@@ -400,38 +400,38 @@ export function CourseDetailPage({ courseId, onBack }) {
   };
 
   return (
-    <div className="w-full h-full bg-gray-100 p-8 overflow-auto">
-      {/* Back Button and Course Header */}
-      <div className="mb-6">
-        <Button
-          variant="ghost"
-          className="text-gray-800 hover:bg-gray-200 mb-4"
-          onClick={onBack}
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Courses
-        </Button>
-
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {courseData.code}: {courseData.title}
-            </h1>
-            <p className="text-gray-600 text-lg">{courseData.instructor}</p>
-          </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-gray-900">
-              {courseData.currentGrade}
+    <div className="w-full h-full  bg-gradient-to-br from-violet-100 to-blue-100 p-4 md:p-8 flex justify-center items-start overflow-auto">
+      <div className="w-full max-w-8xl bg-white/80 rounded-3xl shadow-2xl p-0 md:p-8 backdrop-blur-md border border-gray-200">
+        {/* Sticky Header */}
+        <div className="top-0 z-10 bg-gradient-to-r from-violet-200/80 to-blue-200/80 rounded-t-3xl px-4 md:px-8 pt-6 pb-2 border-b border-gray-300 mb-6">
+          <Button
+            variant="ghost"
+            className="text-gray-800 hover:bg-gray-700 mb-4"
+            onClick={onBack}
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Courses
+          </Button>
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-1">
+                {courseData.code}: {courseData.title}
+              </h1>
+              <p className="text-gray-600 text-lg">{courseData.instructor}</p>
             </div>
-            <p className="text-gray-600">
-              {isCompletedCourse(courseId) ? "Final Grade" : "Current Grade"}
-            </p>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-gray-900">
+                {courseData.currentGrade}
+              </div>
+              <p className="text-gray-600">
+                {isCompletedCourse(courseId) ? "Final Grade" : "Current Grade"}
+              </p>
+            </div>
           </div>
         </div>
-
         {/* Course Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-blue-600 text-white border-0">
+          <Card className="bg-blue-600/90 text-white border-0 rounded-2xl shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-2">
                 <BookOpen className="w-6 h-6" />
@@ -440,11 +440,9 @@ export function CourseDetailPage({ courseId, onBack }) {
               <p className="text-sm opacity-90">Credits</p>
             </CardContent>
           </Card>
-
           {isRemainingCourse(courseId) ? (
-            // For remaining courses, show semester and status
             <>
-              <Card className="bg-gray-600 text-white border-0">
+              <Card className="bg-gray-600/90 text-white border-0 rounded-2xl shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <Calendar className="w-6 h-6" />
@@ -455,8 +453,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <p className="text-sm opacity-90">Semester</p>
                 </CardContent>
               </Card>
-
-              <Card className="bg-yellow-600 text-white border-0">
+              <Card className="bg-yellow-600/90 text-white border-0 rounded-2xl shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <Clock className="w-6 h-6" />
@@ -465,8 +462,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <p className="text-sm opacity-90">Status</p>
                 </CardContent>
               </Card>
-
-              <Card className="bg-indigo-600 text-white border-0">
+              <Card className="bg-indigo-600/90 text-white border-0 rounded-2xl shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <Award className="w-6 h-6" />
@@ -477,9 +473,8 @@ export function CourseDetailPage({ courseId, onBack }) {
               </Card>
             </>
           ) : isCompletedCourse(courseId) ? (
-            // For completed courses, show completion info
             <>
-              <Card className="bg-green-600 text-white border-0">
+              <Card className="bg-green-600/90 text-white border-0 rounded-2xl shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <CheckCircle className="w-6 h-6" />
@@ -488,8 +483,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <p className="text-sm opacity-90">Completed</p>
                 </CardContent>
               </Card>
-
-              <Card className="bg-blue-600 text-white border-0">
+              <Card className="bg-blue-600/90 text-white border-0 rounded-2xl shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <Users className="w-6 h-6" />
@@ -500,8 +494,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <p className="text-sm opacity-90">Final Attendance</p>
                 </CardContent>
               </Card>
-
-              <Card className="bg-purple-600 text-white border-0">
+              <Card className="bg-purple-600/90 text-white border-0 rounded-2xl shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <Award className="w-6 h-6" />
@@ -514,9 +507,8 @@ export function CourseDetailPage({ courseId, onBack }) {
               </Card>
             </>
           ) : (
-            // For running courses, show attendance, progress, assignments
             <>
-              <Card className="bg-green-600 text-white border-0">
+              <Card className="bg-green-600/90 text-white border-0 rounded-2xl shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <Users className="w-6 h-6" />
@@ -527,8 +519,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <p className="text-sm opacity-90">Attendance</p>
                 </CardContent>
               </Card>
-
-              <Card className="bg-purple-600 text-white border-0">
+              <Card className="bg-purple-600/90 text-white border-0 rounded-2xl shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <Award className="w-6 h-6" />
@@ -539,8 +530,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <p className="text-sm opacity-90">Progress</p>
                 </CardContent>
               </Card>
-
-              <Card className="bg-orange-600 text-white border-0">
+              <Card className="bg-orange-600/90 text-white border-0 rounded-2xl shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <Calendar className="w-6 h-6" />

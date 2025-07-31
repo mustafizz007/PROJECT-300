@@ -72,7 +72,7 @@ export function StudentResults({ studentId }) {
 
   return (
     <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
-      <div className="bg-white rounded-3xl p-10 shadow-xl max-w-5xl mx-auto">
+      <div className="bg-white rounded-3xl p-10 shadow-xl max-w-8xl mx-auto">
         {/* Title */}
         <h1 className="text-3xl font-extrabold text-gray-900 mb-10 text-center tracking-tight">
           Semester Result
@@ -82,7 +82,7 @@ export function StudentResults({ studentId }) {
         <div className="overflow-x-auto mb-10">
           <table className="w-full rounded-xl overflow-hidden shadow">
             <thead>
-              <tr className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+              <tr className="bg-gradient-to-r from-indigo-300 to-rose-400 text-white">
                 <th className="text-left py-4 px-2 font-semibold">SL</th>
                 <th className="text-left py-4 px-2 font-semibold">Course ID</th>
                 <th className="text-left py-4 px-2 font-semibold">
