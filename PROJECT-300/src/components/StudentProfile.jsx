@@ -266,7 +266,7 @@ export function StudentProfile({ studentId }) {
             </h3>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-500 font-medium mb-1">
+                <p className="text-green-500 font-medium mb-1 text-left">
                   Change Password
                 </p>
                 <p className="text-sm text-gray-600">

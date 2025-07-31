@@ -37,8 +37,6 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
         alert("Login successful!");
 
         onLoginSuccess(formData.student_id); // Pass student ID to App
-
-        
       } else {
         alert(data.error || "Login failed.");
       }
@@ -53,7 +51,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
   return (
     <div className="login-page">
       {/* Header */}
-      <header className="header">
+      <header className="header" style={{ marginBottom: 0, paddingBottom: 0 }}>
         <div className="header-content">
           <div className="logo">
             <img
@@ -104,8 +102,14 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
       </header>
 
       {/* Login Form */}
-      <main className="login-main">
-        <div className="login-container text-left">
+      <main
+        className="login-main bg-gradient-to-br from-violet-100 to-blue-100"
+        style={{ marginTop: 0, paddingTop: 0, marginBottom: 0, border: 0 }}
+      >
+        <div
+          className="login-container text-left"
+          style={{ marginTop: 0, paddingTop: 0 }}
+        >
           <div className="login-card">
             <h2 className="login-title">Student Login</h2>
             <p className="login-subtitle">

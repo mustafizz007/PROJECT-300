@@ -1,65 +1,105 @@
 import React from "react";
-import { LogOut } from "lucide-react";
+import {
+  Award,
+  Home,
+  User,
+  ClipboardList,
+  BookOpen,
+  FolderOpen,
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import { Button } from "../components/ui/button";
 
-export function SidebarNav({ onNavigate }) {
+function linkClass(path, current) {
+  return [
+    "group flex items-center gap-4 px-4 py-3 rounded-lg transition-all cursor-pointer",
+    "hover:bg-white/10",
+    current === path ? "bg-white/10 text-white" : "text-gray-300",
+  ].join(" ");
+}
+function iconClass(path, current) {
+  return ["w-5 h-5", current === path ? "text-white" : "text-gray-400"].join(
+    " "
+  );
+}
+
+export function SidebarNav({ onNavigate, studentId, onLogout, current }) {
+  // current = dashboardView from parent
   return (
-    <div className="w-80 bg-black flex flex-col h-full flex-shrink-0 m-0 p-0">
-      {/* Top section: Avatar and Logout */}
-      <div className="flex flex-col items-center mb-0">
-        <Avatar className="h-16 w-16 mb-2">
-          <AvatarImage
-            src="/placeholder.svg?height=64&width=64"
-            alt="Student"
-          />
-        </Avatar>
-      </div>
-      {/* Navigation links */}
-      <nav className="flex flex-col space-y-12 px-6">
+    <aside className="w-80 bg-gradient-to-b from-gray-900 to-gray-800 min-h-full flex flex-col py-0 shadow-2xl">
+      <nav className="flex flex-col space-y-2 px-4 mt-6">
         <div
           onClick={() => onNavigate("dashboard")}
-          className="flex items-center gap-4 px-6 py-4 bg-gray-200 text-black rounded-xl cursor-pointer hover:bg-gray-300 transition-colors"
+          className={linkClass("dashboard", current)}
         >
-          <div className="w-6 h-6">🏠</div>
-          <span className="font-medium">Dashboard</span>
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <Home className={iconClass("dashboard", current)} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Dashboard</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </div>
         <div
           onClick={() => onNavigate("profile")}
-          className="flex items-center gap-4 px-6 py-4 bg-gray-200 text-black rounded-xl cursor-pointer hover:bg-gray-300 transition-colors"
+          className={linkClass("profile", current)}
         >
-          <div className="w-6 h-6">👤</div>
-          <span className="font-medium">Profile</span>
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <User className={iconClass("profile", current)} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Profile</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </div>
         <div
           onClick={() => onNavigate("results")}
-          className="flex items-center gap-4 px-6 py-4 bg-gray-200 text-black rounded-xl cursor-pointer hover:bg-gray-300 transition-colors"
+          className={linkClass("results", current)}
         >
-          <div className="w-6 h-6">📋</div>
-          <span className="font-medium">Results</span>
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <ClipboardList className={iconClass("results", current)} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Results</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </div>
         <div
           onClick={() => onNavigate("cgpa")}
-          className="flex items-center gap-4 px-6 py-4 bg-gray-200 text-black rounded-xl cursor-pointer hover:bg-gray-300 transition-colors"
+          className={linkClass("cgpa", current)}
         >
-          <div className="w-6 h-6">⚙️</div>
-          <span className="font-medium">CGPA</span>
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <Award className={iconClass("cgpa", current)} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">CGPA</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </div>
         <div
           onClick={() => onNavigate("courses")}
-          className="flex items-center gap-4 px-6 py-4 bg-gray-200 text-black rounded-xl cursor-pointer hover:bg-gray-300 transition-colors"
+          className={linkClass("courses", current)}
         >
-          <div className="w-6 h-6">📚</div>
-          <span className="font-medium">Courses</span>
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <BookOpen className={iconClass("courses", current)} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Courses</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </div>
         <div
           onClick={() => onNavigate("resources")}
-          className="flex items-center gap-4 px-6 py-4 bg-gray-200 text-black rounded-xl cursor-pointer hover:bg-gray-300 transition-colors"
+          className={linkClass("resources", current)}
         >
-          <div className="w-6 h-6">📁</div>
-          <span className="font-medium">Resources</span>
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
+            <FolderOpen className={iconClass("resources", current)} />
+          </div>
+          <span className="font-medium text-sm tracking-wide">Resources</span>
+          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-2 h-2 rounded-full bg-current"></div>
+          </div>
         </div>
       </nav>
-    </div>
+    </aside>
   );
 }

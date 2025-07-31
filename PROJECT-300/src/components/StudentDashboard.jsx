@@ -97,7 +97,7 @@ export function StudentDashboard({ studentId, onLogout }) {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen bg-gray-100 flex flex-col overflow-hidden">
+    <div className="fixed top-0 left-0 w-screen h-screen bg-gray-900 flex flex-col overflow-hidden">
       {/* Header at the top */}
       <header className="flex items-center justify-between p-6 border-b border-white bg-white w-full flex-shrink-0">
         <div className="flex items-center gap-6">
@@ -106,9 +106,7 @@ export function StudentDashboard({ studentId, onLogout }) {
             alt="MuPortal Logo"
             className="logo-image"
           />
-          <span className="text-xl font-semibold text-black-500">
-            Student's Profile
-          </span>
+          <span className="text-xl font-semibold text-black-500"></span>
         </div>
         <div className="flex items-center gap-10">
           <Avatar className="h-9 w-9">
@@ -121,7 +119,7 @@ export function StudentDashboard({ studentId, onLogout }) {
           </div>
           <Button
             variant="outline"
-            className="bg-black text-white hover:bg-gray-900 px-6 py-3 rounded-lg flex items-center gap-2 border-0 shadow"
+            className="bg-black text-white hover:bg-gray-700 px-6 py-3 rounded-lg flex items-center gap-2 border-0 shadow"
             onClick={onLogout}
           >
             Logout
@@ -148,8 +146,9 @@ export function StudentDashboard({ studentId, onLogout }) {
           studentId={studentId}
           onNavigate={setDashboardView}
           onLogout={onLogout}
+          current={dashboardView}
         />
-        <main className="flex-1 overflow-auto p-6 bg-white w-full h-full">
+        <main className="flex-1 overflow-auto p-6 bg-gray-900 w-full h-full p-0">
           {dashboardView === "dashboard" && (
             <>
               {/* Info Cards */}
