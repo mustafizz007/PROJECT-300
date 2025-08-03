@@ -14,7 +14,7 @@ export default function CourseCard({ course }) {
       </CardHeader>
       <CardContent className="space-y-6 px-6 pb-6">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3 text-left">
             PDF Resources
           </h3>
           <ul className="space-y-2">
@@ -39,7 +39,7 @@ export default function CourseCard({ course }) {
           </ul>
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3 text-left">
             URL Resources
           </h3>
           <ul className="space-y-2">

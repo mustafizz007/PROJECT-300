@@ -150,6 +150,17 @@ export default function StudentResource() {
   return (
     <div className="w-full h-full min-h-screen bg-gradient-to-br from-violet-100 to-blue-100 p-4 md:p-8 flex justify-center items-start overflow-auto">
       <div className="w-full max-w-6xl bg-white/80 rounded-3xl shadow-2xl p-0 md:p-8 backdrop-blur-md border border-gray-200">
+        {/* Header Section */}
+        <div className="flex justify-between items-center mb-8 p-6 md:p-0">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2 text-left">Resources</h1>
+            <p className="text-gray-600 text-lg">Access and manage your course materials</p>
+          </div>
+          <button className="px-6 py-3 bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-lg transition-colors">
+            Add New Resource
+          </button>
+        </div>
+
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}

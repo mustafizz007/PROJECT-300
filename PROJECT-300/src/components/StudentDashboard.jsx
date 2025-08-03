@@ -149,7 +149,7 @@ export function StudentDashboard({ studentId, onLogout }) {
           onLogout={onLogout}
           current={dashboardView}
         />
-        <main className="flex-1 overflow-auto bg-gray-100 w-full h-full p-6">
+        <main className="flex-1 overflow-auto bg-gray-800 w-full h-full p-6">
           {dashboardView === "dashboard" && (
             <>
               {/* Info Cards */}
@@ -226,13 +226,13 @@ export function StudentDashboard({ studentId, onLogout }) {
               </div>
               {/* Action Buttons */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Button className="bg-gray-800 text-white hover:bg-gray-700 py-6 text-base border-0 rounded-xl">
+                <Button className="bg-gray-700 text-white hover:bg-gray-600 py-6 text-base border-0 rounded-xl">
                   View Courses <ExternalLink className="ml-2 h-5 w-5" />
                 </Button>
-                <Button className="bg-gray-800 text-white hover:bg-gray-700 py-6 text-base border-0 rounded-xl">
+                <Button className="bg-gray-700 text-white hover:bg-gray-600 py-6 text-base border-0 rounded-xl">
                   Study Resources <Upload className="ml-2 h-5 w-5" />
                 </Button>
-                <Button className="bg-gray-800 text-white hover:bg-gray-700 py-6 text-base border-0 rounded-xl">
+                <Button className="bg-gray-700 text-white hover:bg-gray-600 py-6 text-base border-0 rounded-xl">
                   View results <FileText className="ml-2 h-5 w-5" />
                 </Button>
               </div>
