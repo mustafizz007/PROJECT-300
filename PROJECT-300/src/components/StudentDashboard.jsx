@@ -8,6 +8,7 @@ import { StudentResults } from "./StudentResults";
 import { StudentCGPA } from "./StudentCGPA";
 import { CoursesPage } from "./CoursesPage";
 import { CourseDetailPage } from "./course-details-page";
+import StudentResource from "./StudentResource";
 import {
   Award,
   CalendarDays,
@@ -148,7 +149,7 @@ export function StudentDashboard({ studentId, onLogout }) {
           onLogout={onLogout}
           current={dashboardView}
         />
-        <main className="flex-1 overflow-auto p-6 bg-gray-900 w-full h-full p-0">
+        <main className="flex-1 overflow-auto bg-gray-100 w-full h-full p-6">
           {dashboardView === "dashboard" && (
             <>
               {/* Info Cards */}
@@ -260,6 +261,7 @@ export function StudentDashboard({ studentId, onLogout }) {
               onCourseSelect={handleCourseSelect}
             />
           )}
+          {dashboardView === "resources" && <StudentResource />}
           {dashboardView === "courseDetail" && selectedCourseId && (
             <CourseDetailPage
               courseId={selectedCourseId}
