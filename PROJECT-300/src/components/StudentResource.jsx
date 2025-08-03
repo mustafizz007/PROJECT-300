@@ -3,9 +3,17 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import CourseCard from "./course-card";
+import AddResourceModal from "./AddResourceModal";
 
 export default function StudentResource() {
   const [activeTab, setActiveTab] = useState("completed");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddResource = (resourceData) => {
+    console.log("New resource:", resourceData);
+    // TODO: Send to backend API
+    // alert("Resource added successfully!");
+  };
   const completedCourses = [
     {
       id: 1,
@@ -153,10 +161,17 @@ export default function StudentResource() {
         {/* Header Section */}
         <div className="flex justify-between items-center mb-8 p-6 md:p-0">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2 text-left">Resources</h1>
-            <p className="text-gray-600 text-lg">Access and manage your course materials</p>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2 text-left">
+              Resources
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Access and manage your course materials
+            </p>
           </div>
-          <button className="px-6 py-3 bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-lg transition-colors">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-6 py-3 bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-lg transition-colors"
+          >
             Add New Resource
           </button>
         </div>
@@ -213,6 +228,13 @@ export default function StudentResource() {
             </TabsContent>
           </div>
         </Tabs>
+
+        {/* Add Resource Modal */}
+        <AddResourceModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleAddResource}
+        />
       </div>
     </div>
   );
