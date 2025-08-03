@@ -34,9 +34,8 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Login successful!");
 
-        onLoginSuccess(formData.student_id); // Pass student ID to App
+        onLoginSuccess(formData.student_id); 
       } else {
         alert(data.error || "Login failed.");
       }
