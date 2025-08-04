@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
@@ -10,6 +10,7 @@ import { StudentCGPA } from "./StudentCGPA";
 import { CoursesPage } from "./CoursesPage";
 import { CourseDetailPage } from "./course-details-page";
 import StudentResource from "./StudentResource";
+import SemesterResultsTable from "./semester-wise-result";
 import {
   Award,
   CalendarDays,
@@ -67,7 +68,7 @@ function AcademicYearItem({ year, credits, status }) {
   );
 }
 
-export function StudentDashboard({ studentId, onLogout }) {
+export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   const [studentName, setStudentName] = useState("Loading...");
   const [cgpa, setCgpa] = useState("Loading...");
   const [totalCredits, setTotalCredits] = useState(null);
@@ -75,6 +76,7 @@ export function StudentDashboard({ studentId, onLogout }) {
   const [academicYears, setAcademicYears] = useState([]);
   const [dashboardView, setDashboardView] = useState("dashboard");
   const [selectedCourseId, setSelectedCourseId] = useState(null);
+  const [selectedSemester, setSelectedSemester] = useState(null);
 
   // Calculate graduation progress based on actual data
   const T_credit = totalCredits !== null ? totalCredits : 0;
@@ -84,7 +86,9 @@ export function StudentDashboard({ studentId, onLogout }) {
   useEffect(() => {
     const fetchAcademicYears = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/student/academic-years-status/${studentId}`);
+        const response = await axios.get(
+          `http://localhost:3000/api/student/academic-years-status/${studentId}`
+        );
         setAcademicYears(response.data);
         console.log("Academic Years:", response.data);
       } catch (error) {
@@ -105,7 +109,9 @@ export function StudentDashboard({ studentId, onLogout }) {
   useEffect(() => {
     const fetchName = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/student/${studentId}`);
+        const res = await fetch(
+          `http://localhost:3000/api/student/${studentId}`
+        );
         const data = await res.json();
         console.log("Student name response:", data);
         setStudentName(data.name || "Unknown Student");
@@ -122,7 +128,9 @@ export function StudentDashboard({ studentId, onLogout }) {
   useEffect(() => {
     const fetchCgpa = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/student/result/${studentId}`);
+        const res = await fetch(
+          `http://localhost:3000/api/student/result/${studentId}`
+        );
         const data = await res.json();
         console.log("CGPA response:", data);
         setCgpa(data.cgpa ? parseFloat(data.cgpa).toFixed(2) : "N/A");
@@ -141,17 +149,19 @@ export function StudentDashboard({ studentId, onLogout }) {
   useEffect(() => {
     const fetchSemesters = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/student/semesters/${studentId}`);
+        const response = await axios.get(
+          `http://localhost:3000/api/student/semesters/${studentId}`
+        );
         const semesterArray = response.data.semesters;
 
         if (Array.isArray(semesterArray)) {
           setSemesters(semesterArray);
         } else {
-          console.warn('Unexpected semester data format:', response.data);
+          console.warn("Unexpected semester data format:", response.data);
           setSemesters([]);
         }
       } catch (error) {
-        console.error('Failed to fetch semesters:', error);
+        console.error("Failed to fetch semesters:", error);
         setSemesters([]);
       }
     };
@@ -171,6 +181,14 @@ export function StudentDashboard({ studentId, onLogout }) {
     setDashboardView("courses");
   };
 
+  // Custom navigation handler for semester results
+  const handleSemesterNavigation = (view, data) => {
+    if (view === "studentResults" && data?.selectedSemester) {
+      setSelectedSemester(data.selectedSemester);
+    }
+    setDashboardView(view);
+  };
+
   return (
     <div className="fixed top-0 left-0 w-screen h-screen bg-gray-900 flex flex-col overflow-hidden">
       {/* Header at the top */}
@@ -179,7 +197,9 @@ export function StudentDashboard({ studentId, onLogout }) {
           <img
             src="/src/assets/mu_portal_logo.png"
             alt="MuPortal Logo"
-            className="logo-image"
+            className="logo-image cursor-pointer hover:opacity-80 transition-opacity duration-200"
+            onClick={() => onNavigate("home")}
+            title="Go to Home Page"
           />
           <span className="text-xl font-semibold text-black-500"></span>
         </div>
@@ -238,7 +258,11 @@ export function StudentDashboard({ studentId, onLogout }) {
                 <InfoCard
                   title="Current Semester"
                   value={semesters.length > 0 ? `${semesters.length}th` : "N/A"}
-                  subtitle={semesters.length > 0 ? `Year ${semesters[semesters.length - 1]}` : "No semesters available"}
+                  subtitle={
+                    semesters.length > 0
+                      ? `Year ${semesters[semesters.length - 1]}`
+                      : "No semesters available"
+                  }
                   icon={CalendarDays}
                   bgColor="bg-purple-600"
                 />
@@ -277,7 +301,8 @@ export function StudentDashboard({ studentId, onLogout }) {
                       <span className="font-bold">
                         {semesters.length > 0
                           ? (() => {
-                              const [year, sem] = semesters[semesters.length - 1].split('-');
+                              const [year, sem] =
+                                semesters[semesters.length - 1].split("-");
                               return `Year ${year}, Semester ${sem}`;
                             })()
                           : "N/A"}
@@ -331,8 +356,15 @@ export function StudentDashboard({ studentId, onLogout }) {
             />
           )}
           {dashboardView === "results" && (
+            <SemesterResultsTable
+              studentId={studentId}
+              onNavigate={handleSemesterNavigation}
+            />
+          )}
+          {dashboardView === "studentResults" && (
             <StudentResults
               studentId={studentId}
+              selectedSemester={selectedSemester}
               onNavigate={setDashboardView}
               onLogout={onLogout}
             />

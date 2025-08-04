@@ -34,8 +34,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
       const data = await response.json();
 
       if (response.ok) {
-
-        onLoginSuccess(formData.student_id); 
+        onLoginSuccess(formData.student_id);
       } else {
         alert(data.error || "Login failed.");
       }
