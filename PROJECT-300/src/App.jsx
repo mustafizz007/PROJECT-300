@@ -46,7 +46,11 @@ export default function App() {
         return <StudentSignup onNavigate={setCurrentPage} />;
       case "dashboard":
         return (
-          <StudentDashboard studentId={studentId} onLogout={handleLogout} />
+          <StudentDashboard
+            studentId={studentId}
+            onLogout={handleLogout}
+            onNavigate={setCurrentPage}
+          />
         );
       case "admin-dashboard":
         return <AdminDashboardPage onNavigate={setCurrentPage} />;
