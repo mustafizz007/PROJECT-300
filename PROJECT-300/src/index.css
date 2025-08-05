@@ -55,9 +55,9 @@
     html, body {
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
-        min-height: 100vh !important;
-        overflow-x: hidden;
+        width: 100vw !important;
+        height: 100vh !important;
+        overflow: hidden;
     }
 
     body {
@@ -65,11 +65,13 @@
     }
 
     #root {
-        width: 100% !important;
-        min-height: 100vh !important;
+        width: 100vw !important;
+        height: 100vh !important;
         margin: 0 !important;
         padding: 0 !important;
-        position: relative;
+        position: fixed;
+        top: 0;
+        left: 0;
     }
 }
 

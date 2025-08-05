@@ -47,7 +47,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+    <div className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 z-50 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
@@ -129,7 +129,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/90">
+                <label className="block text-sm font-medium text-white/90 text-left">
                   Student ID
                 </label>
                 <input
@@ -144,7 +144,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/90">
+                <label className="block text-sm font-medium text-white/90 text-left">
                   Password
                 </label>
                 <input

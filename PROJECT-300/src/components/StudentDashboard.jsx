@@ -18,18 +18,31 @@ import {
   ExternalLink,
   Upload,
   FileText,
+  Menu,
+  X,
+  User,
+  Home,
+  ClipboardList,
+  BookOpen,
+  FolderOpen,
 } from "lucide-react";
 import { SidebarNav } from "./SidebarNav";
 
 function InfoCard({ title, value, subtitle, icon: Icon, bgColor }) {
   return (
-    <Card className={`p-6 ${bgColor} text-white border-0 shadow-lg rounded-xl`}>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium opacity-90">{title}</h3>
-        {Icon && <Icon className="w-6 h-6 opacity-80" />}
+    <Card
+      className={`p-4 sm:p-5 lg:p-6 ${bgColor} text-white border-0 shadow-lg rounded-xl card-hover transition-transform duration-300 hover:scale-105`}
+    >
+      <div className="flex items-center justify-between mb-3 lg:mb-4">
+        <h3 className="text-xs sm:text-sm font-medium opacity-90">{title}</h3>
+        {Icon && (
+          <Icon className="w-5 h-5 sm:w-6 sm:h-6 opacity-80 icon-rotate" />
+        )}
       </div>
-      <div className="text-4xl font-bold mb-2">{value}</div>
-      <p className="text-sm opacity-80">{subtitle}</p>
+      <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">
+        {value}
+      </div>
+      <p className="text-xs sm:text-sm opacity-80">{subtitle}</p>
     </Card>
   );
 }
@@ -70,6 +83,7 @@ function AcademicYearItem({ year, credits, status }) {
 
 export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   const [studentName, setStudentName] = useState("Loading...");
+  const [studentDepartment, setStudentDepartment] = useState("Computer Science");
   const [cgpa, setCgpa] = useState("Loading...");
   const [totalCredits, setTotalCredits] = useState(null);
   const [semesters, setSemesters] = useState([]);
@@ -77,6 +91,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   const [dashboardView, setDashboardView] = useState("dashboard");
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [selectedSemester, setSelectedSemester] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Calculate graduation progress based on actual data
   const T_credit = totalCredits !== null ? totalCredits : 0;
@@ -190,37 +205,90 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen bg-gray-900 flex flex-col overflow-hidden">
-      {/* Header at the top */}
-      <header className="flex items-center justify-between p-6 border-b border-white bg-white w-full flex-shrink-0">
-        <div className="flex items-center gap-6">
-          <img
-            src="/src/assets/mu_portal_logo.png"
-            alt="MuPortal Logo"
-            className="logo-image cursor-pointer hover:opacity-80 transition-opacity duration-200"
+    <div className="w-screen h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 page-reload-animation">
+      {/* Animated background blobs matching homepage - Slower animations */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow"></div>
+        <div className="absolute -top-4 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow animation-delay-4000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow animation-delay-8000"></div>
+        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse-slow"></div>
+        <div className="absolute top-1/4 left-1/3 w-80 h-80 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-blob-slow animation-delay-6000"></div>
+      </div>
+
+      {/* Enhanced Header with glassmorphism matching homepage - Responsive */}
+      <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-2xl w-full header-reload-animation">
+        <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
+          {/* Mobile Menu Button */}
+          <Button
+            className="lg:hidden bg-purple-600/30 hover:bg-purple-600/50 text-white rounded-xl p-2 border-0 backdrop-blur-sm"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+          </Button>
+
+          <div
+            className="group cursor-pointer transform transition-all duration-500 hover:scale-110 hover:rotate-3"
             onClick={() => onNavigate("home")}
             title="Go to Home Page"
-          />
-          <span className="text-xl font-semibold text-black-500"></span>
+          >
+            <img
+              src="/src/assets/mu_portal_logo.png"
+              alt="MuPortal Logo"
+              className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 logo-image transition-opacity duration-200"
+            />
+          </div>
+          <span className="text-xl font-semibold text-white"></span>
         </div>
-        <div className="flex items-center gap-10">
-          <Avatar className="h-9 w-9">
-            <AvatarImage src="/public/mu_portal_logo_2.png" alt={studentName} />
-            <AvatarFallback>ST</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="font-medium text-black">{studentName}</span>
-            <span className="text-sm text-black-400">CSE</span>
+
+        <div className="flex items-center gap-3 sm:gap-4 lg:gap-8">
+          {/* Animated Green Backlight User Icon - Slower animations */}
+          <div className="relative group">
+            {/* Animated green backlight container - slower pulse */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-400/30 via-emerald-400/30 to-green-500/30 blur-lg animate-pulse-slow group-hover:blur-xl transition-all duration-1000"></div>
+            <div className="absolute inset-0 rounded-2xl bg-green-400/20 animate-ping-slow"></div>
+
+            {/* Main icon container with slower animations */}
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-2xl bg-gradient-to-br from-green-400/40 via-emerald-400/40 to-green-500/40 p-0.5 animate-pulse-slow group-hover:scale-110 transition-all duration-1000 shadow-lg shadow-green-500/30">
+              <div className="w-full h-full rounded-2xl bg-slate-900/90 backdrop-blur-sm flex items-center justify-center border border-green-400/30 group-hover:border-green-400/60 transition-all duration-1000">
+                <User className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-green-300 animate-float-slow group-hover:text-green-200 group-hover:scale-110 transition-all duration-1000 drop-shadow-lg" />
+              </div>
+            </div>
+
+            {/* Enhanced multi-layer status indicator - slower animations */}
+            <div className="absolute -bottom-0.5 sm:-bottom-1 -right-0.5 sm:-right-1 flex items-center justify-center">
+              <div className="relative">
+                {/* Outer glow ring - slower ping */}
+                <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-green-400 rounded-full animate-ping-slow opacity-40"></div>
+                <div className="absolute inset-0.5 w-3 h-3 sm:w-4 sm:h-4 bg-green-300 rounded-full animate-ping-slow opacity-60 animation-delay-4000"></div>
+                {/* Main indicator - slower pulse */}
+                <div className="relative w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full border-1 sm:border-2 border-white shadow-lg animate-pulse-slow shadow-green-400/50">
+                  <div className="absolute inset-0.5 sm:inset-1 bg-green-200 rounded-full animate-pulse-slow opacity-80"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-white hidden sm:block animate-slide-in-left">
+            <p className="font-semibold text-sm sm:text-base lg:text-lg">
+              {studentName}
+            </p>
+            <p className="text-sm text-purple-200 font-medium">
+              {studentDepartment}
+            </p>
           </div>
           <Button
             variant="outline"
-            className="bg-black text-white hover:bg-gray-700 px-6 py-3 rounded-lg flex items-center gap-2 border-0 shadow"
+            className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center gap-2 border-0 shadow-lg transition-all duration-300"
             onClick={onLogout}
           >
             Logout
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-4 w-4 sm:h-5 sm:w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -235,61 +303,165 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
           </Button>
         </div>
       </header>
-      {/* Main area: sidebar + content */}
-      <div className="flex flex-1 min-h-0 w-full overflow-hidden">
-        <SidebarNav
-          studentId={studentId}
-          onNavigate={setDashboardView}
-          onLogout={onLogout}
-          current={dashboardView}
-        />
-        <main className="flex-1 overflow-auto bg-gray-800 w-full h-full p-6">
-          {dashboardView === "dashboard" && (
-            <>
-              {/* Info Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20">
-                <InfoCard
-                  title="Current CGPA"
-                  value={cgpa}
-                  subtitle="Out of 4.00"
-                  icon={Award}
-                  bgColor="bg-blue-600"
-                />
-                <InfoCard
-                  title="Current Semester"
-                  value={semesters.length > 0 ? `${semesters.length}th` : "N/A"}
-                  subtitle={
-                    semesters.length > 0
-                      ? `Year ${semesters[semesters.length - 1]}`
-                      : "No semesters available"
-                  }
-                  icon={CalendarDays}
-                  bgColor="bg-purple-600"
-                />
-                <InfoCard
-                  title="Total Credits"
-                  value={totalCredits !== null ? totalCredits : "N/A"}
-                  subtitle="Out of 160"
-                  icon={Book}
-                  bgColor="bg-pink-600"
-                />
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm">
+          <div className="fixed left-0 top-0 h-full w-80 bg-gradient-to-b from-slate-900 via-purple-900/50 to-slate-900 shadow-2xl transform transition-transform duration-300 ease-in-out">
+            <div className="p-6 border-b border-white/10">
+              <Button
+                className="absolute top-4 right-4 bg-purple-600/30 hover:bg-purple-600/50 text-white rounded-xl p-2 border-0"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </Button>
+              <div className="mt-8">
+                <div className="relative group">
+                  {/* Animated green backlight container - slower animations */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-400/30 via-emerald-400/30 to-green-500/30 blur-lg animate-pulse-slow group-hover:blur-xl transition-all duration-1000"></div>
+                  <div className="absolute inset-0 rounded-2xl bg-green-400/20 animate-ping-slow"></div>
+
+                  {/* Main icon container with slower animations */}
+                  <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400/40 via-emerald-400/40 to-green-500/40 p-0.5 animate-pulse-slow group-hover:scale-110 transition-all duration-1000 shadow-lg shadow-green-500/30">
+                    <div className="w-full h-full rounded-2xl bg-slate-900/90 backdrop-blur-sm flex items-center justify-center border border-green-400/30 group-hover:border-green-400/60 transition-all duration-1000">
+                      <User className="w-6 h-6 text-green-300 animate-float-slow group-hover:text-green-200 group-hover:scale-110 transition-all duration-1000 drop-shadow-lg" />
+                    </div>
+                  </div>
+                </div>
               </div>
-              {/* Credits and Graduation Section */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                <Card className="p-6 bg-gray-900 border border-gray-800">
-                  <h2 className="text-lg font-semibold mb-4">
+            </div>
+
+            {/* Mobile Navigation Items */}
+            <nav className="p-6 space-y-4">
+              {[
+                { icon: Home, label: "Dashboard", view: "dashboard" },
+                { icon: User, label: "Profile", view: "profile" },
+                { icon: ClipboardList, label: "Results", view: "results" },
+                { icon: Award, label: "CGPA", view: "cgpa" },
+                { icon: BookOpen, label: "Courses", view: "courses" },
+                { icon: FolderOpen, label: "Resources", view: "resources" },
+              ].map((item) => (
+                <button
+                  key={item.view}
+                  onClick={() => {
+                    setDashboardView(item.view);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${
+                    dashboardView === item.view
+                      ? "bg-gradient-to-r from-purple-600/40 to-pink-600/40 text-white"
+                      : "text-gray-300 hover:bg-purple-600/20 hover:text-white"
+                  }`}
+                >
+                  <item.icon className="w-6 h-6" />
+                  <span className="font-semibold">{item.label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
+      )}
+
+      {/* Main area: sidebar + content - Full Screen */}
+      <div className="relative z-10 flex w-full h-full">
+        {/* Sidebar - Hidden on mobile, shown on tablet+ */}
+        <div className="hidden lg:block">
+          <SidebarNav
+            studentId={studentId}
+            onNavigate={setDashboardView}
+            onLogout={onLogout}
+            current={dashboardView}
+          />
+        </div>
+
+        <main
+          className="flex-1 bg-slate-900/20 backdrop-blur-lg w-full h-full overflow-y-auto scrollbar-hidden dashboard-main"
+          style={{ height: "calc(100vh - 88px)" }}
+        >
+          {dashboardView === "dashboard" && (
+            <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8 animate-fade-in-slow">
+              {/* Welcome Section - Responsive with slower animations */}
+              <div
+                className="text-center mb-8 lg:mb-12 animate-slide-up-slow"
+                style={{ animationDelay: "0.3s" }}
+              >
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-cyan-300 bg-clip-text text-transparent mb-2 lg:mb-4">
+                  Welcome back, {studentName}!
+                </h1>
+                <p className="text-lg sm:text-xl text-gray-300 font-light">
+                  Here's your academic overview
+                </p>
+              </div>
+
+              {/* Info Cards with staggered animation - Responsive Grid with slower animations */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
+                <div
+                  className="animate-slide-up-slow stagger-item-1"
+                  style={{ animationDelay: "0.6s" }}
+                >
+                  <InfoCard
+                    title="Current CGPA"
+                    value={cgpa}
+                    subtitle="Out of 4.00"
+                    icon={Award}
+                    bgColor="bg-gradient-to-br from-purple-600 via-purple-700 to-blue-600 hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/30"
+                  />
+                </div>
+                <div
+                  className="animate-slide-up-slow stagger-item-2"
+                  style={{ animationDelay: "0.9s" }}
+                >
+                  <InfoCard
+                    title="Current Semester"
+                    value={
+                      semesters.length > 0 ? `${semesters.length}th` : "N/A"
+                    }
+                    subtitle={
+                      semesters.length > 0
+                        ? `Year ${semesters[semesters.length - 1]}`
+                        : "No semesters available"
+                    }
+                    icon={CalendarDays}
+                    bgColor="bg-gradient-to-br from-pink-600 via-pink-700 to-purple-600 hover:from-pink-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-pink-500/30"
+                  />
+                </div>
+                <div
+                  className="animate-slide-up-slow stagger-item-3"
+                  style={{ animationDelay: "1.2s" }}
+                >
+                  <InfoCard
+                    title="Total Credits"
+                    value={totalCredits !== null ? totalCredits : "N/A"}
+                    subtitle="Out of 160"
+                    icon={Book}
+                    bgColor="bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-blue-500/30"
+                  />
+                </div>
+              </div>
+
+              {/* Credits and Graduation Section with slower animations - Responsive */}
+              <div
+                className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 mb-8 lg:mb-12 animate-fade-in-slow"
+                style={{ animationDelay: "1.5s" }}
+              >
+                <Card className="p-4 sm:p-6 lg:p-8 bg-slate-800/60 backdrop-blur-xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/20 transform hover:scale-[1.02] card-hover animate-slide-in-left-slow rounded-2xl lg:rounded-3xl">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-4 lg:mb-6 gradient-text flex items-center gap-2 lg:gap-3">
+                    <Award className="w-5 h-5 sm:w-6 sm:h-6" />
                     Credits by Academic Year
                   </h2>
                   {academicYears.length === 0 ? (
-                    <p className="text-gray-400">Loading academic years...</p>
+                    <p className="text-gray-400 animate-pulse-slow text-center py-8">
+                      Loading academic years...
+                    </p>
                   ) : (
                     academicYears.map((item, index) => (
                       <AcademicYearItem key={index} {...item} />
                     ))
                   )}
                 </Card>
-                <Card className="p-6 bg-teal-600 text-white border-0 rounded-xl">
-                  <h2 className="text-2xl font-bold mb-2 text-center">
+                <Card className="p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-600 text-white border-0 rounded-2xl lg:rounded-3xl card-hover animate-slide-in-right-slow shadow-2xl">
+                  <h2 className="text-2xl sm:text-3xl font-bold mb-2 lg:mb-3 text-center animate-float-slow flex items-center justify-center gap-2 lg:gap-3">
+                    <CalendarDays className="w-6 h-6 sm:w-8 sm:h-8" />
                     May 2025
                   </h2>
                   <p className="text-lg mb-6 opacity-90 text-center">
@@ -334,19 +506,35 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                   </div>
                 </Card>
               </div>
-              {/* Action Buttons */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Button className="bg-gray-700 text-white hover:bg-gray-600 py-6 text-base border-0 rounded-xl">
-                  View Courses <ExternalLink className="ml-2 h-5 w-5" />
+
+              {/* Action Buttons - Responsive Grid with slower animations */}
+              <div
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 animate-fade-in-slow content-reload-animation pb-8"
+                style={{ animationDelay: "2s" }}
+              >
+                <Button
+                  onClick={() => setDashboardView("courses")}
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6 sm:py-8 text-base sm:text-lg font-semibold border-0 rounded-xl sm:rounded-2xl btn-pulse card-hover transform hover:scale-105 transition-all duration-700 shadow-xl hover:shadow-purple-500/30 stagger-item-4"
+                >
+                  <BookOpen className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 icon-rotate" />
+                  View Courses
                 </Button>
-                <Button className="bg-gray-700 text-white hover:bg-gray-600 py-6 text-base border-0 rounded-xl">
-                  Study Resources <Upload className="ml-2 h-5 w-5" />
+                <Button
+                  onClick={() => setDashboardView("resources")}
+                  className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white py-6 sm:py-8 text-base sm:text-lg font-semibold border-0 rounded-xl sm:rounded-2xl btn-pulse card-hover transform hover:scale-105 transition-all duration-700 shadow-xl hover:shadow-pink-500/30 stagger-item-5"
+                >
+                  <FolderOpen className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 icon-rotate" />
+                  Study Resources
                 </Button>
-                <Button className="bg-gray-700 text-white hover:bg-gray-600 py-6 text-base border-0 rounded-xl">
-                  View results <FileText className="ml-2 h-5 w-5" />
+                <Button
+                  onClick={() => setDashboardView("results")}
+                  className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white py-6 sm:py-8 text-base sm:text-lg font-semibold border-0 rounded-xl sm:rounded-2xl btn-pulse card-hover transform hover:scale-105 transition-all duration-700 shadow-xl hover:shadow-cyan-500/30 sm:col-span-2 lg:col-span-1 stagger-item-6"
+                >
+                  <ClipboardList className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 icon-rotate" />
+                  View Results
                 </Button>
               </div>
-            </>
+            </div>
           )}
           {dashboardView === "profile" && (
             <StudentProfile
