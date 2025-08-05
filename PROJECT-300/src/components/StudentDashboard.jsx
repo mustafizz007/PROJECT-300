@@ -214,7 +214,10 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div
+      className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 z-50 scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-slate-900"
+      style={{ overflowY: "auto" }}
+    >
       {/* Animated background blobs matching homepage */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
@@ -374,7 +377,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
       )}
 
       {/* Main area: sidebar + content - Responsive */}
-      <div className="relative z-10 flex w-full min-h-screen">
+      <div className="relative z-10 flex w-full">
         {/* Sidebar - Hidden on mobile, shown on tablet+ */}
         <div className="hidden lg:block">
           <SidebarNav
@@ -385,7 +388,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
           />
         </div>
 
-        <main className="flex-1 bg-slate-900/30 backdrop-blur-lg w-full p-4 sm:p-6 lg:p-8 min-h-screen overflow-y-auto dashboard-main">
+        <main className="flex-1 bg-slate-900/30 backdrop-blur-lg w-full p-4 sm:p-6 lg:p-8 dashboard-main">
           {dashboardView === "dashboard" && (
             <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-fade-in">
               {/* Welcome Section - Responsive */}
@@ -606,6 +609,22 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
           )}
         </main>
       </div>
+      {/* Custom CSS for scrollbar */}
+      <style jsx>{`
+        .scrollbar-thin {
+          scrollbar-width: thin;
+        }
+        .scrollbar-thumb-purple-600::-webkit-scrollbar-thumb {
+          background: #9333ea;
+          border-radius: 8px;
+        }
+        .scrollbar-track-slate-900::-webkit-scrollbar-track {
+          background: #0f172a;
+        }
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 8px;
+        }
+      `}</style>
     </div>
   );
 }
