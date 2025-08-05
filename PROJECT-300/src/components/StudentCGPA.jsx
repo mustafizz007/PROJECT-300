@@ -61,9 +61,10 @@ export function StudentCGPA({ studentId }) {
   }, [studentId]);
 
   return (
-    <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
+    <div className="w-full h-full p-8 bg-gradient-to-br from-purple-200 via-blue-100 to-pink-100 overflow-auto">
       <br></br>
-
+      <br></br>
+      <br></br>
       <div className="bg-white rounded-3xl p-10 shadow-xl max-w-4xl mx-auto">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-10 text-center tracking-tight">
           CGPA Progression

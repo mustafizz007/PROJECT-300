@@ -170,8 +170,22 @@ export default function StudentResource() {
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-6 py-3 bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-lg transition-colors"
+            className="px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
             Add New Resource
           </button>
         </div>

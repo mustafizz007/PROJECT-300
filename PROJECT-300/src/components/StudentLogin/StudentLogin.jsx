@@ -129,7 +129,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/90">
+                <label className="block text-sm font-medium text-white/90 text-left">
                   Student ID
                 </label>
                 <input
@@ -144,7 +144,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/90">
+                <label className="block text-sm font-medium text-white/90 text-left">
                   Password
                 </label>
                 <input

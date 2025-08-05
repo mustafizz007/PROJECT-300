@@ -32,7 +32,7 @@ import "./dashboard-animations.css";
 function InfoCard({ title, value, subtitle, icon: Icon, bgColor }) {
   return (
     <Card
-      className={`p-4 sm:p-5 lg:p-6 ${bgColor} text-white border-0 shadow-lg rounded-xl card-hover animate-float`}
+      className={`p-4 sm:p-5 lg:p-6 ${bgColor} text-white border-0 shadow-lg rounded-xl card-hover transition-transform duration-300 hover:scale-105`}
     >
       <div className="flex items-center justify-between mb-3 lg:mb-4">
         <h3 className="text-xs sm:text-sm font-medium opacity-90">{title}</h3>
@@ -40,7 +40,7 @@ function InfoCard({ title, value, subtitle, icon: Icon, bgColor }) {
           <Icon className="w-5 h-5 sm:w-6 sm:h-6 opacity-80 icon-rotate" />
         )}
       </div>
-      <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2 animate-scale-in">
+      <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">
         {value}
       </div>
       <p className="text-xs sm:text-sm opacity-80">{subtitle}</p>

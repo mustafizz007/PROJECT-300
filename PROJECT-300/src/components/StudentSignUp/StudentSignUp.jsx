@@ -153,7 +153,7 @@ export default function StudentSignup({ onNavigate }) {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/90">
+                <label className="block text-sm font-medium text-white/90 text-left">
                   Full Name
                 </label>
                 <input
@@ -168,7 +168,7 @@ export default function StudentSignup({ onNavigate }) {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/90">
+                <label className="block text-sm font-medium text-white/90 text-left">
                   Student ID
                 </label>
                 <input
@@ -185,7 +185,7 @@ export default function StudentSignup({ onNavigate }) {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/90">
+                <label className="block text-sm font-medium text-white/90 text-left">
                   Department
                 </label>
                 <select
@@ -212,7 +212,7 @@ export default function StudentSignup({ onNavigate }) {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-white/90">
+                  <label className="block text-sm font-medium text-white/90 text-left">
                     Password
                   </label>
                   <input
@@ -227,7 +227,7 @@ export default function StudentSignup({ onNavigate }) {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-white/90">
+                  <label className="block text-sm font-medium text-white/90 text-left">
                     Confirm Password
                   </label>
                   <input
