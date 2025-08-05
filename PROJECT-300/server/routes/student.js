@@ -69,12 +69,12 @@ router.get('/academic-years-status/:studentId', async (req, res) => {
   }
 });
 
-// GET /api/student/:studentId - Fetch student name by ID
-router.get('/:studentId', async (req, res) => {
-  const studentId = req.params.studentId;
+// NEW API: GET /api/student/phone/:studentId - Fetch student phone number
+router.get('/phone/:studentId', async (req, res) => {
+  const { studentId } = req.params;
   try {
     const result = await pool.query(
-      'SELECT name FROM student_info WHERE student_id = $1',
+      'SELECT phone FROM student_info WHERE student_id = $1',
       [studentId]
     );
 
@@ -82,7 +82,36 @@ router.get('/:studentId', async (req, res) => {
       return res.status(404).json({ error: 'Student not found' });
     }
 
-    res.json({ name: result.rows[0].name });
+    const phone = result.rows[0].phone;
+    res.json({ 
+      student_id: studentId,
+      phone: phone || null 
+    });
+  } catch (err) {
+    console.error('Get student phone error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /api/student/:studentId - Fetch student data including phone
+router.get('/:studentId', async (req, res) => {
+  const studentId = req.params.studentId;
+  try {
+    const result = await pool.query(
+      'SELECT name, phone, department FROM student_info WHERE student_id = $1',
+      [studentId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+
+    res.json({ 
+      student_id: studentId,
+      name: result.rows[0].name,
+      phone: result.rows[0].phone,
+      department: result.rows[0].department
+    });
   } catch (err) {
     console.error('Get student error:', err);
     res.status(500).json({ error: 'Server error' });

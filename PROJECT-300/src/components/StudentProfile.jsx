@@ -29,11 +29,17 @@ export function StudentProfile({ studentId }) {
         if (response.ok) {
           const data = await response.json();
           console.log("Fetched student data:", data); // Debug log
+          console.log("Phone field:", data.phone); // Debug phone specifically
+          console.log("Phone type:", typeof data.phone); // Debug phone type
+          
           setStudentData((prev) => ({
             ...prev,
-            name: data.name,
-            phone: data.phone || "No phone available",
+            name: data.name || "Unknown Student",
+            phone: data.phone || "", // Remove "No phone available" fallback
+            department: data.department || "Computer Science",
           }));
+        } else {
+          console.error("API Error:", response.status, response.statusText);
         }
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -126,6 +132,16 @@ export function StudentProfile({ studentId }) {
 
   const handleSaveProfile = async () => {
     try {
+      const updateData = {
+        name: studentData.name,
+        phone: studentData.phone || null,
+        department: studentData.department,
+        major: studentData.major,
+        specification: studentData.specification,
+        expectedGraduation: studentData.expectedGraduation,
+        academicAdvisor: studentData.academicAdvisor,
+      };
+
       const response = await fetch(
         `http://localhost:3000/api/student/${studentId}`,
         {
@@ -133,13 +149,17 @@ export function StudentProfile({ studentId }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(studentData),
+          body: JSON.stringify(updateData),
         }
       );
 
       if (response.ok) {
         setIsEditing(false);
         alert("Profile updated successfully!");
+      } else {
+        const errorData = await response.json();
+        console.error("Update failed:", errorData);
+        alert("Error updating profile. Please try again.");
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -276,8 +296,8 @@ export function StudentProfile({ studentId }) {
                   Phone
                 </Label>
                 <Input
-                  placeholder="Phone number"
-                  value={studentData.phone}
+                  placeholder={isEditing ? "Enter phone number" : "No phone number"}
+                  value={studentData.phone || ""}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
                   disabled={!isEditing}
                   className="w-full bg-purple-100 border-0 rounded-md h-10 text-purple-900 font-semibold"
