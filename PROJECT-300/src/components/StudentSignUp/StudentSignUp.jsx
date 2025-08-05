@@ -68,7 +68,10 @@ export default function StudentSignup({ onNavigate }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+    <div
+      className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 z-50 overflow-hidden scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-slate-900"
+      style={{ overflowY: "auto" }}
+    >
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
@@ -278,6 +281,22 @@ export default function StudentSignup({ onNavigate }) {
           </div>
         </div>
       </main>
+      {/* Custom CSS for scrollbar */}
+      <style jsx>{`
+        .scrollbar-thin {
+          scrollbar-width: thin;
+        }
+        .scrollbar-thumb-purple-600::-webkit-scrollbar-thumb {
+          background: #9333ea;
+          border-radius: 8px;
+        }
+        .scrollbar-track-slate-900::-webkit-scrollbar-track {
+          background: #0f172a;
+        }
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 8px;
+        }
+      `}</style>
     </div>
   );
 }

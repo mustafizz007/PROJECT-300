@@ -228,6 +228,22 @@ export default function HomePage({ onNavigate }) {
           </div>
         </div>
       </main>
+      {/* Custom CSS for scrollbar */}
+      <style jsx>{`
+        .scrollbar-thin {
+          scrollbar-width: thin;
+        }
+        .scrollbar-thumb-purple-600::-webkit-scrollbar-thumb {
+          background: #9333ea;
+          border-radius: 8px;
+        }
+        .scrollbar-track-slate-900::-webkit-scrollbar-track {
+          background: #0f172a;
+        }
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 8px;
+        }
+      `}</style>
     </div>
   );
 }
