@@ -3,52 +3,21 @@ import { FaStar, FaTrophy } from "react-icons/fa";
 
 export function StudentCGPA({ studentId }) {
   const [cgpaData, setCgpaData] = useState({
-    currentCGPA: "Loading...",
+    currentCGPA: "3.85",
     scale: "4.0",
-    highestCGPA: "Loading...",
-    highestSemester: "Loading...",
+    highestCGPA: "3.92",
+    highestSemester: "Semester 4",
   });
 
   useEffect(() => {
     const fetchCGPAData = async () => {
       try {
-        // Fetch current overall CGPA
-        const currentResponse = await fetch(
-          `http://localhost:3000/api/student/result/${studentId}`
+        const response = await fetch(
+          `http://localhost:3000/api/student/${studentId}/cgpa`
         );
-        
-        // Fetch highest semester CGPA
-        const highestResponse = await fetch(
-          `http://localhost:3000/api/student/highest-cgpa/${studentId}`
-        );
-
-        if (currentResponse.ok && highestResponse.ok) {
-          const currentData = await currentResponse.json();
-          const highestData = await highestResponse.json();
-          
-          setCgpaData({
-            currentCGPA: currentData.cgpa || "N/A",
-            scale: "4.0",
-            highestCGPA: highestData.highest_cgpa || "N/A",
-            highestSemester: highestData.semester ? `Semester ${highestData.semester}` : "N/A",
-          });
-        } else {
-          // Handle partial failures
-          if (currentResponse.ok) {
-            const currentData = await currentResponse.json();
-            setCgpaData(prev => ({
-              ...prev,
-              currentCGPA: currentData.cgpa || "N/A"
-            }));
-          }
-          if (highestResponse.ok) {
-            const highestData = await highestResponse.json();
-            setCgpaData(prev => ({
-              ...prev,
-              highestCGPA: highestData.highest_cgpa || "N/A",
-              highestSemester: highestData.semester ? `Semester ${highestData.semester}` : "N/A"
-            }));
-          }
+        if (response.ok) {
+          const data = await response.json();
+          setCgpaData(data);
         }
       } catch (error) {
         console.error("Error fetching CGPA data:", error);
