@@ -214,17 +214,18 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Animated background blobs matching homepage */}
+    <div className="w-screen h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 page-reload-animation">
+      {/* Animated background blobs matching homepage - Slower animations */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute -top-4 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
-        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"></div>
+        <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow"></div>
+        <div className="absolute -top-4 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow animation-delay-4000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow animation-delay-8000"></div>
+        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse-slow"></div>
+        <div className="absolute top-1/4 left-1/3 w-80 h-80 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-blob-slow animation-delay-6000"></div>
       </div>
 
       {/* Enhanced Header with glassmorphism matching homepage - Responsive */}
-      <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-2xl w-full">
+      <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-2xl w-full header-reload-animation">
         <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
           {/* Mobile Menu Button */}
           <Button
@@ -252,28 +253,28 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4 lg:gap-8">
-          {/* Animated Green Backlight User Icon - Replacing Avatar */}
+          {/* Animated Green Backlight User Icon - Slower animations */}
           <div className="relative group">
-            {/* Animated green backlight container */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-400/30 via-emerald-400/30 to-green-500/30 blur-lg animate-pulse group-hover:blur-xl transition-all duration-500"></div>
-            <div className="absolute inset-0 rounded-2xl bg-green-400/20 animate-ping"></div>
+            {/* Animated green backlight container - slower pulse */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-400/30 via-emerald-400/30 to-green-500/30 blur-lg animate-pulse-slow group-hover:blur-xl transition-all duration-1000"></div>
+            <div className="absolute inset-0 rounded-2xl bg-green-400/20 animate-ping-slow"></div>
 
-            {/* Main icon container with enhanced animations */}
-            <div className="relative w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-2xl bg-gradient-to-br from-green-400/40 via-emerald-400/40 to-green-500/40 p-0.5 animate-pulse group-hover:scale-110 transition-all duration-500 shadow-lg shadow-green-500/30">
-              <div className="w-full h-full rounded-2xl bg-slate-900/90 backdrop-blur-sm flex items-center justify-center border border-green-400/30 group-hover:border-green-400/60 transition-all duration-500">
-                <User className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-green-300 animate-float group-hover:text-green-200 group-hover:scale-110 transition-all duration-500 drop-shadow-lg" />
+            {/* Main icon container with slower animations */}
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-2xl bg-gradient-to-br from-green-400/40 via-emerald-400/40 to-green-500/40 p-0.5 animate-pulse-slow group-hover:scale-110 transition-all duration-1000 shadow-lg shadow-green-500/30">
+              <div className="w-full h-full rounded-2xl bg-slate-900/90 backdrop-blur-sm flex items-center justify-center border border-green-400/30 group-hover:border-green-400/60 transition-all duration-1000">
+                <User className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-green-300 animate-float-slow group-hover:text-green-200 group-hover:scale-110 transition-all duration-1000 drop-shadow-lg" />
               </div>
             </div>
 
-            {/* Enhanced multi-layer status indicator */}
+            {/* Enhanced multi-layer status indicator - slower animations */}
             <div className="absolute -bottom-0.5 sm:-bottom-1 -right-0.5 sm:-right-1 flex items-center justify-center">
               <div className="relative">
-                {/* Outer glow ring */}
-                <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-green-400 rounded-full animate-ping opacity-40"></div>
-                <div className="absolute inset-0.5 w-3 h-3 sm:w-4 sm:h-4 bg-green-300 rounded-full animate-ping opacity-60 animation-delay-1000"></div>
-                {/* Main indicator */}
-                <div className="relative w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full border-1 sm:border-2 border-white shadow-lg animate-pulse shadow-green-400/50">
-                  <div className="absolute inset-0.5 sm:inset-1 bg-green-200 rounded-full animate-pulse opacity-80"></div>
+                {/* Outer glow ring - slower ping */}
+                <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-green-400 rounded-full animate-ping-slow opacity-40"></div>
+                <div className="absolute inset-0.5 w-3 h-3 sm:w-4 sm:h-4 bg-green-300 rounded-full animate-ping-slow opacity-60 animation-delay-4000"></div>
+                {/* Main indicator - slower pulse */}
+                <div className="relative w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full border-1 sm:border-2 border-white shadow-lg animate-pulse-slow shadow-green-400/50">
+                  <div className="absolute inset-0.5 sm:inset-1 bg-green-200 rounded-full animate-pulse-slow opacity-80"></div>
                 </div>
               </div>
             </div>
@@ -328,14 +329,14 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
               </Button>
               <div className="mt-8">
                 <div className="relative group">
-                  {/* Animated green backlight container */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-400/30 via-emerald-400/30 to-green-500/30 blur-lg animate-pulse group-hover:blur-xl transition-all duration-500"></div>
-                  <div className="absolute inset-0 rounded-2xl bg-green-400/20 animate-ping"></div>
+                  {/* Animated green backlight container - slower animations */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-400/30 via-emerald-400/30 to-green-500/30 blur-lg animate-pulse-slow group-hover:blur-xl transition-all duration-1000"></div>
+                  <div className="absolute inset-0 rounded-2xl bg-green-400/20 animate-ping-slow"></div>
 
-                  {/* Main icon container with enhanced animations */}
-                  <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400/40 via-emerald-400/40 to-green-500/40 p-0.5 animate-pulse group-hover:scale-110 transition-all duration-500 shadow-lg shadow-green-500/30">
-                    <div className="w-full h-full rounded-2xl bg-slate-900/90 backdrop-blur-sm flex items-center justify-center border border-green-400/30 group-hover:border-green-400/60 transition-all duration-500">
-                      <User className="w-6 h-6 text-green-300 animate-float group-hover:text-green-200 group-hover:scale-110 transition-all duration-500 drop-shadow-lg" />
+                  {/* Main icon container with slower animations */}
+                  <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400/40 via-emerald-400/40 to-green-500/40 p-0.5 animate-pulse-slow group-hover:scale-110 transition-all duration-1000 shadow-lg shadow-green-500/30">
+                    <div className="w-full h-full rounded-2xl bg-slate-900/90 backdrop-blur-sm flex items-center justify-center border border-green-400/30 group-hover:border-green-400/60 transition-all duration-1000">
+                      <User className="w-6 h-6 text-green-300 animate-float-slow group-hover:text-green-200 group-hover:scale-110 transition-all duration-1000 drop-shadow-lg" />
                     </div>
                   </div>
                 </div>
@@ -373,8 +374,8 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
         </div>
       )}
 
-      {/* Main area: sidebar + content - Responsive */}
-      <div className="relative z-10 flex w-full min-h-screen">
+      {/* Main area: sidebar + content - Full Screen */}
+      <div className="relative z-10 flex w-full h-full">
         {/* Sidebar - Hidden on mobile, shown on tablet+ */}
         <div className="hidden lg:block">
           <SidebarNav
@@ -385,13 +386,16 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
           />
         </div>
 
-        <main className="flex-1 bg-slate-900/30 backdrop-blur-lg w-full p-4 sm:p-6 lg:p-8 min-h-screen overflow-y-auto dashboard-main">
+        <main
+          className="flex-1 bg-slate-900/20 backdrop-blur-lg w-full h-full overflow-y-auto scrollbar-hidden dashboard-main"
+          style={{ height: "calc(100vh - 88px)" }}
+        >
           {dashboardView === "dashboard" && (
-            <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-fade-in">
-              {/* Welcome Section - Responsive */}
+            <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8 animate-fade-in-slow">
+              {/* Welcome Section - Responsive with slower animations */}
               <div
-                className="text-center mb-8 lg:mb-12 animate-slide-up"
-                style={{ animationDelay: "0.1s" }}
+                className="text-center mb-8 lg:mb-12 animate-slide-up-slow"
+                style={{ animationDelay: "0.3s" }}
               >
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-cyan-300 bg-clip-text text-transparent mb-2 lg:mb-4">
                   Welcome back, {studentName}!
@@ -401,23 +405,23 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                 </p>
               </div>
 
-              {/* Info Cards with staggered animation - Responsive Grid */}
+              {/* Info Cards with staggered animation - Responsive Grid with slower animations */}
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
                 <div
-                  className="animate-slide-up"
-                  style={{ animationDelay: "0.2s" }}
+                  className="animate-slide-up-slow stagger-item-1"
+                  style={{ animationDelay: "0.6s" }}
                 >
                   <InfoCard
                     title="Current CGPA"
                     value={cgpa}
                     subtitle="Out of 4.00"
                     icon={Award}
-                    bgColor="bg-gradient-to-br from-purple-600 via-purple-700 to-blue-600 hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/30"
+                    bgColor="bg-gradient-to-br from-purple-600 via-purple-700 to-blue-600 hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/30"
                   />
                 </div>
                 <div
-                  className="animate-slide-up"
-                  style={{ animationDelay: "0.3s" }}
+                  className="animate-slide-up-slow stagger-item-2"
+                  style={{ animationDelay: "0.9s" }}
                 >
                   <InfoCard
                     title="Current Semester"
@@ -430,35 +434,35 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                         : "No semesters available"
                     }
                     icon={CalendarDays}
-                    bgColor="bg-gradient-to-br from-pink-600 via-pink-700 to-purple-600 hover:from-pink-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-pink-500/30"
+                    bgColor="bg-gradient-to-br from-pink-600 via-pink-700 to-purple-600 hover:from-pink-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-pink-500/30"
                   />
                 </div>
                 <div
-                  className="animate-slide-up"
-                  style={{ animationDelay: "0.4s" }}
+                  className="animate-slide-up-slow stagger-item-3"
+                  style={{ animationDelay: "1.2s" }}
                 >
                   <InfoCard
                     title="Total Credits"
                     value={totalCredits !== null ? totalCredits : "N/A"}
                     subtitle="Out of 160"
                     icon={Book}
-                    bgColor="bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/30"
+                    bgColor="bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-blue-500/30"
                   />
                 </div>
               </div>
 
-              {/* Credits and Graduation Section with animations - Responsive */}
+              {/* Credits and Graduation Section with slower animations - Responsive */}
               <div
-                className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 mb-8 lg:mb-12 animate-fade-in"
-                style={{ animationDelay: "0.5s" }}
+                className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 mb-8 lg:mb-12 animate-fade-in-slow"
+                style={{ animationDelay: "1.5s" }}
               >
-                <Card className="p-4 sm:p-6 lg:p-8 bg-slate-800/60 backdrop-blur-xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 transform hover:scale-[1.02] card-hover animate-slide-in-left rounded-2xl lg:rounded-3xl">
+                <Card className="p-4 sm:p-6 lg:p-8 bg-slate-800/60 backdrop-blur-xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/20 transform hover:scale-[1.02] card-hover animate-slide-in-left-slow rounded-2xl lg:rounded-3xl">
                   <h2 className="text-xl sm:text-2xl font-bold mb-4 lg:mb-6 gradient-text flex items-center gap-2 lg:gap-3">
                     <Award className="w-5 h-5 sm:w-6 sm:h-6" />
                     Credits by Academic Year
                   </h2>
                   {academicYears.length === 0 ? (
-                    <p className="text-gray-400 animate-pulse text-center py-8">
+                    <p className="text-gray-400 animate-pulse-slow text-center py-8">
                       Loading academic years...
                     </p>
                   ) : (
@@ -469,8 +473,8 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                     </div>
                   )}
                 </Card>
-                <Card className="p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-600 text-white border-0 rounded-2xl lg:rounded-3xl card-hover animate-slide-in-right shadow-2xl">
-                  <h2 className="text-2xl sm:text-3xl font-bold mb-2 lg:mb-3 text-center animate-float flex items-center justify-center gap-2 lg:gap-3">
+                <Card className="p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-600 text-white border-0 rounded-2xl lg:rounded-3xl card-hover animate-slide-in-right-slow shadow-2xl">
+                  <h2 className="text-2xl sm:text-3xl font-bold mb-2 lg:mb-3 text-center animate-float-slow flex items-center justify-center gap-2 lg:gap-3">
                     <CalendarDays className="w-6 h-6 sm:w-8 sm:h-8" />
                     May 2025
                   </h2>
@@ -536,28 +540,28 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                 </Card>
               </div>
 
-              {/* Action Buttons - Responsive Grid */}
+              {/* Action Buttons - Responsive Grid with slower animations */}
               <div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 animate-fade-in pb-8"
-                style={{ animationDelay: "0.7s" }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 animate-fade-in-slow content-reload-animation pb-8"
+                style={{ animationDelay: "2s" }}
               >
                 <Button
                   onClick={() => setDashboardView("courses")}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6 sm:py-8 text-base sm:text-lg font-semibold border-0 rounded-xl sm:rounded-2xl btn-pulse card-hover transform hover:scale-105 transition-all duration-500 shadow-xl hover:shadow-purple-500/30"
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6 sm:py-8 text-base sm:text-lg font-semibold border-0 rounded-xl sm:rounded-2xl btn-pulse card-hover transform hover:scale-105 transition-all duration-700 shadow-xl hover:shadow-purple-500/30 stagger-item-4"
                 >
                   <BookOpen className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 icon-rotate" />
                   View Courses
                 </Button>
                 <Button
                   onClick={() => setDashboardView("resources")}
-                  className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white py-6 sm:py-8 text-base sm:text-lg font-semibold border-0 rounded-xl sm:rounded-2xl btn-pulse card-hover transform hover:scale-105 transition-all duration-500 shadow-xl hover:shadow-pink-500/30"
+                  className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white py-6 sm:py-8 text-base sm:text-lg font-semibold border-0 rounded-xl sm:rounded-2xl btn-pulse card-hover transform hover:scale-105 transition-all duration-700 shadow-xl hover:shadow-pink-500/30 stagger-item-5"
                 >
                   <FolderOpen className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 icon-rotate" />
                   Study Resources
                 </Button>
                 <Button
                   onClick={() => setDashboardView("results")}
-                  className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white py-6 sm:py-8 text-base sm:text-lg font-semibold border-0 rounded-xl sm:rounded-2xl btn-pulse card-hover transform hover:scale-105 transition-all duration-500 shadow-xl hover:shadow-cyan-500/30 sm:col-span-2 lg:col-span-1"
+                  className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white py-6 sm:py-8 text-base sm:text-lg font-semibold border-0 rounded-xl sm:rounded-2xl btn-pulse card-hover transform hover:scale-105 transition-all duration-700 shadow-xl hover:shadow-cyan-500/30 sm:col-span-2 lg:col-span-1 stagger-item-6"
                 >
                   <ClipboardList className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 icon-rotate" />
                   View Results
