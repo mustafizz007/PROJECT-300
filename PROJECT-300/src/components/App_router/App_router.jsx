@@ -1,8 +1,10 @@
 import { useState } from "react";
-import HomePage from "./HomePage";
-import StudentSignup from "./StudentSignup";
-import StudentDashboard from "./StudentDashboard";
-import StudentLogin from "./StudentLogin"; 
+import HomePage from "../HomePage/HomePage";
+import StudentSignup from "../StudentSignUp/StudentSignUp";
+import StudentDashboard from "../StudentDashboard";
+import StudentLogin from "../StudentLogin/StudentLogin";
+import AdminLogin from "../AdminLogin/AdminLogin";
+import AdminSignup from "../AdminSignUp/AdminSignUp";
 
 export default function AppRouter() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -18,11 +20,25 @@ export default function AppRouter() {
       case "signup":
         return <StudentSignup onNavigate={handleNavigate} />;
       case "login":
-        return <StudentLogin onNavigate={handleNavigate} />;
+        return (
+          <StudentLogin
+            onNavigate={handleNavigate}
+            onLoginSuccess={() => handleNavigate("dashboard")}
+          />
+        );
       case "dashboard":
         return <StudentDashboard onNavigate={handleNavigate} />;
       case "admin-login":
-        return <div>Admin Login Page (to be implemented)</div>;
+        return (
+          <AdminLogin
+            onNavigate={handleNavigate}
+            onLoginSuccess={() => handleNavigate("admin-dashboard")}
+          />
+        );
+      case "admin-signup":
+        return <AdminSignup onNavigate={handleNavigate} />;
+      case "admin-dashboard":
+        return <div>Admin Dashboard (to be implemented)</div>;
       case "about":
         return <div>About Page (to be implemented)</div>;
       case "contact":

@@ -3,6 +3,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import pool from './db.js';
 import studentRoutes from './routes/student.js';
+import adminRoutes from './routes/admin.js';
 
 const app = express();
 const PORT = 3000;
@@ -13,6 +14,9 @@ app.use(express.json());
 
 // Mount student routes
 app.use('/api/student', studentRoutes);
+
+// Mount admin routes
+app.use('/admin', adminRoutes);
 
 //  Signup Route
 app.post('/signup', async (req, res) => {
@@ -60,10 +64,9 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid student ID or password' });
     }
 
-    // ✅ Successful login
     res.status(200).json({ message: 'Login successful', name: user.name });
   } catch (err) {
-    console.error('❌ Login error:', err);
+    console.error('Login error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });

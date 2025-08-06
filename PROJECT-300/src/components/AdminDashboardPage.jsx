@@ -11,8 +11,9 @@ import {
   Search,
   FileCheck,
 } from "lucide-react";
+import logo from "../assets/mu_portal_logo.png";
 
-export default function StudentDashboard({ onNavigate }) {
+export default function AdminDashboard({ onNavigate }) {
   const [activeTab, setActiveTab] = useState("Overview");
 
   const sidebarItems = [
@@ -47,11 +48,11 @@ export default function StudentDashboard({ onNavigate }) {
     },
   ];
 
-  const quickActions = [
-    { title: "Add New Student", icon: Plus },
-    { title: "Search Records", icon: Search },
-    { title: "Generate Report", icon: FileCheck },
-  ];
+  // const quickActions = [
+  //   { title: "Add New Student", icon: Plus },
+  //   { title: "Search Records", icon: Search },
+  //   { title: "Generate Report", icon: FileCheck },
+  // ];
 
   const handleLogout = () => {
     if (onNavigate) {
@@ -67,9 +68,16 @@ export default function StudentDashboard({ onNavigate }) {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-2">
-              <div className="text-2xl font-bold text-gray-800">
-                <span className="text-blue-600">Mu</span>Portal
-                <span className="ml-2 text-gray-600 font-normal">Student</span>
+              <img
+                src={logo}
+                alt="MuPortal Logo"
+                className="h-8 w-auto cursor-pointer hover:scale-105 transition-transform duration-300"
+                onClick={() => onNavigate && onNavigate("home")}
+              />
+              <div className="text-xl font-bold text-gray-800">
+                <span className="ml-2 text-gray-600 font-normal">
+                  Admin Panel
+                </span>
               </div>
             </div>
 
@@ -81,9 +89,9 @@ export default function StudentDashboard({ onNavigate }) {
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-gray-800">
-                    Student User
+                    Admin User
                   </div>
-                  <div className="text-xs text-gray-500">Student</div>
+                  <div className="text-xs text-gray-500">Administrator</div>
                 </div>
               </div>
               <button
@@ -127,7 +135,7 @@ export default function StudentDashboard({ onNavigate }) {
           <main className="flex-1 bg-gray-800 text-white p-8">
             {/* Dashboard Header */}
             <div className="mb-8">
-              <h1 className="text-4xl font-bold mb-2">Student Dashboard</h1>
+              <h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
               <p className="text-gray-300 text-lg">
                 Manage courses, students, and academic data
               </p>
@@ -162,7 +170,7 @@ export default function StudentDashboard({ onNavigate }) {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-gray-700 rounded-lg p-6 border border-gray-600">
+            {/* <div className="bg-gray-700 rounded-lg p-6 border border-gray-600">
               <h2 className="text-xl font-semibold mb-6 text-white">
                 Quick Actions
               </h2>
@@ -183,7 +191,7 @@ export default function StudentDashboard({ onNavigate }) {
                   );
                 })}
               </div>
-            </div>
+            </div> */}
           </main>
         </div>
       </div>
