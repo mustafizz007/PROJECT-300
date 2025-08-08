@@ -22,17 +22,18 @@
 - `DELETE /api/admin/notifications` - Clear all
 - `GET /api/admin/stats` - Get course statistics
 
- Database Setup
+**Database Setup**
+SQL Commands for Table Creation
 
- SQL Commands for Table Creation
 
-Step 1: Create Database
-
+  Step 1: Create Database
+  
+```sql
 CREATE DATABASE student_portal;
-
--- Connect to the database
+-- Connect to the database 
 \c student_portal;
 ```
+
  Step 2: Create Tables in Order
 
 **1. Courses Table**
@@ -43,7 +44,7 @@ CREATE TABLE IF NOT EXISTS courses (
     course_code VARCHAR(20) UNIQUE NOT NULL,
     title VARCHAR(255) NOT NULL,
     department VARCHAR(255) NOT NULL,
-    credits INTEGER NOT NULL,
+    credits DECIMAL(4,2) NOT NULL,
     instructor VARCHAR(255) NOT NULL,
     enrolled_students INTEGER DEFAULT 0,
     max_capacity INTEGER NOT NULL,

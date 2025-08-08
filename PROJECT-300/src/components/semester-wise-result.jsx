@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -7,31 +8,137 @@ import {
   TableRow,
 } from "./ui/table";
 
-const semesterResults = [
-  { semester: "1st semester", cgpa: "3.50", credits: 28, status: "Completed" },
-  { semester: "2nd semester", cgpa: "3.60", credits: 28, status: "Completed" },
-  { semester: "3rd semester", cgpa: "3.80", credits: 28, status: "Completed" },
-  { semester: "4th semester", cgpa: "3.90", credits: 28, status: "Completed" },
-  { semester: "5th semester", cgpa: "3.75", credits: 28, status: "Completed" },
-  { semester: "6th semester", cgpa: "3.85", credits: 28, status: "Completed" },
-  { semester: "7th semester", cgpa: "3.65", credits: 28, status: "Completed" },
-  { semester: "8th semester", cgpa: "3.95", credits: 28, status: "Completed" },
-  { semester: "9th semester", cgpa: "3.70", credits: 16, status: "Completed" },
-  { semester: "10th semester", cgpa: "3.88", credits: 16, status: "Completed" },
-  { semester: "11th semester", cgpa: "3.92", credits: 16, status: "Completed" },
-  {
-    semester: "12th semester",
-    cgpa: "InProgress",
-    credits: 16,
-    status: "Current",
-  },
-];
+export default function SemesterResultsTable({ onNavigate, studentId = "222-115-090" }) {
+  const [semesterResults, setSemesterResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-export default function SemesterResultsTable({ onNavigate }) {
+  useEffect(() => {
+    const fetchSemesterResults = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch(
+          `http://localhost:3000/api/student/semester-results/${studentId}`
+        );
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Fetched semester results:', data);
+        
+        setSemesterResults(data.semester_results || []);
+      } catch (err) {
+        console.error('Error fetching semester results:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (studentId) {
+      fetchSemesterResults();
+    }
+  }, [studentId]);
   const handleViewDetails = (semester) => {
     // Navigate to detailed results page with semester data
     onNavigate("studentResults", { selectedSemester: semester });
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div className="bg-gradient-to-r from-gray-600 to-indigo-600 px-8 py-6">
+              <h2 className="text-3xl font-bold text-white">
+                Semester Results Overview
+              </h2>
+              <p className="text-blue-100 mt-2">
+                Loading academic performance data...
+              </p>
+            </div>
+            <div className="p-8 flex justify-center items-center min-h-[400px]">
+              <div className="flex flex-col items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mb-4"></div>
+                <p className="text-gray-600">Loading semester results...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div className="bg-gradient-to-r from-red-600 to-red-700 px-8 py-6">
+              <h2 className="text-3xl font-bold text-white">
+                Error Loading Results
+              </h2>
+              <p className="text-red-100 mt-2">
+                Unable to fetch semester results
+              </p>
+            </div>
+            <div className="p-8 flex justify-center items-center min-h-[400px]">
+              <div className="text-center">
+                <div className="text-red-600 mb-4">
+                  <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <p className="text-gray-600 mb-4">Error: {error}</p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // No data state
+  if (!semesterResults || semesterResults.length === 0) {
+    return (
+      <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div className="bg-gradient-to-r from-gray-600 to-indigo-600 px-8 py-6">
+              <h2 className="text-3xl font-bold text-white">
+                Semester Results Overview
+              </h2>
+              <p className="text-blue-100 mt-2">
+                No academic data found
+              </p>
+            </div>
+            <div className="p-8 flex justify-center items-center min-h-[400px]">
+              <div className="text-center">
+                <div className="text-gray-400 mb-4">
+                  <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <p className="text-gray-600">No semester results found for this student.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
@@ -42,7 +149,7 @@ export default function SemesterResultsTable({ onNavigate }) {
               Semester Results Overview
             </h2>
             <p className="text-blue-100 mt-2">
-              Academic performance across all semesters
+              Academic performance across {semesterResults.length} semesters
             </p>
           </div>
 
@@ -50,22 +157,22 @@ export default function SemesterResultsTable({ onNavigate }) {
             <Table>
               <TableHeader>
                 <TableRow className="border-b-2 border-gray-200 bg-gray-50">
-                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4">
+                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4 text-center">
                     SL
                   </TableHead>
-                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4">
+                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4 text-center">
                     Semester
                   </TableHead>
-                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4">
+                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4 text-center">
                     CGPA
                   </TableHead>
-                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4">
+                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4 text-center">
                     Credits
                   </TableHead>
-                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4">
+                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4 text-center">
                     Status
                   </TableHead>
-                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4">
+                  <TableHead className="text-gray-700 font-bold text-sm uppercase tracking-wide py-4 text-center">
                     Action
                   </TableHead>
                 </TableRow>
@@ -85,7 +192,7 @@ export default function SemesterResultsTable({ onNavigate }) {
                     <TableCell className="py-4">
                       <span
                         className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                          result.cgpa === "InProgress"
+                          result.cgpa === "InProgress" || result.status === "Current"
                             ? "bg-yellow-100 text-yellow-800 border border-yellow-200"
                             : "bg-green-100 text-green-800 border border-green-200"
                         }`}

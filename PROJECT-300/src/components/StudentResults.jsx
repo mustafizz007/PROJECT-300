@@ -19,333 +19,79 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
       totalCGPA: "0.00",
     },
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showAnalysis, setShowAnalysis] = useState(false);
 
-  // Calculate summary based on selected semester courses
+  // Map frontend semester format to API format
+  const mapSemesterToAPIFormat = (semester) => {
+    const semesterMap = {
+      "1st semester": "1-1",
+      "2nd semester": "1-2", 
+      "3rd semester": "1-3",
+      "4th semester": "2-1",
+      "5th semester": "2-2",
+      "6th semester": "2-3",
+      "7th semester": "3-1",
+      "8th semester": "3-2",
+      "9th semester": "3-3",
+      "10th semester": "4-1",
+      "11th semester": "4-2",
+      "12th semester": "4-3"
+    };
+    return semesterMap[semester] || "1-1";
+  };
+
+  // Fetch data from API when studentId or selectedSemester changes
   useEffect(() => {
-    const semesterCourses = {
-      "1st semester": [
-        {
-          sl: 1,
-          courseId: "CSE 101",
-          courseName: "Structured Programming",
-          cgpa: "4.00",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 2,
-          courseId: "CSE 101L",
-          courseName: " Structured Programming Lab",
-          cgpa: "3.60",
-          credits: 1.5,
-          status: "Regular",
-        },
-        {
-          sl: 3,
-          courseId: "MAT 101",
-          courseName: "Basic Electrical Engineering",
-          cgpa: "3.40",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 4,
-          courseId: "PHY 101",
-          courseName: "Physics I",
-          cgpa: "3.30",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 5,
-          courseId: "ENG 101",
-          courseName: "English I",
-          cgpa: "3.70",
-          credits: 2,
-          status: "Regular",
-        },
-        {
-          sl: 6,
-          courseId: "CSE 101",
-          courseName: "Discrete Mathematics",
-          cgpa: "4.00",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 7,
-          courseId: "CSE 101",
-          courseName: "Differential and Integral Calculus",
-          cgpa: "3.80",
-          credits: 3,
-          status: "Regular",
-        },
-      ],
-      "2nd semester": [
-        {
-          sl: 1,
-          courseId: "CSE 102",
-          courseName: "Data Structures",
-          cgpa: "3.60",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 2,
-          courseId: "CSE 102L",
-          courseName: "Data Structures Lab",
-          cgpa: "3.70",
-          credits: 1.5,
-          status: "Regular",
-        },
-        {
-          sl: 3,
-          courseId: "MAT 102",
-          courseName: "Differential Equations and Laplace Transforms",
-          cgpa: "3.50",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 4,
-          courseId: "PHY 102",
-          courseName: "Physics II",
-          cgpa: "3.40",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 5,
-          courseId: "STAT 101",
-          courseName: "English II",
-          cgpa: "3.80",
-          credits: 2,
-          status: "Regular",
-        },
-        {
-          sl: 6,
-          courseId: "CSE 102",
-          courseName: "Engineering ethics and cyber law",
-          cgpa: "4.00",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 7,
-          courseId: "CSE 102",
-          courseName: "Basic Electrical Engineering",
-          cgpa: "3.80",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 8,
-          courseId: "CSE 102",
-          courseName: "Communication Engineering",
-          cgpa: "3.90",
-          credits: 3,
-          status: "Regular",
-        },
-      ],
-      "3rd semester": [
-        {
-          sl: 1,
-          courseId: "CSE 201",
-          courseName: "Communication Engineering",
-          cgpa: "3.80",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 2,
-          courseId: "CSE 201L",
-          courseName: "Object Oriented Programming ",
-          cgpa: "3.90",
-          credits: 1.5,
-          status: "Regular",
-        },
-        {
-          sl: 3,
-          courseId: "CSE 203",
-          courseName: "Object Oriented Programming Lab",
-          cgpa: "3.70",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 4,
-          courseId: "MAT 201",
-          courseName: "Algorithm Design and Analysis",
-          cgpa: "3.60",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 5,
-          courseId: "ECO 101",
-          courseName: "Algorithm Design and Analysis Lab",
-          cgpa: "3.85",
-          credits: 2,
-          status: "Regular",
-        },
-        {
-          sl: 6,
-          courseId: "CSE 205",
-          courseName: "Bangladesh Studies",
-          cgpa: "3.75",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 7,
-          courseId: "CSE 207",
-          courseName: "Computer Organization and Architecture",
-          cgpa: "3.90",
-          credits: 3,
-          status: "Regular",
-        },
-      ],
-      "4th semester": [
-        {
-          sl: 1,
-          courseId: "CSE 202",
-          courseName: "Principles of Economics and Entrepreneurship",
-          cgpa: "3.90",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 2,
-          courseId: "CSE 202L",
-          courseName: "Matric,complex variables and Fourier Analysis",
-          cgpa: "4.00",
-          credits: 1.5,
-          status: "Regular",
-        },
-        {
-          sl: 3,
-          courseId: "CSE 204",
-          courseName: "Competitive Programming",
-          cgpa: "3.80",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 4,
-          courseId: "CSE 206",
-          courseName: "Database Management Systems",
-          cgpa: "3.85",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 5,
-          courseId: "HUM 101",
-          courseName: "Business Studies",
-          cgpa: "3.75",
-          credits: 2,
-          status: "Regular",
-        },
-      ],
-      "5th semester": [
-        {
-          sl: 1,
-          courseId: "CSE 301",
-          courseName: "Operating Systems",
-          cgpa: "3.75",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 2,
-          courseId: "CSE 301L",
-          courseName: "OS Lab",
-          cgpa: "3.80",
-          credits: 1.5,
-          status: "Regular",
-        },
-        {
-          sl: 3,
-          courseId: "CSE 303",
-          courseName: "Software Engineering",
-          cgpa: "3.70",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 4,
-          courseId: "CSE 305",
-          courseName: "Computer Networks",
-          cgpa: "3.65",
-          credits: 3,
-          status: "Regular",
-        },
-        {
-          sl: 5,
-          courseId: "MAT 301",
-          courseName: "Theory of Computations",
-          cgpa: "3.90",
-          credits: 3,
-          status: "Regular",
-        },
-      ],
-      "12th semester": [
-        {
-          sl: 1,
-          courseId: "CSE 498",
-          courseName: "Project 300",
-          cgpa: "InProgress",
-          credits: 3,
-          status: "Current",
-        },
-        {
-          sl: 2,
-          courseId: "CSE 499",
-          courseName: "Thesis",
-          cgpa: "InProgress",
-          credits: 3,
-          status: "Current",
-        },
-        {
-          sl: 3,
-          courseId: "CSE 495",
-          courseName: "Internship",
-          cgpa: "InProgress",
-          credits: 2,
-          status: "Current",
-        },
-      ],
+    const fetchResultsData = async () => {
+      if (!studentId || !selectedSemester) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const apiSemester = mapSemesterToAPIFormat(selectedSemester);
+        console.log(`Fetching data for ${selectedSemester} (${apiSemester})`);
+        
+        const response = await fetch(
+          `http://localhost:3000/api/student/${studentId}/results/${apiSemester}`
+        );
+        
+        if (!response.ok) {
+          if (response.status === 404) {
+            // If no data found, show empty state but don't error
+            setResultsData({
+              courses: [],
+              summary: {
+                totalCredits: 0,
+                remainingCredits: 160,
+                totalCGPA: "0.00",
+              },
+            });
+            setLoading(false);
+            return;
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Fetched results data:', data);
+        
+        setResultsData(data);
+      } catch (err) {
+        console.error("Error fetching results data:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const courses =
-      semesterCourses[selectedSemester] || semesterCourses["1st semester"];
-    const totalCredits = courses.reduce(
-      (sum, course) => sum + course.credits,
-      0
-    );
-    const validCgpaCourses = courses.filter(
-      (course) => course.cgpa !== "InProgress"
-    );
-    const averageCgpa =
-      validCgpaCourses.length > 0
-        ? (
-            validCgpaCourses.reduce(
-              (sum, course) => sum + parseFloat(course.cgpa),
-              0
-            ) / validCgpaCourses.length
-          ).toFixed(2)
-        : "0.00";
-
-    setResultsData({
-      courses,
-      summary: {
-        totalCredits,
-        remainingCredits: 160 - totalCredits,
-        totalCGPA: averageCgpa,
-      },
-    });
-  }, [selectedSemester]);
+    fetchResultsData();
+  }, [studentId, selectedSemester]);
 
   // Calculate CGPA improvement recommendations
   const calculateImprovementRecommendations = (courses) => {
@@ -496,26 +242,47 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
     targetMessage: "Focus on consistent academic excellence",
   };
 
-  useEffect(() => {
-    // Fetch results data from API
-    const fetchResultsData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/api/student/${studentId}/results`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setResultsData(data);
-        }
-      } catch (error) {
-        console.error("Error fetching results data:", error);
-      }
-    };
+  // Loading state
+  if (loading) {
+    return (
+      <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
+        <div className="bg-white rounded-3xl p-10 shadow-xl max-w-8xl mx-auto">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="flex flex-col items-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+              <p className="text-gray-600">Loading semester results...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-    if (studentId) {
-      fetchResultsData();
-    }
-  }, [studentId]);
+  // Error state
+  if (error) {
+    return (
+      <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
+        <div className="bg-white rounded-3xl p-10 shadow-xl max-w-8xl mx-auto">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <div className="text-red-600 mb-4">
+                <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-gray-600 mb-4">Error loading results: {error}</p>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
@@ -558,22 +325,22 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
           <table className="w-full rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
             <thead>
               <tr className="bg-gradient-to-r from-indigo-300 to-rose-400 text-white hover:from-indigo-400 hover:to-rose-500 transition-all duration-300">
-                <th className="text-left py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <th className="text-center py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
                   SL
                 </th>
-                <th className="text-left py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <th className="text-center py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
                   Course ID
                 </th>
-                <th className="text-left py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <th className="text-center py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
                   Course Name
                 </th>
-                <th className="text-left py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <th className="text-center py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
                   CGPA
                 </th>
-                <th className="text-left py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <th className="text-center py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
                   Credits
                 </th>
-                <th className="text-left py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <th className="text-center py-4 px-2 font-semibold hover:scale-105 transition-transform duration-300 cursor-pointer">
                   Status
                 </th>
               </tr>

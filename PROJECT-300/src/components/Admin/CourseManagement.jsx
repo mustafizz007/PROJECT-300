@@ -12,6 +12,10 @@ import {
   Video,
   Link,
   Upload,
+  ChevronUp,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { courseAPI } from "../../services/api";
 
@@ -32,6 +36,7 @@ export default function CourseManagement() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Form state for course modal
   const [courseForm, setCourseForm] = useState({
@@ -58,6 +63,39 @@ export default function CourseManagement() {
   useEffect(() => {
     loadData();
   }, []);
+
+  // Handle scroll detection for floating scroll-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll control functions
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollToBottom = () => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  };
+
+  const scrollLeft = () => {
+    const container = document.querySelector('.overflow-x-auto');
+    if (container) {
+      container.scrollBy({ left: -200, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    const container = document.querySelector('.overflow-x-auto');
+    if (container) {
+      container.scrollBy({ left: 200, behavior: 'smooth' });
+    }
+  };
 
   const loadData = async () => {
     try {
@@ -227,9 +265,10 @@ export default function CourseManagement() {
   }
 
   return (
-    <>
-      <div className="mb-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div className="h-full overflow-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 scroll-smooth">
+      <div className="min-w-full p-4">
+        <div className="mb-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold mb-2">
               Course Management
@@ -239,6 +278,38 @@ export default function CourseManagement() {
             </p>
           </div>
           <div className="flex items-center space-x-3">
+            {/* Scroll Control Buttons */}
+            <div className="flex items-center space-x-1 bg-gray-700 rounded-lg p-1">
+              <button
+                onClick={scrollToTop}
+                className="p-2 text-gray-400 hover:text-white hover:bg-gray-600 rounded transition-colors"
+                title="Scroll to top"
+              >
+                <ChevronUp className="w-4 h-4" />
+              </button>
+              <button
+                onClick={scrollToBottom}
+                className="p-2 text-gray-400 hover:text-white hover:bg-gray-600 rounded transition-colors"
+                title="Scroll to bottom"
+              >
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <button
+                onClick={scrollLeft}
+                className="p-2 text-gray-400 hover:text-white hover:bg-gray-600 rounded transition-colors"
+                title="Scroll left"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={scrollRight}
+                className="p-2 text-gray-400 hover:text-white hover:bg-gray-600 rounded transition-colors"
+                title="Scroll right"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+            
             <button
               onClick={handleCourseCreate}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors w-fit"
@@ -333,8 +404,8 @@ export default function CourseManagement() {
         </div>
 
         {/* Courses Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div className="overflow-x-auto overflow-y-auto max-h-96 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+          <table className="w-full min-w-[800px]">
             <thead className="bg-gray-600">
               <tr>
                 <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
@@ -432,7 +503,7 @@ export default function CourseManagement() {
       {/* Course Modal */}
       {showCourseModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
             <h3 className="text-lg font-semibold text-white mb-4">
               {selectedCourse ? "Edit Course" : "Add Course"}
             </h3>
@@ -538,7 +609,7 @@ export default function CourseManagement() {
       {/* Materials Management Modal */}
       {showMaterialsModal && selectedCourseForMaterials && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-semibold text-white">
                 Manage Materials - {selectedCourseForMaterials.title}
@@ -689,6 +760,18 @@ export default function CourseManagement() {
           </div>
         </div>
       )}
-    </>
+
+      {/* Floating Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-40 hover:scale-110"
+          title="Scroll to top"
+        >
+          <ChevronUp className="w-5 h-5" />
+        </button>
+      )}
+      </div>
+    </div>
   );
 }

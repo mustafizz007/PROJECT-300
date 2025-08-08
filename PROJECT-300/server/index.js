@@ -13,6 +13,19 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
+// Simple request logger (optional - comment out to reduce logs further)
+app.use((req, res, next) => {
+  if (req.method === 'GET' && req.url.includes('/api/')) {
+    // Only log non-polling API calls to reduce spam
+    if (!req.url.includes('notifications') && !req.url.includes('stats')) {
+      console.log(`${req.method} ${req.url}`);
+    }
+  } else if (req.method !== 'GET') {
+    console.log(`${req.method} ${req.url}`);
+  }
+  next();
+});
+
 // Mount student routes
 app.use('/api/student', studentRoutes);
 
