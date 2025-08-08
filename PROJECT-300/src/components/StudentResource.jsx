@@ -156,7 +156,7 @@ export default function StudentResource() {
   ];
 
   return (
-    <div className="w-full h-full min-h-screen bg-gradient-to-br from-violet-100 to-blue-100 p-4 md:p-8 flex justify-center items-start overflow-auto">
+    <div className="w-full h-full min-h-screen bg-gradient-to-br from-gray-200 via-blue-100 to-gray-100 p-4 md:p-8 flex justify-center items-start overflow-auto">
       <div className="w-full max-w-6xl bg-white/80 rounded-3xl shadow-2xl p-0 md:p-8 backdrop-blur-md border border-gray-200">
         {/* Header Section */}
         <div className="flex justify-between items-center mb-8 p-6 md:p-0">
@@ -170,7 +170,7 @@ export default function StudentResource() {
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
+            className="px-6 py-3 bg-gradient-to-r from-gray-500 to-slate-900 hover:from-gray-600 hover:to-slate-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

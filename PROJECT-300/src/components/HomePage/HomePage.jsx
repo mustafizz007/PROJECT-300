@@ -13,7 +13,7 @@ export default function HomePage({ onNavigate }) {
         <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"></div>
       </div>
 
-      <header className="relative z-10 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-2xl">
+      <header className="relative z-10 bg-white border-b border-white shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             {/* Logo */}
@@ -24,7 +24,7 @@ export default function HomePage({ onNavigate }) {
               <img
                 src={logo}
                 alt="MuPortal Logo"
-                className="h-12 w-auto transform group-hover:scale-110 transition-all duration-500 group-hover:rotate-3 drop-shadow-2xl group-hover:drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]"
+                className="h-12 w-auto transform group-hover:scale-110 transition-all duration-500 group-hover:rotate-3 group-hover:drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]"
               />
             </div>
 
@@ -37,11 +37,11 @@ export default function HomePage({ onNavigate }) {
                 <button
                   key={item.name}
                   onClick={item.action}
-                  className="relative text-white/90 hover:text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 group overflow-hidden"
+                  className="relative text-black/90 hover:text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 group overflow-hidden"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span className="relative z-10">{item.name}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-lg"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-600/20 to-gray-600/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-lg"></div>
                   <div className="absolute inset-0 bg-white/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-lg"></div>
                 </button>
               ))}
@@ -50,20 +50,20 @@ export default function HomePage({ onNavigate }) {
             <div className="flex space-x-4">
               <button
                 onClick={() => onNavigate("login")}
-                className="relative px-6 py-2.5 bg-transparent border-2 border-purple-400/50 text-purple-200 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-purple-300 hover:shadow-lg hover:shadow-purple-500/25"
+                className="relative px-6 py-2.5 bg-transparent border-2 border-gray-900/50 text-black-900 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-gray-300 hover:shadow-lg hover:shadow-gray-100/25"
               >
                 <span className="relative z-10 group-hover:text-white transition-colors duration-300">
                   Login
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-600 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
               </button>
 
               <button
                 onClick={() => onNavigate("signup")}
-                className="relative px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105"
+                className="relative px-6 py-2.5 bg-gradient-to-r from-gray-800 to-gray-800 text-white font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-gray-900/50 hover:scale-105"
               >
                 <span className="relative z-10">Sign Up</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-600 to-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute inset-0 bg-white/20 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
               </button>
             </div>
@@ -72,11 +72,11 @@ export default function HomePage({ onNavigate }) {
       </header>
 
       {/* Hero Section */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-br from-black via-zinc-900 to-slate-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             {/* Hero Title */}
-            <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 mb-6 animate-fade-in-up">
+            <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-royal-400 to-white-900 mb-6 animate-fade-in-up">
               <span className="block">MuPortal</span>
               <span className="block text-3xl md:text-5xl mt-2 text-white/90">
                 University Material Sharing Portal
@@ -92,9 +92,9 @@ export default function HomePage({ onNavigate }) {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animation-delay-600">
               <button
                 onClick={() => onNavigate("login")}
-                className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-purple-500/25 transform hover:scale-105 transition-all duration-300 ease-out overflow-hidden min-w-[200px]"
+                className="group relative px-8 py-4 bg-gradient-to-r from-slate-900 via-white-700 to-gray-800 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-gray-500/25 transform hover:scale-105 transition-all duration-300 ease-out overflow-hidden min-w-[200px]"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-700 via-pink-700 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <span className="relative z-10 flex items-center justify-center">
                   <svg
@@ -110,16 +110,18 @@ export default function HomePage({ onNavigate }) {
                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                     />
                   </svg>
-                  Student Login
+                  <span className="transition-colors duration-300 group-hover:text-zinc-200">
+                    Student Login
+                  </span>
                 </span>
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-yellow-400/20 to-orange-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white-400/20 to-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
               </button>
 
               <button
                 onClick={() => onNavigate("admin-login")}
-                className="group relative px-8 py-4 bg-transparent border-2 border-purple-400/50 text-purple-200 font-bold text-lg rounded-2xl hover:border-purple-300 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/25 overflow-hidden min-w-[200px]"
+                className="group relative px-8 py-4 bg-transparent border-2 border-white-400/50 text-purple-100 font-bold text-lg rounded-2xl hover:border-white-300 transition-all duration-300 hover:shadow-lg hover:shadow-white-400/25 overflow-hidden min-w-[200px]"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-2xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-white-600/20 to-white-600/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-2xl"></div>
                 <span className="relative z-10 flex items-center justify-center group-hover:text-white transition-colors duration-300">
                   <svg
                     className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300"
@@ -173,7 +175,7 @@ export default function HomePage({ onNavigate }) {
                 title: "Department-Based Access",
                 description:
                   "Automatically filtered content based on your department",
-                gradient: "from-purple-500 to-pink-500",
+                gradient: "from-gray-500 to-gray-400",
               },
               {
                 icon: "📄",
@@ -191,7 +193,7 @@ export default function HomePage({ onNavigate }) {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="group relative bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 hover:border-white/40 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 hover:scale-105 cursor-pointer overflow-hidden"
+                className="group relative bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 hover:border-white/40 transition-all duration-500 hover:shadow-2xl hover:shadow-gray-400/20 hover:scale-105 cursor-pointer overflow-hidden"
                 style={{ animationDelay: `${900 + index * 200}ms` }}
               >
                 {/* Animated background */}
@@ -205,7 +207,7 @@ export default function HomePage({ onNavigate }) {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 transition-all duration-300">
+                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-gray-400 group-hover:to-gray-400 transition-all duration-300">
                   {feature.title}
                 </h3>
 
@@ -215,7 +217,7 @@ export default function HomePage({ onNavigate }) {
                 </p>
 
                 {/* Hover effect overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-600/5 to-gray-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
               </div>
             ))}
           </div>

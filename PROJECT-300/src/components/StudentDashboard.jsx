@@ -205,7 +205,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   };
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 page-reload-animation">
+    <div className="w-screen h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-white-900 to-gray-900 page-reload-animation">
       {/* Animated background blobs matching homepage - Slower animations */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow"></div>
@@ -216,7 +216,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
       </div>
 
       {/* Enhanced Header with glassmorphism matching homepage - Responsive */}
-      <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-2xl w-full header-reload-animation">
+      <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-white backdrop-blur-md border-b border-white/20 shadow-2xl w-full header-reload-animation">
         <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
           {/* Mobile Menu Button */}
           <Button
@@ -238,7 +238,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
             <img
               src="/src/assets/mu_portal_logo.png"
               alt="MuPortal Logo"
-              className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 logo-image transition-opacity duration-200"
+              className="h-12 w-auto transform group-hover:scale-110 transition-all duration-500 group-hover:rotate-3 group-hover:drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]"
             />
           </div>
           <span className="text-xl font-semibold text-white"></span>
@@ -252,9 +252,9 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
             <div className="absolute inset-0 rounded-2xl bg-green-400/20 animate-ping-slow"></div>
 
             {/* Main icon container with slower animations */}
-            <div className="relative w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-2xl bg-gradient-to-br from-green-400/40 via-emerald-400/40 to-green-500/40 p-0.5 animate-pulse-slow group-hover:scale-110 transition-all duration-1000 shadow-lg shadow-green-500/30">
-              <div className="w-full h-full rounded-2xl bg-slate-900/90 backdrop-blur-sm flex items-center justify-center border border-green-400/30 group-hover:border-green-400/60 transition-all duration-1000">
-                <User className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-green-300 animate-float-slow group-hover:text-green-200 group-hover:scale-110 transition-all duration-1000 drop-shadow-lg" />
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-2xl bg-gradient-to-br from-gray-400/40 via-gray-800/40 to-gray-500/40 p-0.5 animate-pulse-slow group-hover:scale-110 transition-all duration-1000 shadow-lg shadow-gray-500/30">
+              <div className="w-full h-full rounded-2xl bg-gray-900/90 backdrop-blur-sm flex items-center justify-center border border-gray-900/30 group-hover:border-gray-900/60 transition-all duration-1000">
+                <User className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white animate-float-slow group-hover:text-gray-200 group-hover:scale-110 transition-all duration-1000 drop-shadow-lg" />
               </div>
             </div>
 
@@ -272,17 +272,17 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
             </div>
           </div>
 
-          <div className="text-white hidden sm:block animate-slide-in-left">
+          <div className="text-black hidden sm:block animate-slide-in-left">
             <p className="font-semibold text-sm sm:text-base lg:text-lg">
               {studentName}
             </p>
-            <p className="text-sm text-purple-200 font-medium">
+            <p className="text-sm text-gray-600 font-medium">
               {studentDepartment}
             </p>
           </div>
           <Button
             variant="outline"
-            className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center gap-2 border-0 shadow-lg transition-all duration-300"
+            className="bg-gradient-to-r from-gray-800 to-gray-600 hover:from-gray-700 hover:to-gray-900 text-white hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center gap-2 border-0 shadow-lg transition-all duration-300"
             onClick={onLogout}
           >
             Logout
@@ -385,7 +385,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                 className="text-center mb-8 lg:mb-12 animate-slide-up-slow"
                 style={{ animationDelay: "0.3s" }}
               >
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-cyan-300 bg-clip-text text-transparent mb-2 lg:mb-4">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white-300 via-gray-300 to-white-300 bg-clip-text text-transparent mb-2 lg:mb-4">
                   Welcome back, {studentName}!
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-300 font-light">
@@ -444,7 +444,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                 className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 mb-8 lg:mb-12 animate-fade-in-slow"
                 style={{ animationDelay: "1.5s" }}
               >
-                <Card className="p-4 sm:p-6 lg:p-8 bg-slate-800/60 backdrop-blur-xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/20 transform hover:scale-[1.02] card-hover animate-slide-in-left-slow rounded-2xl lg:rounded-3xl">
+                <Card className="p-4 sm:p-6 lg:p-8 bg-slate-800/60 backdrop-blur-xl border border-gray-500/20 hover:border-gray-400/40 transition-all duration-700 hover:shadow-2xl hover:shadow-purple-500/20 transform hover:scale-[1.02] card-hover animate-slide-in-left-slow rounded-2xl lg:rounded-3xl">
                   <h2 className="text-xl sm:text-2xl font-bold mb-4 lg:mb-6 gradient-text flex items-center gap-2 lg:gap-3">
                     <Award className="w-5 h-5 sm:w-6 sm:h-6" />
                     Credits by Academic Year

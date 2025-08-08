@@ -34,10 +34,10 @@ export default function SemesterResultsTable({ onNavigate }) {
   };
 
   return (
-    <div className="p-8 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
+          <div className="bg-gradient-to-r from-gray-600 to-indigo-600 px-8 py-6">
             <h2 className="text-3xl font-bold text-white">
               Semester Results Overview
             </h2>

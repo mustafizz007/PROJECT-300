@@ -31,7 +31,7 @@ export function StudentProfile({ studentId }) {
           console.log("Fetched student data:", data); // Debug log
           console.log("Phone field:", data.phone); // Debug phone specifically
           console.log("Phone type:", typeof data.phone); // Debug phone type
-          
+
           setStudentData((prev) => ({
             ...prev,
             name: data.name || "Unknown Student",
@@ -174,38 +174,38 @@ export function StudentProfile({ studentId }) {
   // Function to get initials from student name
   const getInitials = (name) => {
     if (!name || name === "Loading...") return "?";
-    
+
     const nameParts = name.trim().split(/\s+/);
     if (nameParts.length === 1) {
       return nameParts[0].charAt(0).toUpperCase();
     }
-    
+
     // Get first letter of first name and first letter of last name
     const firstInitial = nameParts[0].charAt(0).toUpperCase();
     const lastInitial = nameParts[nameParts.length - 1].charAt(0).toUpperCase();
-    
+
     return firstInitial + lastInitial;
   };
 
   return (
-    <div className="w-full h-full p-8 bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 overflow-auto">
+    <div className="w-full h-full p-8 bg-gradient-to-br from-gray-100 via-teal-50 to-gray-200 overflow-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {/* Profile Card - Left */}
-        <div className="bg-gradient-to-br from-purple-200 via-blue-100 to-pink-200 rounded-2xl p-8 shadow-2xl border border-purple-300/30">
+        <div className="bg-gradient-to-br from-gray-200 via-teal-50 to-gray-300 rounded-2xl p-8 shadow-2xl border border-teal-300/30">
           <div className="text-center mb-8">
             <Avatar className="h-20 w-20 mx-auto mb-4 shadow-lg">
               <AvatarImage
                 src="/placeholder.svg?height=80&width=80"
                 alt={studentData.name}
               />
-              <AvatarFallback className="bg-gradient-to-br from-purple-400 via-pink-500 to-blue-500 text-white text-xl">
+              <AvatarFallback className="bg-gradient-to-br from-gray-400 via-teal-500 to-gray-500 text-white text-xl">
                 {getInitials(studentData.name)}
               </AvatarFallback>
             </Avatar>
-            <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 mb-2">
+            <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-700 via-teal-600 to-gray-800 mb-2">
               {studentData.name}
             </h2>
-            <p className="text-purple-600 mb-1 font-semibold">
+            <p className="text-teal-700 mb-1 font-semibold">
               Dept : {studentData.department}
             </p>
             <p className="text-blue-600 mb-6 font-semibold">
@@ -215,31 +215,29 @@ export function StudentProfile({ studentId }) {
 
           <div className="space-y-4 mb-8">
             <div className="flex justify-between items-center">
-              <span className="text-purple-700 font-medium">
-                Current CGPA :
-              </span>
-              <span className="text-2xl font-extrabold text-blue-700">
+              <span className="text-teal-700 font-medium">Current CGPA :</span>
+              <span className="text-2xl font-extrabold text-teal-700">
                 {studentData.cgpa}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-purple-700 font-medium">Year:</span>
-              <span className="text-2xl font-extrabold text-blue-700">
+              <span className="text-teal-700 font-medium">Year:</span>
+              <span className="text-2xl font-extrabold text-teal-700">
                 {studentData.year}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-purple-700 font-medium">
+              <span className="text-teal-700 font-medium">
                 Credits Completed :
               </span>
-              <span className="text-2xl font-extrabold text-blue-700">
+              <span className="text-2xl font-extrabold text-teal-700">
                 {studentData.credits}
               </span>
             </div>
           </div>
 
           <Button
-            className="w-full bg-gradient-to-r from-purple-400 via-pink-500 to-blue-400 hover:from-purple-400 hover:to-blue-400 text-white py-3 rounded-xl shadow-lg font-bold transition-all duration-300"
+            className="w-full bg-gradient-to-r from-gray-400 via-teal-500 to-gray-500 hover:from-gray-400 hover:to-teal-500 text-white py-3 rounded-xl shadow-lg font-bold transition-all duration-300"
             onClick={() => setIsEditing(!isEditing)}
           >
             {isEditing ? "Cancel Edit" : "Edit profile"}
@@ -249,36 +247,36 @@ export function StudentProfile({ studentId }) {
         {/* Right Side - Forms */}
         <div className="space-y-6">
           {/* Personal Information */}
-          <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 rounded-2xl p-6 shadow-lg border border-purple-200/30">
-            <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 mb-6">
+          <div className="bg-gradient-to-br from-gray-50 via-teal-50 to-gray-100 rounded-2xl p-6 shadow-lg border border-teal-200/30">
+            <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-700 via-teal-600 to-gray-800 mb-6">
               Personal Information
             </h3>
             <div className="space-y-4">
               <div>
-                <Label className="text-sm font-bold text-purple-700 mb-2 block text-left">
+                <Label className="text-sm font-bold text-teal-700 mb-2 block text-left">
                   Full Name
                 </Label>
                 <Input
                   value={studentData.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
                   disabled={!isEditing}
-                  className="w-full bg-purple-100 border-0 rounded-md h-10 text-purple-900 font-semibold"
+                  className="w-full bg-gray-100 border-0 rounded-md h-10 text-gray-900 font-semibold"
                 />
               </div>
 
               <div>
-                <Label className="text-sm font-bold text-purple-700 mb-2 block text-left">
+                <Label className="text-sm font-bold text-teal-700 mb-2 block text-left">
                   Student ID
                 </Label>
                 <Input
                   value={studentId}
                   disabled={true}
-                  className="w-full bg-purple-100 border-0 rounded-md h-10 text-purple-900 font-semibold"
+                  className="w-full bg-gray-100 border-0 rounded-md h-10 text-gray-900 font-semibold"
                 />
               </div>
 
               <div>
-                <Label className="text-sm font-bold text-purple-700 mb-2 block text-left">
+                <Label className="text-sm font-bold text-teal-700 mb-2 block text-left">
                   Department
                 </Label>
                 <Input
@@ -287,28 +285,30 @@ export function StudentProfile({ studentId }) {
                     handleInputChange("department", e.target.value)
                   }
                   disabled={!isEditing}
-                  className="w-full bg-purple-100 border-0 rounded-md h-10 text-purple-900 font-semibold"
+                  className="w-full bg-gray-100 border-0 rounded-md h-10 text-gray-900 font-semibold"
                 />
               </div>
 
               <div>
-                <Label className="text-sm font-bold text-purple-700 mb-2 block text-left">
+                <Label className="text-sm font-bold text-teal-700 mb-2 block text-left">
                   Phone
                 </Label>
                 <Input
-                  placeholder={isEditing ? "Enter phone number" : "No phone number"}
+                  placeholder={
+                    isEditing ? "Enter phone number" : "No phone number"
+                  }
                   value={studentData.phone || ""}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
                   disabled={!isEditing}
-                  className="w-full bg-purple-100 border-0 rounded-md h-10 text-purple-900 font-semibold"
+                  className="w-full bg-gray-100 border-0 rounded-md h-10 text-gray-900 font-semibold"
                 />
               </div>
             </div>
           </div>
 
           {/* Academic Information */}
-          <div className="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 rounded-2xl p-6 shadow-lg border border-blue-200/30">
-            <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-600 to-pink-600 mb-6">
+          <div className="bg-gradient-to-br from-teal-50 via-gray-50 to-teal-100 rounded-2xl p-6 shadow-lg border border-teal-200/30">
+            <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-700 via-teal-600 to-gray-700 mb-6">
               Academic Information
             </h3>
             <div className="space-y-4">
@@ -321,7 +321,7 @@ export function StudentProfile({ studentId }) {
                     value={studentData.major}
                     onChange={(e) => handleInputChange("major", e.target.value)}
                     disabled={!isEditing}
-                    className="w-full bg-blue-100 border-0 rounded-md h-10 text-blue-900 font-semibold"
+                    className="w-full bg-teal-100 border-0 rounded-md h-10 text-teal-900 font-semibold"
                   />
                 </div>
                 <div>
@@ -334,7 +334,7 @@ export function StudentProfile({ studentId }) {
                       handleInputChange("specification", e.target.value)
                     }
                     disabled={!isEditing}
-                    className="w-full bg-blue-100 border-0 rounded-md h-10 text-blue-900 font-semibold"
+                    className="w-full bg-teal-100 border-0 rounded-md h-10 text-teal-900 font-semibold"
                   />
                 </div>
               </div>
@@ -350,7 +350,7 @@ export function StudentProfile({ studentId }) {
                       handleInputChange("expectedGraduation", e.target.value)
                     }
                     disabled={!isEditing}
-                    className="w-full bg-blue-100 border-0 rounded-md h-10 text-blue-900 font-semibold"
+                    className="w-full bg-teal-100 border-0 rounded-md h-10 text-teal-900 font-semibold"
                   />
                 </div>
                 <div>
@@ -363,7 +363,7 @@ export function StudentProfile({ studentId }) {
                       handleInputChange("academicAdvisor", e.target.value)
                     }
                     disabled={!isEditing}
-                    className="w-full bg-blue-100 border-0 rounded-md h-10 text-blue-900 font-semibold"
+                    className="w-full bg-teal-100 border-0 rounded-md h-10 text-teal-900 font-semibold"
                   />
                 </div>
               </div>
@@ -371,21 +371,21 @@ export function StudentProfile({ studentId }) {
           </div>
 
           {/* Privacy & Security */}
-          <div className="bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 rounded-2xl p-6 shadow-lg border border-pink-200/30">
-            <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 mb-6">
+          <div className="bg-gradient-to-br from-gray-50 via-teal-50 to-gray-100 rounded-2xl p-6 shadow-lg border border-teal-200/30">
+            <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-700 via-gray-600 to-teal-800 mb-6">
               Privacy & Security
             </h3>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-pink-500 font-bold mb-1 text-left">
+                <p className="text-teal-600 font-bold mb-1 text-left">
                   Change Password
                 </p>
-                <p className="text-sm text-purple-600">
+                <p className="text-sm text-teal-700">
                   Update your account password
                 </p>
               </div>
               <Button
-                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white px-8 py-2 rounded-xl font-bold shadow-md transition-all duration-300"
+                className="bg-gradient-to-r from-teal-500 to-gray-500 hover:from-teal-600 hover:to-gray-600 text-white px-8 py-2 rounded-xl font-bold shadow-md transition-all duration-300"
                 onClick={handleChangePassword}
               >
                 Change

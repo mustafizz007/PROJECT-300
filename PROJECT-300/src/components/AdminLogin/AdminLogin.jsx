@@ -57,7 +57,7 @@ export default function AdminLogin({ onNavigate, onLoginSuccess }) {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-2xl">
+      <header className="relative z-10 bg-white backdrop-blur-md border-b border-white/20 shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             {/* Logo */}
@@ -68,7 +68,7 @@ export default function AdminLogin({ onNavigate, onLoginSuccess }) {
               <img
                 src={logo}
                 alt="MuPortal Logo"
-                className="h-12 w-auto transform group-hover:scale-110 transition-all duration-500 group-hover:rotate-3 drop-shadow-2xl group-hover:drop-shadow-[0_0_20px_rgba(59,130,246,0.6)]"
+                className="h-12 w-auto transform group-hover:scale-110 transition-all duration-500 group-hover:rotate-3 group-hover:drop-shadow-[0_0_20px_rgba(59,130,246,0.6)]"
               />
             </div>
 
@@ -82,7 +82,7 @@ export default function AdminLogin({ onNavigate, onLoginSuccess }) {
                 <button
                   key={item.name}
                   onClick={item.action}
-                  className="relative text-white/90 hover:text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 group overflow-hidden"
+                  className="relative text-blue hover:text-blue font-medium px-4 py-2 rounded-lg transition-all duration-300 group overflow-hidden"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span className="relative z-10">{item.name}</span>
@@ -102,12 +102,12 @@ export default function AdminLogin({ onNavigate, onLoginSuccess }) {
 
               <button
                 onClick={() => onNavigate("admin-signup")}
-                className="relative px-6 py-2.5 bg-transparent border-2 border-blue-400/50 text-blue-200 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/25"
+                className="relative px-6 py-2.5 bg-transparent border-2 border-blue-400/50 text-blue-500 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/25"
               >
                 <span className="relative z-10 group-hover:text-white transition-colors duration-300">
                   Admin Sign Up
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-900 to-cyan-900 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
               </button>
             </div>
           </div>

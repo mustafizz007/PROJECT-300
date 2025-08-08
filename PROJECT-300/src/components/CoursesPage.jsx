@@ -102,7 +102,7 @@ export function CoursesPage({ onCourseSelect }) {
 );
 
   return (
-    <div className="w-full h-full min-h-screen bg-gradient-to-br from-violet-100 to-blue-100 p-4 md:p-8 flex justify-center items-start overflow-auto">
+    <div className="w-full h-full min-h-screen bg-gradient-to-br from-gray-200 via-blue-100 to-gray-100 p-4 md:p-8 flex justify-center items-start overflow-auto">
     <div className="w-full max-w-6xl bg-white/80 rounded-3xl shadow-2xl p-0 md:p-8 backdrop-blur-md border border-gray-200">
       <Tabs
         value={activeTab}

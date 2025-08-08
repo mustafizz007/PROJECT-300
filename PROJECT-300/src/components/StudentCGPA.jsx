@@ -30,7 +30,7 @@ export function StudentCGPA({ studentId }) {
   }, [studentId]);
 
   return (
-    <div className="w-full h-full p-8 bg-gradient-to-br from-purple-200 via-blue-100 to-pink-100 overflow-auto">
+    <div className="w-full h-full p-8 bg-gradient-to-br from-gray-200 via-blue-100 to-gray-100 overflow-auto">
       <br></br>
       <br></br>
       <br></br>
