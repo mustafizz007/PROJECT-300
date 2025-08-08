@@ -11,6 +11,8 @@ import { CoursesPage } from "./CoursesPage";
 import { CourseDetailPage } from "./course-details-page";
 import StudentResource from "./StudentResource";
 import SemesterResultsTable from "./semester-wise-result";
+import NotificationBell from "./ui/NotificationBell";
+import { studentNotificationAPI } from "../services/api";
 import {
   Award,
   CalendarDays,
@@ -83,7 +85,8 @@ function AcademicYearItem({ year, credits, status }) {
 
 export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   const [studentName, setStudentName] = useState("Loading...");
-  const [studentDepartment, setStudentDepartment] = useState("Computer Science");
+  const [studentDepartment, setStudentDepartment] =
+    useState("Computer Science");
   const [cgpa, setCgpa] = useState("Loading...");
   const [totalCredits, setTotalCredits] = useState(null);
   const [semesters, setSemesters] = useState([]);
@@ -92,6 +95,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [selectedSemester, setSelectedSemester] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   // Calculate graduation progress based on actual data
   const T_credit = totalCredits !== null ? totalCredits : 0;
@@ -184,6 +188,51 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
     if (studentId) fetchSemesters();
   }, [studentId]);
 
+  // Fetch student notifications
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await studentNotificationAPI.getNotifications();
+        setNotifications(response.notifications);
+      } catch (error) {
+        console.error("Failed to fetch notifications:", error);
+        setNotifications([]);
+      }
+    };
+
+    fetchNotifications();
+    // Set up polling to check for new notifications every 30 seconds
+    const interval = setInterval(fetchNotifications, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Handler to clear notifications
+  const handleClearNotifications = async () => {
+    try {
+      await studentNotificationAPI.clearAll();
+      setNotifications([]);
+    } catch (error) {
+      console.error("Failed to clear notifications:", error);
+    }
+  };
+
+  // Handler to mark notification as read
+  const handleMarkAsRead = async (notificationId) => {
+    try {
+      await studentNotificationAPI.markAsRead(notificationId);
+      // Update local state to mark the notification as read
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notification) =>
+          notification.id === notificationId
+            ? { ...notification, is_read: true }
+            : notification
+        )
+      );
+    } catch (error) {
+      console.error("Failed to mark notification as read:", error);
+    }
+  };
+
   // Handler to open course detail
   const handleCourseSelect = (courseId) => {
     setSelectedCourseId(courseId);
@@ -245,6 +294,13 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4 lg:gap-8">
+          {/* Notification Bell */}
+          <NotificationBell
+            notifications={notifications}
+            onClearNotifications={handleClearNotifications}
+            onMarkAsRead={handleMarkAsRead}
+          />
+
           {/* Animated Green Backlight User Icon - Slower animations */}
           <div className="relative group">
             {/* Animated green backlight container - slower pulse */}

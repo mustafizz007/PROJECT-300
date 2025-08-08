@@ -20,7 +20,7 @@ export default function ResultsManagement() {
     {
       id: 1,
       studentId: "2021-1-60-001",
-      studentName: "John Doe",
+      studentName: "Sabbir Ahmed",
       courseCode: "CSE 101",
       courseName: "Programming Fundamentals",
       semester: "Fall 2024",
@@ -33,7 +33,7 @@ export default function ResultsManagement() {
     {
       id: 2,
       studentId: "2021-1-60-002",
-      studentName: "Jane Smith",
+      studentName: "Anindo Paul",
       courseCode: "MATH 201",
       courseName: "Calculus II",
       semester: "Fall 2024",
@@ -46,7 +46,7 @@ export default function ResultsManagement() {
     {
       id: 3,
       studentId: "2020-1-60-015",
-      studentName: "Mike Johnson",
+      studentName: "Qudroti Hossain",
       courseCode: "PHY 101",
       courseName: "Physics I",
       semester: "Fall 2024",

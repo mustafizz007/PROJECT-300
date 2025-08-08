@@ -130,13 +130,13 @@ export default function StudentManagement() {
         <div className="bg-gray-700 p-4 md:p-6 rounded-lg border border-gray-600">
           <div className="flex items-center justify-between mb-2">
             <div className="p-2 bg-purple-500 bg-opacity-20 rounded-lg">
-              <Award className="w-5 h-5 text-purple-400" />
+              <GraduationCap className="w-5 h-5 text-purple-400" />
             </div>
           </div>
           <div className="text-xl md:text-2xl font-bold text-white mb-1">
             {students.filter((s) => s.status === "graduating").length}
           </div>
-          <div className="text-sm text-gray-400">Graduating</div>
+          <div className="text-sm text-gray-400">Number of Courses</div>
         </div>
 
         <div className="bg-gray-700 p-4 md:p-6 rounded-lg border border-gray-600">

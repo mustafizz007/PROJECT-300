@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BookOpen,
   Users,
@@ -8,83 +8,196 @@ import {
   Search,
   Edit,
   Trash2,
+  FileText,
+  Video,
+  Link,
+  Upload,
 } from "lucide-react";
+import { courseAPI } from "../../services/api";
 
 export default function CourseManagement() {
   const [showCourseModal, setShowCourseModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courseSearchTerm, setCourseSearchTerm] = useState("");
   const [courseFilterType, setCourseFilterType] = useState("all");
+  const [showMaterialsModal, setShowMaterialsModal] = useState(false);
+  const [selectedCourseForMaterials, setSelectedCourseForMaterials] =
+    useState(null);
+  const [courses, setCourses] = useState([]);
+  const [stats, setStats] = useState({
+    total_courses: 0,
+    active_courses: 0,
+    avg_capacity_percentage: 0,
+    total_materials: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [courses, setCourses] = useState([
-    {
-      id: 1,
-      courseCode: "CSE 101",
-      title: "Programming Fundamentals",
-      department: "Computer Science",
-      credits: 3,
-      instructor: "Khudeja Khanom Anwara",
-      enrolledStudents: 45,
-      maxCapacity: 50,
-      status: "active",
-      semester: "Fall 2024",
-    },
-    {
-      id: 2,
-      courseCode: "MATH 201",
-      title: "Calculus II",
-      department: "Mathematics",
-      credits: 4,
-      instructor: "Dr. Sarah Johnson",
-      enrolledStudents: 35,
-      maxCapacity: 40,
-      status: "active",
-      semester: "Fall 2024",
-    },
-    {
-      id: 3,
-      courseCode: "PHY 101",
-      title: "Physics I",
-      department: "Physics",
-      credits: 3,
-      instructor: "Prof. Michael Brown",
-      enrolledStudents: 28,
-      maxCapacity: 35,
-      status: "active",
-      semester: "Fall 2024",
-    },
-    {
-      id: 4,
-      courseCode: "CSE 201",
-      title: "Data Structures",
-      department: "Computer Science",
-      credits: 3,
-      instructor: "Md. Rakib Hassan",
-      enrolledStudents: 42,
-      maxCapacity: 45,
-      status: "active",
-      semester: "Fall 2024",
-    },
-  ]);
+  // Form state for course modal
+  const [courseForm, setCourseForm] = useState({
+    title: "",
+    course_code: "",
+    instructor: "",
+    credits: "",
+    department: "",
+    max_capacity: "",
+    description: "",
+    semester: "Fall 2024",
+    materials: [],
+  });
+
+  // Form state for materials
+  const [materialForm, setMaterialForm] = useState({
+    title: "",
+    type: "document",
+    url: "",
+    description: "",
+  });
+
+  // Load data on component mount
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [coursesData, statsData] = await Promise.all([
+        courseAPI.getAllCourses(),
+        courseAPI.getStats(),
+      ]);
+
+      setCourses(coursesData.courses);
+      setStats(statsData.stats);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+      console.error("Error loading data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCourseCreate = () => {
     setSelectedCourse(null);
+    setCourseForm({
+      title: "",
+      course_code: "",
+      instructor: "",
+      credits: "",
+      department: "",
+      max_capacity: "",
+      description: "",
+      semester: "Fall 2024",
+      materials: [],
+    });
     setShowCourseModal(true);
   };
 
   const handleCourseEdit = (course) => {
     setSelectedCourse(course);
+    setCourseForm({
+      title: course.title,
+      course_code: course.course_code,
+      instructor: course.instructor,
+      credits: course.credits.toString(),
+      department: course.department,
+      max_capacity: course.max_capacity.toString(),
+      description: course.description,
+      semester: course.semester,
+      materials: course.materials || [],
+    });
     setShowCourseModal(true);
   };
 
-  const handleCourseDelete = (courseId) => {
-    setCourses(courses.filter((c) => c.id !== courseId));
+  const handleCourseDelete = async (courseId) => {
+    try {
+      await courseAPI.deleteCourse(courseId);
+      await loadData(); // Reload data to get updated list and notifications
+    } catch (err) {
+      console.error("Error deleting course:", err);
+      setError(err.message);
+    }
+  };
+
+  const handleCourseSave = async () => {
+    try {
+      const courseData = {
+        title: courseForm.title,
+        course_code: courseForm.course_code,
+        instructor: courseForm.instructor,
+        credits: parseInt(courseForm.credits),
+        department: courseForm.department,
+        max_capacity: parseInt(courseForm.max_capacity),
+        description: courseForm.description,
+        semester: courseForm.semester,
+      };
+
+      console.log("Sending course data:", courseData); // Debug log
+
+      if (selectedCourse) {
+        await courseAPI.updateCourse(selectedCourse.id, courseData);
+      } else {
+        await courseAPI.createCourse(courseData);
+      }
+
+      setShowCourseModal(false);
+      await loadData(); // Reload data to get updated list and notifications
+    } catch (err) {
+      console.error("Error saving course:", err);
+      setError(err.message);
+    }
+  };
+
+  const handleManageMaterials = (course) => {
+    setSelectedCourseForMaterials(course);
+    setShowMaterialsModal(true);
+  };
+
+  const handleAddMaterial = async () => {
+    if (!materialForm.title || !materialForm.url) return;
+
+    try {
+      await courseAPI.addMaterial(selectedCourseForMaterials.id, materialForm);
+      setMaterialForm({
+        title: "",
+        type: "document",
+        url: "",
+        description: "",
+      });
+      await loadData(); // Reload data to get updated materials and notifications
+
+      // Update the selected course for materials to show new material immediately
+      const updatedCourse = await courseAPI.getCourse(
+        selectedCourseForMaterials.id
+      );
+      setSelectedCourseForMaterials(updatedCourse.course);
+    } catch (err) {
+      console.error("Error adding material:", err);
+      setError(err.message);
+    }
+  };
+
+  const handleDeleteMaterial = async (materialId) => {
+    try {
+      await courseAPI.deleteMaterial(materialId);
+      await loadData(); // Reload data to get updated materials and notifications
+
+      // Update the selected course for materials to show changes immediately
+      const updatedCourse = await courseAPI.getCourse(
+        selectedCourseForMaterials.id
+      );
+      setSelectedCourseForMaterials(updatedCourse.course);
+    } catch (err) {
+      console.error("Error deleting material:", err);
+      setError(err.message);
+    }
   };
 
   const filteredCourses = courses.filter((course) => {
     const matchesSearch =
       course.title.toLowerCase().includes(courseSearchTerm.toLowerCase()) ||
-      course.courseCode
+      course.course_code
         .toLowerCase()
         .includes(courseSearchTerm.toLowerCase()) ||
       course.instructor.toLowerCase().includes(courseSearchTerm.toLowerCase());
@@ -96,6 +209,22 @@ export default function CourseManagement() {
 
     return matchesSearch && matchesFilter;
   });
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-white">Loading courses...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-red-400">Error: {error}</div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -109,13 +238,15 @@ export default function CourseManagement() {
               Manage courses, curricula, and academic programs
             </p>
           </div>
-          <button
-            onClick={handleCourseCreate}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors w-fit"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add Course</span>
-          </button>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleCourseCreate}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors w-fit"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Course</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -128,7 +259,7 @@ export default function CourseManagement() {
             </div>
           </div>
           <div className="text-xl md:text-2xl font-bold text-white mb-1">
-            {courses.length}
+            {stats.total_courses}
           </div>
           <div className="text-sm text-gray-400">Total Courses</div>
         </div>
@@ -136,13 +267,13 @@ export default function CourseManagement() {
         <div className="bg-gray-700 p-4 md:p-6 rounded-lg border border-gray-600">
           <div className="flex items-center justify-between mb-2">
             <div className="p-2 bg-green-500 bg-opacity-20 rounded-lg">
-              <Users className="w-5 h-5 text-green-400" />
+              <BookOpen className="w-5 h-5 text-green-400" />
             </div>
           </div>
           <div className="text-xl md:text-2xl font-bold text-white mb-1">
-            {courses.reduce((sum, c) => sum + c.enrolledStudents, 0)}
+            {stats.total_courses}
           </div>
-          <div className="text-sm text-gray-400">Total Enrollment</div>
+          <div className="text-sm text-gray-400">Number of Courses</div>
         </div>
 
         <div className="bg-gray-700 p-4 md:p-6 rounded-lg border border-gray-600">
@@ -152,15 +283,7 @@ export default function CourseManagement() {
             </div>
           </div>
           <div className="text-xl md:text-2xl font-bold text-white mb-1">
-            {Math.round(
-              (courses.reduce(
-                (sum, c) => sum + c.enrolledStudents / c.maxCapacity,
-                0
-              ) /
-                courses.length) *
-                100
-            )}
-            %
+            {Math.round(stats.avg_capacity_percentage)}%
           </div>
           <div className="text-sm text-gray-400">Avg Capacity</div>
         </div>
@@ -172,7 +295,7 @@ export default function CourseManagement() {
             </div>
           </div>
           <div className="text-xl md:text-2xl font-bold text-white mb-1">
-            {courses.filter((c) => c.status === "active").length}
+            {stats.active_courses}
           </div>
           <div className="text-sm text-gray-400">Active Courses</div>
         </div>
@@ -227,7 +350,7 @@ export default function CourseManagement() {
                   Instructor
                 </th>
                 <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                  Enrollment
+                  Materials
                 </th>
                 <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Status
@@ -251,7 +374,7 @@ export default function CourseManagement() {
                     </div>
                   </td>
                   <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                    {course.courseCode}
+                    {course.course_code}
                   </td>
                   <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                     {course.credits}
@@ -260,21 +383,9 @@ export default function CourseManagement() {
                     {course.instructor}
                   </td>
                   <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                    <div className="flex items-center">
-                      <span>
-                        {course.enrolledStudents}/{course.maxCapacity}
-                      </span>
-                      <div className="ml-2 w-16 bg-gray-500 rounded-full h-2">
-                        <div
-                          className="bg-blue-400 h-2 rounded-full"
-                          style={{
-                            width: `${
-                              (course.enrolledStudents / course.maxCapacity) *
-                              100
-                            }%`,
-                          }}
-                        ></div>
-                      </div>
+                    <div className="flex items-center space-x-2">
+                      <FileText className="w-4 h-4 text-blue-400" />
+                      <span>{course.materials?.length || 0} materials</span>
                     </div>
                   </td>
                   <td className="px-4 md:px-6 py-4 whitespace-nowrap">
@@ -290,6 +401,13 @@ export default function CourseManagement() {
                   </td>
                   <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleManageMaterials(course)}
+                        className="text-green-400 hover:text-green-300"
+                        title="Manage Materials"
+                      >
+                        <FileText className="w-4 h-4" />
+                      </button>
                       <button
                         onClick={() => handleCourseEdit(course)}
                         className="text-blue-400 hover:text-blue-300"
@@ -314,37 +432,90 @@ export default function CourseManagement() {
       {/* Course Modal */}
       {showCourseModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md">
+          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-semibold text-white mb-4">
               {selectedCourse ? "Edit Course" : "Add Course"}
             </h3>
             <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Course Title"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  placeholder="Course Title"
+                  value={courseForm.title}
+                  onChange={(e) =>
+                    setCourseForm({ ...courseForm, title: e.target.value })
+                  }
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Course Code"
+                  value={courseForm.course_code}
+                  onChange={(e) =>
+                    setCourseForm({
+                      ...courseForm,
+                      course_code: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  placeholder="Instructor"
+                  value={courseForm.instructor}
+                  onChange={(e) =>
+                    setCourseForm({ ...courseForm, instructor: e.target.value })
+                  }
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                />
+                <input
+                  type="number"
+                  placeholder="Credits"
+                  value={courseForm.credits}
+                  onChange={(e) =>
+                    setCourseForm({ ...courseForm, credits: e.target.value })
+                  }
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <select
+                  value={courseForm.department}
+                  onChange={(e) =>
+                    setCourseForm({ ...courseForm, department: e.target.value })
+                  }
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
+                >
+                  <option value="">Select Department</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Physics">Physics</option>
+                  <option value="Engineering">Engineering</option>
+                </select>
+                <input
+                  type="number"
+                  placeholder="Max Capacity"
+                  value={courseForm.max_capacity}
+                  onChange={(e) =>
+                    setCourseForm({
+                      ...courseForm,
+                      max_capacity: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                />
+              </div>
+              <textarea
+                placeholder="Course Description"
+                value={courseForm.description}
+                onChange={(e) =>
+                  setCourseForm({ ...courseForm, description: e.target.value })
+                }
+                rows="3"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
               />
-              <input
-                type="text"
-                placeholder="Course Code"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
-              />
-              <input
-                type="text"
-                placeholder="Instructor"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
-              />
-              <input
-                type="number"
-                placeholder="Credits"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
-              />
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white">
-                <option value="">Select Department</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Mathematics">Mathematics</option>
-                <option value="Physics">Physics</option>
-              </select>
               <div className="flex justify-end space-x-3 mt-6">
                 <button
                   onClick={() => setShowCourseModal(false)}
@@ -353,12 +524,167 @@ export default function CourseManagement() {
                   Cancel
                 </button>
                 <button
-                  onClick={() => setShowCourseModal(false)}
+                  onClick={handleCourseSave}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
                 >
-                  Save
+                  Save Course
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Materials Management Modal */}
+      {showMaterialsModal && selectedCourseForMaterials && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold text-white">
+                Manage Materials - {selectedCourseForMaterials.title}
+              </h3>
+              <button
+                onClick={() => setShowMaterialsModal(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Add New Material Form */}
+            <div className="bg-gray-700 rounded-lg p-4 mb-6">
+              <h4 className="text-lg font-medium text-white mb-4">
+                Add New Material
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <input
+                  type="text"
+                  placeholder="Material Title"
+                  value={materialForm.title}
+                  onChange={(e) =>
+                    setMaterialForm({ ...materialForm, title: e.target.value })
+                  }
+                  className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400"
+                />
+                <select
+                  value={materialForm.type}
+                  onChange={(e) =>
+                    setMaterialForm({ ...materialForm, type: e.target.value })
+                  }
+                  className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded text-white"
+                >
+                  <option value="document">Document</option>
+                  <option value="video">Video</option>
+                  <option value="link">Link</option>
+                  <option value="assignment">Assignment</option>
+                </select>
+              </div>
+              <div className="grid grid-cols-1 gap-4 mb-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="text"
+                    placeholder="URL or File Path"
+                    value={materialForm.url}
+                    onChange={(e) =>
+                      setMaterialForm({ ...materialForm, url: e.target.value })
+                    }
+                    className="flex-1 px-3 py-2 bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400"
+                  />
+                  <button className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded flex items-center space-x-1">
+                    <Upload className="w-4 h-4" />
+                    <span>Upload</span>
+                  </button>
+                </div>
+                <textarea
+                  placeholder="Description"
+                  value={materialForm.description}
+                  onChange={(e) =>
+                    setMaterialForm({
+                      ...materialForm,
+                      description: e.target.value,
+                    })
+                  }
+                  rows="2"
+                  className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded text-white placeholder-gray-400"
+                />
+              </div>
+              <button
+                onClick={handleAddMaterial}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center space-x-2"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Material</span>
+              </button>
+            </div>
+
+            {/* Existing Materials */}
+            <div>
+              <h4 className="text-lg font-medium text-white mb-4">
+                Existing Materials
+              </h4>
+              {selectedCourseForMaterials.materials?.length > 0 ? (
+                <div className="space-y-3">
+                  {selectedCourseForMaterials.materials.map((material) => (
+                    <div
+                      key={material.id}
+                      className="bg-gray-700 rounded-lg p-4 flex items-center justify-between"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="p-2 bg-gray-600 rounded">
+                          {material.type === "document" && (
+                            <FileText className="w-5 h-5 text-blue-400" />
+                          )}
+                          {material.type === "video" && (
+                            <Video className="w-5 h-5 text-red-400" />
+                          )}
+                          {material.type === "link" && (
+                            <Link className="w-5 h-5 text-green-400" />
+                          )}
+                          {material.type === "assignment" && (
+                            <Award className="w-5 h-5 text-purple-400" />
+                          )}
+                        </div>
+                        <div>
+                          <h5 className="text-white font-medium">
+                            {material.title}
+                          </h5>
+                          <p className="text-gray-400 text-sm">
+                            {material.description}
+                          </p>
+                          <p className="text-gray-500 text-xs">
+                            {material.type.toUpperCase()}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <button className="text-blue-400 hover:text-blue-300">
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          className="text-red-400 hover:text-red-300"
+                          onClick={() => handleDeleteMaterial(material.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-400">
+                  <FileText className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                  <p>No materials added yet</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end mt-6">
+              <button
+                onClick={() => setShowMaterialsModal(false)}
+                className="bg-gray-600 hover:bg-gray-500 text-white px-6 py-2 rounded"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

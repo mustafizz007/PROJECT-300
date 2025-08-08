@@ -93,31 +93,6 @@ router.get('/phone/:studentId', async (req, res) => {
   }
 });
 
-// GET /api/student/:studentId - Fetch student data including phone
-router.get('/:studentId', async (req, res) => {
-  const studentId = req.params.studentId;
-  try {
-    const result = await pool.query(
-      'SELECT name, phone, department FROM student_info WHERE student_id = $1',
-      [studentId]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Student not found' });
-    }
-
-    res.json({ 
-      student_id: studentId,
-      name: result.rows[0].name,
-      phone: result.rows[0].phone,
-      department: result.rows[0].department
-    });
-  } catch (err) {
-    console.error('Get student error:', err);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
 // Route 2: Get CGPA of student by ID
 router.get('/result/:student_id', async (req, res) => {
   const { student_id } = req.params;
@@ -158,6 +133,69 @@ router.get('/semesters/:studentId', async (req, res) => {
   } catch (err) {
     console.error('Error fetching semesters:', err);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Get student notifications
+router.get('/notifications', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM student_notifications ORDER BY created_at DESC LIMIT 10'
+    );
+    
+    res.status(200).json({ notifications: result.rows });
+  } catch (err) {
+    console.error('Get student notifications error:', err);
+    res.status(500).json({ error: 'Server error while fetching notifications' });
+  }
+});
+
+// Mark student notification as read
+router.put('/notifications/:id/read', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await pool.query('UPDATE student_notifications SET is_read = true WHERE id = $1', [id]);
+    res.status(200).json({ message: 'Notification marked as read' });
+  } catch (err) {
+    console.error('Mark student notification read error:', err);
+    res.status(500).json({ error: 'Server error while updating notification' });
+  }
+});
+
+// Clear all student notifications
+router.delete('/notifications', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM student_notifications');
+    res.status(200).json({ message: 'All notifications cleared' });
+  } catch (err) {
+    console.error('Clear student notifications error:', err);
+    res.status(500).json({ error: 'Server error while clearing notifications' });
+  }
+});
+
+// GET /api/student/:studentId - Fetch student data including phone (catch-all route - must be last)
+router.get('/:studentId', async (req, res) => {
+  const studentId = req.params.studentId;
+  try {
+    const result = await pool.query(
+      'SELECT name, phone, department FROM student_info WHERE student_id = $1',
+      [studentId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+
+    res.json({ 
+      student_id: studentId,
+      name: result.rows[0].name,
+      phone: result.rows[0].phone,
+      department: result.rows[0].department
+    });
+  } catch (err) {
+    console.error('Get student error:', err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

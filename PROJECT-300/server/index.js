@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import pool from './db.js';
 import studentRoutes from './routes/student.js';
 import adminRoutes from './routes/admin.js';
+import courseRoutes from './routes/courses.js';
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +18,9 @@ app.use('/api/student', studentRoutes);
 
 // Mount admin routes
 app.use('/admin', adminRoutes);
+
+// Mount course routes
+app.use('/api/admin', courseRoutes);
 
 //  Signup Route
 app.post('/signup', async (req, res) => {

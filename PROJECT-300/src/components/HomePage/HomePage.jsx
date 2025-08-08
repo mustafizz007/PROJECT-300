@@ -224,7 +224,7 @@ export default function HomePage({ onNavigate }) {
         </div>
       </main>
       {/* Custom CSS for scrollbar */}
-      <style jsx>{`
+      <style>{`
         .scrollbar-thin {
           scrollbar-width: thin;
         }
