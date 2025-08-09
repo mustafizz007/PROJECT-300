@@ -94,18 +94,18 @@ export default function ResultsManagement() {
   return (
     <>
       <div className="mb-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
               Results Management
             </h1>
-            <p className="text-gray-300 text-sm md:text-base">
+            <p className="text-gray-300 text-sm sm:text-base">
               Manage grades, transcripts, and academic performance
             </p>
           </div>
           <button
             onClick={handleResultCreate}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors w-fit"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-lg flex items-center justify-center space-x-2 transition-colors w-full sm:w-auto"
           >
             <Plus className="w-4 h-4" />
             <span>Add Result</span>
@@ -114,38 +114,38 @@ export default function ResultsManagement() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
-        <div className="bg-gray-700 p-4 md:p-6 rounded-lg border border-gray-600">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 mb-6">
+        <div className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all">
           <div className="flex items-center justify-between mb-2">
-            <div className="p-2 bg-blue-500 bg-opacity-20 rounded-lg">
-              <FileText className="w-5 h-5 text-blue-400" />
+            <div className="p-2 lg:p-3 bg-blue-500 bg-opacity-20 rounded-lg">
+              <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
             </div>
           </div>
-          <div className="text-xl md:text-2xl font-bold text-white mb-1">
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
             {results.length}
           </div>
-          <div className="text-sm text-gray-400">Total Results</div>
+          <div className="text-xs sm:text-sm text-gray-400">Total Results</div>
         </div>
 
-        <div className="bg-gray-700 p-4 md:p-6 rounded-lg border border-gray-600">
+        <div className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all">
           <div className="flex items-center justify-between mb-2">
-            <div className="p-2 bg-green-500 bg-opacity-20 rounded-lg">
-              <Award className="w-5 h-5 text-green-400" />
+            <div className="p-2 lg:p-3 bg-green-500 bg-opacity-20 rounded-lg">
+              <Award className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
             </div>
           </div>
-          <div className="text-xl md:text-2xl font-bold text-white mb-1">
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
             {results.filter((r) => r.status === "published").length}
           </div>
-          <div className="text-sm text-gray-400">Published</div>
+          <div className="text-xs sm:text-sm text-gray-400">Published</div>
         </div>
 
-        <div className="bg-gray-700 p-4 md:p-6 rounded-lg border border-gray-600">
+        <div className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all">
           <div className="flex items-center justify-between mb-2">
-            <div className="p-2 bg-purple-500 bg-opacity-20 rounded-lg">
-              <TrendingUp className="w-5 h-5 text-purple-400" />
+            <div className="p-2 lg:p-3 bg-purple-500 bg-opacity-20 rounded-lg">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
             </div>
           </div>
-          <div className="text-xl md:text-2xl font-bold text-white mb-1">
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
             {(
               results.reduce((sum, r) => sum + r.gpa, 0) / results.length
             ).toFixed(2)}

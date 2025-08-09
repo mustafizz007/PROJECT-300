@@ -83,18 +83,18 @@ export default function CreditManagement() {
   return (
     <>
       <div className="mb-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
               Credit Management
             </h1>
-            <p className="text-gray-300 text-sm md:text-base">
+            <p className="text-gray-300 text-sm sm:text-base">
               Manage credit requirements, transfers, and graduation tracking
             </p>
           </div>
           <button
             onClick={handleCreditCreate}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors w-fit"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-lg flex items-center justify-center space-x-2 transition-colors w-full sm:w-auto"
           >
             <Plus className="w-4 h-4" />
             <span>Add Credit Rule</span>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminHeader from "./Admin/AdminHeader";
 import AdminSidebar from "./Admin/AdminSidebar";
 import OverviewDashboard from "./Admin/OverviewDashboard";
@@ -7,13 +7,39 @@ import CourseManagement from "./Admin/CourseManagement";
 import ResultsManagement from "./Admin/ResultsManagement";
 import CreditManagement from "./Admin/CreditManagement";
 import AssessmentManagement from "./Admin/AssessmentManagement";
+import "./Admin/admin-responsive.css";
 
 export default function AdminDashboard({ onNavigate }) {
   const [activeTab, setActiveTab] = useState("Overview");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle window resize for responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setSidebarOpen(false); // Close mobile sidebar when switching to desktop
+      }
+    };
+
+    handleResize(); // Check initial size
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleLogout = () => {
     if (onNavigate) {
       onNavigate("home");
+    }
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    if (isMobile) {
+      setSidebarOpen(false); // Close sidebar after selection on mobile
     }
   };
 
@@ -34,8 +60,10 @@ export default function AdminDashboard({ onNavigate }) {
       default:
         return (
           <div className="mb-8">
-            <h1 className="text-2xl md:text-4xl font-bold mb-2">{activeTab}</h1>
-            <p className="text-gray-300 text-sm md:text-lg">
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2">
+              {activeTab}
+            </h1>
+            <p className="text-gray-300 text-sm sm:text-base lg:text-lg">
               Content for {activeTab} will be implemented here
             </p>
           </div>
@@ -44,15 +72,39 @@ export default function AdminDashboard({ onNavigate }) {
   };
 
   return (
-    <div className="font-sans">
-      <div className="min-h-screen bg-gray-100">
-        <AdminHeader onNavigate={onNavigate} onLogout={handleLogout} />
+    <div className="font-sans min-h-screen bg-gray-100">
+      <div className="min-h-screen">
+        <AdminHeader
+          onNavigate={onNavigate}
+          onLogout={handleLogout}
+          onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
+          sidebarOpen={sidebarOpen}
+        />
 
-        <div className="flex">
-          <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <div className="flex relative">
+          {/* Mobile backdrop */}
+          {isMobile && sidebarOpen && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
 
-          <main className="flex-1 bg-gray-800 text-white p-4 md:p-8">
-            {renderActiveComponent()}
+          <AdminSidebar
+            activeTab={activeTab}
+            setActiveTab={handleTabChange}
+            isOpen={sidebarOpen}
+            isMobile={isMobile}
+          />
+
+          <main
+            className={`flex-1 bg-gray-800 text-white transition-all duration-300 min-h-screen admin-main-content ${
+              isMobile ? "w-full" : "ml-0"
+            }`}
+          >
+            <div className="p-3 sm:p-4 lg:p-8 min-h-screen admin-scroll-container">
+              <div className="admin-fade-in">{renderActiveComponent()}</div>
+            </div>
           </main>
         </div>
       </div>

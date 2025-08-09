@@ -85,8 +85,7 @@ function AcademicYearItem({ year, credits, status }) {
 
 export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   const [studentName, setStudentName] = useState("Loading...");
-  const [studentDepartment, setStudentDepartment] =
-    useState("Computer Science");
+  const [studentDepartment] = useState("Computer Science");
   const [cgpa, setCgpa] = useState("Loading...");
   const [totalCredits, setTotalCredits] = useState(null);
   const [semesters, setSemesters] = useState([]);

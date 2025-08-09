@@ -143,9 +143,9 @@ export default function AssessmentManagement() {
   return (
     <>
       <div className="mb-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
               Assessment Management
             </h1>
             <p className="text-gray-300 text-sm md:text-base">
