@@ -2,11 +2,9 @@ import logo from "../../assets/mu_portal_logo.png";
 
 export default function HomePage({ onNavigate }) {
   return (
-    <div
-      className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 z-50 overflow-hidden scrollbar-thin scrollbar-thumb-purple-600 scrollbar-track-slate-900"
-      style={{ overflowY: "auto" }}
-    >
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="w-full h-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-y-auto custom-scrollbar">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
         <div className="absolute -top-4 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
@@ -50,7 +48,7 @@ export default function HomePage({ onNavigate }) {
             <div className="flex space-x-4">
               <button
                 onClick={() => onNavigate("login")}
-                className="relative px-6 py-2.5 bg-transparent border-2 border-gray-900/50 text-black-900 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-gray-300 hover:shadow-lg hover:shadow-gray-100/25"
+                className="relative px-6 py-2.5 bg-transparent border-2 border-gray-900/50 text-gray-900 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-gray-300 hover:shadow-lg hover:shadow-gray-100/25"
               >
                 <span className="relative z-10 group-hover:text-white transition-colors duration-300">
                   Login
@@ -72,8 +70,8 @@ export default function HomePage({ onNavigate }) {
       </header>
 
       {/* Hero Section */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-br from-black via-zinc-900 to-slate-900">
-        <div className="max-w-7xl mx-auto">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-br from-black via-zinc-900 to-slate-900 min-h-screen">
+        <div className="max-w-7xl mx-auto w-full">
           <div className="text-center">
             {/* Hero Title */}
             <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-royal-400 to-white-900 mb-6 animate-fade-in-up">
@@ -223,22 +221,6 @@ export default function HomePage({ onNavigate }) {
           </div>
         </div>
       </main>
-      {/* Custom CSS for scrollbar */}
-      <style>{`
-        .scrollbar-thin {
-          scrollbar-width: thin;
-        }
-        .scrollbar-thumb-purple-600::-webkit-scrollbar-thumb {
-          background: #9333ea;
-          border-radius: 8px;
-        }
-        .scrollbar-track-slate-900::-webkit-scrollbar-track {
-          background: #0f172a;
-        }
-        .scrollbar-thin::-webkit-scrollbar {
-          width: 8px;
-        }
-      `}</style>
     </div>
   );
 }

@@ -27,7 +27,7 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
   const mapSemesterToAPIFormat = (semester) => {
     const semesterMap = {
       "1st semester": "1-1",
-      "2nd semester": "1-2", 
+      "2nd semester": "1-2",
       "3rd semester": "1-3",
       "4th semester": "2-1",
       "5th semester": "2-2",
@@ -37,7 +37,7 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
       "9th semester": "3-3",
       "10th semester": "4-1",
       "11th semester": "4-2",
-      "12th semester": "4-3"
+      "12th semester": "4-3",
     };
     return semesterMap[semester] || "1-1";
   };
@@ -53,14 +53,14 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
       try {
         setLoading(true);
         setError(null);
-        
+
         const apiSemester = mapSemesterToAPIFormat(selectedSemester);
         console.log(`Fetching data for ${selectedSemester} (${apiSemester})`);
-        
+
         const response = await fetch(
           `http://localhost:3000/api/student/${studentId}/results/${apiSemester}`
         );
-        
+
         if (!response.ok) {
           if (response.status === 404) {
             // If no data found, show empty state but don't error
@@ -77,10 +77,10 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
           }
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        console.log('Fetched results data:', data);
-        
+        console.log("Fetched results data:", data);
+
         setResultsData(data);
       } catch (err) {
         console.error("Error fetching results data:", err);
@@ -245,7 +245,7 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
   // Loading state
   if (loading) {
     return (
-      <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
+      <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 custom-scrollbar overflow-y-auto">
         <div className="bg-white rounded-3xl p-10 shadow-xl max-w-8xl mx-auto">
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="flex flex-col items-center">
@@ -261,18 +261,30 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
   // Error state
   if (error) {
     return (
-      <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
+      <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 custom-scrollbar overflow-y-auto">
         <div className="bg-white rounded-3xl p-10 shadow-xl max-w-8xl mx-auto">
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="text-center">
               <div className="text-red-600 mb-4">
-                <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-16 h-16 mx-auto"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </div>
-              <p className="text-gray-600 mb-4">Error loading results: {error}</p>
-              <button 
-                onClick={() => window.location.reload()} 
+              <p className="text-gray-600 mb-4">
+                Error loading results: {error}
+              </p>
+              <button
+                onClick={() => window.location.reload()}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
               >
                 Retry
@@ -285,7 +297,7 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
   }
 
   return (
-    <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 overflow-auto">
+    <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 custom-scrollbar overflow-y-auto">
       <div className="bg-white rounded-3xl p-10 shadow-xl max-w-8xl mx-auto hover:shadow-2xl hover:shadow-blue-200/30 transition-shadow duration-500">
         {/* Back Button */}
         <div className="mb-8">

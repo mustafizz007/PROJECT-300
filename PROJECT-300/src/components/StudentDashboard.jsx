@@ -253,7 +253,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   };
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-white-900 to-gray-900 page-reload-animation">
+    <div className="w-full h-full bg-gradient-to-br from-gray-900 via-white-900 to-gray-900 page-reload-animation relative overflow-hidden">
       {/* Animated background blobs matching homepage - Slower animations */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow"></div>
@@ -429,10 +429,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
           />
         </div>
 
-        <main
-          className="flex-1 bg-slate-900/20 backdrop-blur-lg w-full h-full overflow-y-auto scrollbar-hidden dashboard-main"
-          style={{ height: "calc(100vh - 88px)" }}
-        >
+        <main className="flex-1 bg-slate-900/20 backdrop-blur-lg w-full h-full overflow-y-auto custom-scrollbar dashboard-main">
           {dashboardView === "dashboard" && (
             <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8 animate-fade-in-slow">
               {/* Welcome Section - Responsive with slower animations */}

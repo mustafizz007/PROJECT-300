@@ -6,6 +6,8 @@ import { StudentDashboard } from "./components/StudentDashboard";
 import AdminDashboardPage from "./components/AdminDashboardPage";
 import AdminLogin from "./components/AdminLogin/AdminLogin";
 import AdminSignup from "./components/AdminSignUp/AdminSignUp";
+import AboutPage from "./components/AboutPage/AboutPage";
+import ContactPage from "./components/ContactPage/ContactPage";
 import "./style.css";
 
 export default function App() {
@@ -41,6 +43,10 @@ export default function App() {
     switch (currentPage) {
       case "home":
         return <HomePage onNavigate={setCurrentPage} />;
+      case "about":
+        return <AboutPage onNavigate={setCurrentPage} />;
+      case "contact":
+        return <ContactPage onNavigate={setCurrentPage} />;
       case "login":
         return (
           <StudentLogin

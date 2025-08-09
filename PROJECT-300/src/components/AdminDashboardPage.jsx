@@ -72,8 +72,8 @@ export default function AdminDashboard({ onNavigate }) {
   };
 
   return (
-    <div className="font-sans min-h-screen bg-gray-100">
-      <div className="min-h-screen">
+    <div className="font-sans w-full h-full bg-gray-100 overflow-hidden">
+      <div className="w-full h-full flex flex-col">
         <AdminHeader
           onNavigate={onNavigate}
           onLogout={handleLogout}
@@ -81,7 +81,7 @@ export default function AdminDashboard({ onNavigate }) {
           sidebarOpen={sidebarOpen}
         />
 
-        <div className="flex relative">
+        <div className="flex relative flex-1 h-full">
           {/* Mobile backdrop */}
           {isMobile && sidebarOpen && (
             <div
@@ -98,11 +98,11 @@ export default function AdminDashboard({ onNavigate }) {
           />
 
           <main
-            className={`flex-1 bg-gray-800 text-white transition-all duration-300 min-h-screen admin-main-content ${
+            className={`flex-1 bg-gray-800 text-white transition-all duration-300 h-full admin-main-content custom-scrollbar overflow-y-auto ${
               isMobile ? "w-full" : "ml-0"
             }`}
           >
-            <div className="p-3 sm:p-4 lg:p-8 min-h-screen admin-scroll-container">
+            <div className="p-3 sm:p-4 lg:p-8 admin-scroll-container h-full">
               <div className="admin-fade-in">{renderActiveComponent()}</div>
             </div>
           </main>
