@@ -1,5 +1,6 @@
 // API configuration
 const API_BASE_URL = 'http://localhost:3000/api/admin';
+const ADMIN_BASE_URL = 'http://localhost:3000/admin';
 
 // Helper function for API calls
 const apiCall = async (endpoint, options = {}) => {
@@ -22,6 +23,70 @@ const apiCall = async (endpoint, options = {}) => {
     console.error('API Error:', error);
     throw error;
   }
+};
+
+// Helper function for admin API calls
+const adminApiCall = async (endpoint, options = {}) => {
+  try {
+    const response = await fetch(`${ADMIN_BASE_URL}${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Admin API request failed');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Admin API Error:', error);
+    throw error;
+  }
+};
+
+// Admin Dashboard APIs
+export const adminDashboardAPI = {
+  // Get dashboard statistics
+  getDashboardStats: async () => {
+    return await adminApiCall('/dashboard/stats');
+  },
+
+  // Get all students for management
+  getAllStudents: async () => {
+    return await adminApiCall('/students');
+  },
+
+  // Create new student
+  createStudent: async (studentData) => {
+    return await adminApiCall('/students', {
+      method: 'POST',
+      body: JSON.stringify(studentData),
+    });
+  },
+
+  // Update student
+  updateStudent: async (studentId, studentData) => {
+    return await adminApiCall(`/students/${studentId}`, {
+      method: 'PUT',
+      body: JSON.stringify(studentData),
+    });
+  },
+
+  // Delete student
+  deleteStudent: async (studentId) => {
+    return await adminApiCall(`/students/${studentId}`, {
+      method: 'DELETE',
+    });
+  },
+
+  // Get recent activities
+  getRecentActivities: async () => {
+    return await adminApiCall('/dashboard/recent-activities');
+  },
 };
 
 // Course API functions
@@ -124,4 +189,4 @@ export const studentNotificationAPI = {
   },
 };
 
-export default { courseAPI, studentNotificationAPI };
+export default { adminDashboardAPI, courseAPI, studentNotificationAPI };

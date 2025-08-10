@@ -1,8 +1,8 @@
 import express from 'express';
-import pool from '../db.js'; // Make sure you added .js extension
+import pool from '../db.js'; 
 const router = express.Router();
 
-// Route: GET /api/student/academic-years-status/:studentId
+
 router.get('/academic-years-status/:studentId', async (req, res) => {
   const { studentId } = req.params;
   try {
@@ -18,7 +18,7 @@ router.get('/academic-years-status/:studentId', async (req, res) => {
     // Organize semesters by year
     const years = {};
     rows.forEach(({ semester, credit }) => {
-      const [year, term] = semester.split('-'); // e.g. '1-2' => year='1', term='2'
+      const [year, term] = semester.split('-'); 
       if (!years[year]) {
         years[year] = {
           year: `Year ${year}`,
@@ -160,13 +160,6 @@ router.get('/semester-results/:studentId', async (req, res) => {
   const { studentId } = req.params;
   try {
     // console.log('Fetching semester results for student:', studentId);
-    
-    // First, let's get the raw data to debug
-    const rawResult = await pool.query(
-      `SELECT semester, credit, gpa FROM student_result WHERE student_id = $1 ORDER BY semester`,
-      [studentId]
-    );
-    // console.log('Raw database data:', rawResult.rows);
     
     const result = await pool.query(
       `SELECT 

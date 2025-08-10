@@ -99,18 +99,18 @@ async function setupAdminTable() {
       
       console.log('Default super admin created!');
       console.log('📝 Login with: ADMIN-001 / admin123');
-      console.log('🔗 Admin can now connect to server via frontend login');
+      console.log('Admin can now connect to server via frontend login');
     } catch (err) {
       if (err.code === '23505') {  // Unique constraint violation
         console.log('ℹ️  Default admin already exists');
-        console.log('🔗 Server connection ready - admin can login');
+        console.log('Server connection ready - admin can login');
       } else {
         throw err;
       }
     }
 
     console.log('Admin setup completed successfully!');
-    console.log('🚀 Server is ready to accept admin connections');
+    console.log('Server is ready to accept admin connections');
 
   } catch (error) {
     console.error('Error setting up admin table:', error);

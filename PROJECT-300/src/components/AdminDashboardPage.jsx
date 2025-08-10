@@ -18,11 +18,11 @@ export default function AdminDashboard({ onNavigate }) {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       if (!mobile) {
-        setSidebarOpen(false); // Close mobile sidebar when switching to desktop
+        setSidebarOpen(false); 
       }
     };
 
-    handleResize(); // Check initial size
+    handleResize(); 
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
@@ -37,7 +37,7 @@ export default function AdminDashboard({ onNavigate }) {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     if (isMobile) {
-      setSidebarOpen(false); // Close sidebar after selection on mobile
+      setSidebarOpen(false); 
     }
   };
 

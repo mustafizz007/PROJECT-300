@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Users,
   BookOpen,
@@ -8,34 +9,68 @@ import {
   UserPlus,
   Star,
 } from "lucide-react";
+import { adminDashboardAPI } from "../../services/api";
 
 export default function OverviewDashboard() {
+  const [dashboardStats, setDashboardStats] = useState({
+    totalStudents: 0,
+    activeCourses: 0,
+    publishedResults: 0,
+    graduates: 0,
+    avgCgpa: "0.00",
+    passRate: "0%",
+  });
+  const [recentActivities, setRecentActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Fetch dashboard stats and recent activities in parallel
+      const [statsResponse, activitiesResponse] = await Promise.all([
+        adminDashboardAPI.getDashboardStats(),
+        adminDashboardAPI.getRecentActivities(),
+      ]);
+
+      setDashboardStats(statsResponse);
+      setRecentActivities(activitiesResponse);
+    } catch (err) {
+      console.error("Error fetching dashboard data:", err);
+      setError("Failed to load dashboard data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const statsCards = [
     {
       title: "Total Students",
-      value: "1,234",
-      change: "+12%",
+      value: dashboardStats.totalStudents.toString(),
       icon: Users,
       color: "blue",
     },
     {
       title: "Active Courses",
-      value: "56",
-      change: "+5%",
+      value: dashboardStats.activeCourses.toString(),
       icon: BookOpen,
       color: "green",
     },
     {
       title: "Published Results",
-      value: "342",
-      change: "+8%",
+      value: dashboardStats.publishedResults.toString(),
       icon: FileText,
       color: "purple",
     },
     {
       title: "Graduates",
-      value: "89",
-      change: "+15%",
+      value: dashboardStats.graduates.toString(),
       icon: GraduationCap,
       color: "yellow",
     },
@@ -50,6 +85,64 @@ export default function OverviewDashboard() {
     };
     return colorMap[color] || colorMap.blue;
   };
+
+  const formatActivityText = (activity) => {
+    if (activity.type === "results published") {
+      return (
+        <>
+          <span className="text-blue-400">{activity.course}</span> results
+          published
+        </>
+      );
+    } else if (activity.type === "enrolled") {
+      return (
+        <>
+          New student <span className="text-green-400">{activity.student}</span>{" "}
+          enrolled
+        </>
+      );
+    }
+    return activity.type;
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6 lg:space-y-8">
+        <div className="mb-6 lg:mb-8">
+          <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2">
+            Admin Dashboard
+          </h1>
+          <p className="text-gray-300 text-sm sm:text-base lg:text-lg">
+            Loading dashboard data...
+          </p>
+        </div>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6 lg:space-y-8">
+        <div className="mb-6 lg:mb-8">
+          <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2">
+            Admin Dashboard
+          </h1>
+          <p className="text-red-400 text-sm sm:text-base lg:text-lg">
+            {error}
+          </p>
+          <button
+            onClick={fetchDashboardData}
+            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 lg:space-y-8">
@@ -80,9 +173,6 @@ export default function OverviewDashboard() {
                 >
                   <Icon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
                 </div>
-                <span className="text-green-400 text-xs sm:text-sm font-medium px-2 py-1 bg-green-400 bg-opacity-10 rounded-full">
-                  {card.change}
-                </span>
               </div>
               <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
                 {card.value}
@@ -140,7 +230,7 @@ export default function OverviewDashboard() {
                 Average CGPA
               </span>
               <span className="text-white font-semibold text-sm sm:text-base">
-                3.45
+                {dashboardStats.avgCgpa}
               </span>
             </div>
             <div className="flex justify-between items-center">
@@ -148,7 +238,7 @@ export default function OverviewDashboard() {
                 Pass Rate
               </span>
               <span className="text-white font-semibold text-sm sm:text-base">
-                94%
+                {dashboardStats.passRate}
               </span>
             </div>
           </div>
@@ -167,16 +257,20 @@ export default function OverviewDashboard() {
             Latest updates and changes
           </p>
           <div className="space-y-2 text-sm sm:text-base">
-            <div className="text-gray-400 p-2 rounded hover:bg-gray-600 transition-colors">
-              <span className="text-blue-400">CSE 101</span> results published
-            </div>
-            <div className="text-gray-400 p-2 rounded hover:bg-gray-600 transition-colors">
-              New student <span className="text-green-400">John Doe</span>{" "}
-              enrolled
-            </div>
-            <div className="text-gray-400 p-2 rounded hover:bg-gray-600 transition-colors">
-              <span className="text-purple-400">MATH 201</span> schedule updated
-            </div>
+            {recentActivities.length > 0 ? (
+              recentActivities.map((activity, index) => (
+                <div
+                  key={index}
+                  className="text-gray-400 p-2 rounded hover:bg-gray-600 transition-colors"
+                >
+                  {formatActivityText(activity)}
+                </div>
+              ))
+            ) : (
+              <div className="text-gray-400 p-2 rounded">
+                No recent activities
+              </div>
+            )}
           </div>
         </div>
       </div>

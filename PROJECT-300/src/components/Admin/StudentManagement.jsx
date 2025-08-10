@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Users,
   GraduationCap,
@@ -9,58 +9,103 @@ import {
   Edit,
   Trash2,
 } from "lucide-react";
+import { adminDashboardAPI } from "../../services/api";
 
-export default function StudentManagement() {
+const StudentManagement = () => {
   const [showStudentModal, setShowStudentModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [studentSearchTerm, setStudentSearchTerm] = useState("");
   const [studentFilterType, setStudentFilterType] = useState("all");
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [studentFormData, setStudentFormData] = useState({
+    name: "",
+    student_id: "",
+    department: "",
+    phone: "",
+    password: "",
+  });
 
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      studentId: "2021-1-60-001",
-      name: "Nubha",
-      email: "nubha@example.com",
-      department: "Computer Science",
-      semester: "8th",
-      cgpa: 3.75,
-      status: "active",
-    },
-    {
-      id: 2,
-      studentId: "2021-1-60-002",
-      name: "Junak",
-      email: "junak@example.com",
-      department: "Computer Science",
-      semester: "6th",
-      cgpa: 3.92,
-      status: "active",
-    },
-    {
-      id: 3,
-      studentId: "2020-1-60-015",
-      name: "abdullah",
-      email: "abdullah@example.com",
-      department: "Engineering",
-      semester: "8th",
-      cgpa: 3.68,
-      status: "graduating",
-    },
-  ]);
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  const fetchStudents = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const studentsData = await adminDashboardAPI.getAllStudents();
+      setStudents(studentsData);
+    } catch (err) {
+      console.error("Error fetching students:", err);
+      setError("Failed to load students. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleStudentCreate = () => {
     setSelectedStudent(null);
+    setStudentFormData({
+      name: "",
+      student_id: "",
+      department: "",
+      phone: "",
+      password: "",
+    });
     setShowStudentModal(true);
   };
 
   const handleStudentEdit = (student) => {
     setSelectedStudent(student);
+    setStudentFormData({
+      name: student.name,
+      student_id: student.studentId,
+      department: student.department,
+      phone: student.phone || "",
+      password: "",
+    });
     setShowStudentModal(true);
   };
 
-  const handleStudentDelete = (studentId) => {
-    setStudents(students.filter((s) => s.id !== studentId));
+  const handleStudentDelete = async (studentId) => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this student? This action cannot be undone."
+      )
+    ) {
+      try {
+        await adminDashboardAPI.deleteStudent(studentId);
+        await fetchStudents();
+      } catch (err) {
+        console.error("Error deleting student:", err);
+        alert("Failed to delete student. Please try again.");
+      }
+    }
+  };
+
+  const handleStudentSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (selectedStudent) {
+        // Update existing student
+        await adminDashboardAPI.updateStudent(selectedStudent.id, {
+          name: studentFormData.name,
+          department: studentFormData.department,
+          phone: studentFormData.phone,
+        });
+      } else {
+        // Create new student
+        await adminDashboardAPI.createStudent(studentFormData);
+      }
+
+      setShowStudentModal(false);
+      await fetchStudents(); 
+    } catch (err) {
+      console.error("Error saving student:", err);
+      alert(err.message || "Failed to save student. Please try again.");
+    }
   };
 
   const filteredStudents = students.filter((student) => {
@@ -69,7 +114,8 @@ export default function StudentManagement() {
       student.studentId
         .toLowerCase()
         .includes(studentSearchTerm.toLowerCase()) ||
-      student.email.toLowerCase().includes(studentSearchTerm.toLowerCase());
+      (student.email &&
+        student.email.toLowerCase().includes(studentSearchTerm.toLowerCase()));
 
     const matchesFilter =
       studentFilterType === "all" ||
@@ -78,6 +124,51 @@ export default function StudentManagement() {
 
     return matchesSearch && matchesFilter;
   });
+
+  // Calculate stats from real data
+  const activeStudents = students.filter((s) => s.status === "active").length;
+  const graduatingStudents = students.filter(
+    (s) => s.status === "graduating"
+  ).length;
+  const avgCgpa =
+    students.length > 0
+      ? (
+          students.reduce((sum, s) => sum + s.cgpa, 0) / students.length
+        ).toFixed(2)
+      : "0.00";
+
+  if (loading) {
+    return (
+      <div className="mb-6">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+          Student Management
+        </h1>
+        <p className="text-gray-300 text-sm sm:text-base">
+          Loading students...
+        </p>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="mb-6">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+          Student Management
+        </h1>
+        <p className="text-red-400 text-sm sm:text-base mb-4">{error}</p>
+        <button
+          onClick={fetchStudents}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -122,7 +213,7 @@ export default function StudentManagement() {
             </div>
           </div>
           <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
-            {students.filter((s) => s.status === "active").length}
+            {activeStudents}
           </div>
           <div className="text-xs sm:text-sm text-gray-400">
             Active Students
@@ -136,7 +227,7 @@ export default function StudentManagement() {
             </div>
           </div>
           <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
-            {students.filter((s) => s.status === "graduating").length}
+            {graduatingStudents}
           </div>
           <div className="text-xs sm:text-sm text-gray-400">Graduating</div>
         </div>
@@ -148,9 +239,7 @@ export default function StudentManagement() {
             </div>
           </div>
           <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
-            {(
-              students.reduce((sum, s) => sum + s.cgpa, 0) / students.length
-            ).toFixed(2)}
+            {avgCgpa}
           </div>
           <div className="text-xs sm:text-sm text-gray-400">Average CGPA</div>
         </div>
@@ -180,6 +269,7 @@ export default function StudentManagement() {
               <option value="all">All Students</option>
               <option value="active">Active</option>
               <option value="graduating">Graduating</option>
+              <option value="inactive">Inactive</option>
               <option value="Computer Science">Computer Science</option>
               <option value="Engineering">Engineering</option>
             </select>
@@ -244,7 +334,9 @@ export default function StudentManagement() {
                     {student.semester}
                   </td>
                   <td className="px-3 sm:px-4 lg:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-white">
-                    <span className="font-semibold">{student.cgpa}</span>
+                    <span className="font-semibold">
+                      {student.cgpa.toFixed(2)}
+                    </span>
                   </td>
                   <td className="px-3 sm:px-4 lg:px-6 py-4 whitespace-nowrap">
                     <span
@@ -291,45 +383,100 @@ export default function StudentManagement() {
             <h3 className="text-lg font-semibold text-white mb-4">
               {selectedStudent ? "Edit Student" : "Add Student"}
             </h3>
-            <div className="space-y-4">
+            <form onSubmit={handleStudentSubmit} className="space-y-4">
               <input
                 type="text"
                 placeholder="Student Name"
+                value={studentFormData.name}
+                onChange={(e) =>
+                  setStudentFormData({
+                    ...studentFormData,
+                    name: e.target.value,
+                  })
+                }
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 text-sm sm:text-base"
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 text-sm sm:text-base"
+                required
               />
               <input
                 type="text"
                 placeholder="Student ID"
+                value={studentFormData.student_id}
+                onChange={(e) =>
+                  setStudentFormData({
+                    ...studentFormData,
+                    student_id: e.target.value,
+                  })
+                }
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 text-sm sm:text-base"
+                required
+                disabled={selectedStudent} 
               />
-              <select className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm sm:text-base">
+              <select
+                value={studentFormData.department}
+                onChange={(e) =>
+                  setStudentFormData({
+                    ...studentFormData,
+                    department: e.target.value,
+                  })
+                }
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm sm:text-base"
+                required
+              >
                 <option value="">Select Department</option>
                 <option value="Computer Science">Computer Science</option>
                 <option value="Engineering">Engineering</option>
+                <option value="Business Administration">
+                  Business Administration
+                </option>
+                <option value="Mathematics">Mathematics</option>
               </select>
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                value={studentFormData.phone}
+                onChange={(e) =>
+                  setStudentFormData({
+                    ...studentFormData,
+                    phone: e.target.value,
+                  })
+                }
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 text-sm sm:text-base"
+              />
+              {!selectedStudent && (
+                <input
+                  type="password"
+                  placeholder="Password (leave empty for default)"
+                  value={studentFormData.password}
+                  onChange={(e) =>
+                    setStudentFormData({
+                      ...studentFormData,
+                      password: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 text-sm sm:text-base"
+                />
+              )}
               <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 mt-6">
                 <button
+                  type="button"
                   onClick={() => setShowStudentModal(false)}
                   className="px-4 py-2 text-gray-300 hover:text-white transition-colors order-2 sm:order-1"
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={() => setShowStudentModal(false)}
+                  type="submit"
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition-colors order-1 sm:order-2"
                 >
-                  Save
+                  {selectedStudent ? "Update" : "Create"}
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}
     </>
   );
-}
+};
+
+export default StudentManagement;
