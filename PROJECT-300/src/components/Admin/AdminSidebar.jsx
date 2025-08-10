@@ -1,12 +1,4 @@
-import {
-  Home,
-  BookOpen,
-  Users,
-  FileText,
-  GraduationCap,
-  FileCheck,
-  ClipboardList,
-} from "lucide-react";
+import { Home, BookOpen, Users, FileText } from "lucide-react";
 
 export default function AdminSidebar({
   activeTab,
@@ -19,16 +11,6 @@ export default function AdminSidebar({
     { id: "Student Management", label: "Student Management", icon: Users },
     { id: "Course Management", label: "Course Management", icon: BookOpen },
     { id: "Results Management", label: "Results Management", icon: FileText },
-    {
-      id: "Credit Management",
-      label: "Credit Management",
-      icon: GraduationCap,
-    },
-    {
-      id: "Assessment Management",
-      label: "Assessment Management",
-      icon: ClipboardList,
-    },
   ];
 
   return (

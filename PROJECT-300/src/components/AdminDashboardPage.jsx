@@ -5,8 +5,6 @@ import OverviewDashboard from "./Admin/OverviewDashboard";
 import StudentManagement from "./Admin/StudentManagement";
 import CourseManagement from "./Admin/CourseManagement";
 import ResultsManagement from "./Admin/ResultsManagement";
-import CreditManagement from "./Admin/CreditManagement";
-import AssessmentManagement from "./Admin/AssessmentManagement";
 import "./Admin/admin-responsive.css";
 
 export default function AdminDashboard({ onNavigate }) {
@@ -53,10 +51,6 @@ export default function AdminDashboard({ onNavigate }) {
         return <CourseManagement />;
       case "Results Management":
         return <ResultsManagement />;
-      case "Credit Management":
-        return <CreditManagement />;
-      case "Assessment Management":
-        return <AssessmentManagement />;
       default:
         return (
           <div className="mb-8">
