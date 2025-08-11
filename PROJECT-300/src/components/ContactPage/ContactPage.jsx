@@ -94,8 +94,8 @@ export default function ContactPage({ onNavigate }) {
                       <span className="text-white text-xl">📧</span>
                     </div>
                     <div>
-                      <p className="text-white font-semibold">Email</p>
-                      <p className="text-gray-400">legendnubha2026@gmail.com</p>
+                      <p className="text-white font-semibold text-left">Email</p>
+                      <p className="text-gray-400">musylhet@gmail.com</p>
                     </div>
                   </div>
 
@@ -104,7 +104,7 @@ export default function ContactPage({ onNavigate }) {
                       <span className="text-white text-xl">📞</span>
                     </div>
                     <div>
-                      <p className="text-white font-semibold">Phone</p>
+                      <p className="text-white font-semibold text-left">Phone</p>
                       <p className="text-gray-400">+880 01723- 212383</p>
                     </div>
                   </div>
@@ -114,8 +114,8 @@ export default function ContactPage({ onNavigate }) {
                       <span className="text-white text-xl">📍</span>
                     </div>
                     <div>
-                      <p className="text-white font-semibold">Address</p>
-                      <p className="text-gray-400">
+                      <p className="text-white font-semibold text-left">Address</p>
+                      <p className="text-gray-400 text-left">
                         Metropolitan University Campus, Boteswer, Sylhet.
                       </p>
                     </div>

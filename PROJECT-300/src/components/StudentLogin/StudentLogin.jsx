@@ -76,8 +76,8 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
             <nav className="hidden md:flex space-x-8">
               {[
                 { name: "Home", action: () => onNavigate("home") },
-                { name: "About", action: () => {} },
-                { name: "Contact", action: () => {} },
+                { name: "About", action: () => onNavigate("about") },
+                { name: "Contact", action: () => onNavigate("contact") },
               ].map((item, index) => (
                 <button
                   key={item.name}
@@ -122,7 +122,7 @@ export default function StudentLogin({ onNavigate, onLoginSuccess }) {
         <div className="max-w-md w-full space-y-8">
           <div className="bg-white/10 backdrop-blur-md rounded-3xl p-10 shadow-2xl border border-white/20 hover:shadow-gray-500/20 transition-all duration-500 animate-fade-in-up">
             <div className="text-left">
-              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-gray-300 mb-2">
+              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-gray-300 mb-2">
                 Student Login
               </h2>
               <p className="text-white/80 mb-8">

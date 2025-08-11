@@ -265,7 +265,7 @@ export default function StudentResource() {
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-6 py-3 bg-gradient-to-r from-gray-500 to-slate-900 hover:from-gray-600 hover:to-slate-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
+            className="px-6 py-3 bg-gradient-to-r from-purple-500 to-slate-900 hover:from-purple-600 hover:to-slate-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

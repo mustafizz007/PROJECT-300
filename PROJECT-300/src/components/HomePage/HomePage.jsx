@@ -117,7 +117,7 @@ export default function HomePage({ onNavigate }) {
 
               <button
                 onClick={() => onNavigate("admin-login")}
-                className="group relative px-8 py-4 bg-transparent border-2 border-white-400/50 text-purple-100 font-bold text-lg rounded-2xl hover:border-white-300 transition-all duration-300 hover:shadow-lg hover:shadow-white-400/25 overflow-hidden min-w-[200px]"
+                className="group relative px-8 py-4 bg-transparent border-2 border-purple-700/50 text-purple-100 font-bold text-lg rounded-2xl hover:border-white-300 transition-all duration-300 hover:shadow-lg hover:shadow-white-400/25 overflow-hidden min-w-[200px]"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white-600/20 to-white-600/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-2xl"></div>
                 <span className="relative z-10 flex items-center justify-center group-hover:text-white transition-colors duration-300">
