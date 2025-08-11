@@ -2,6 +2,12 @@ import { useState } from "react";
 import { X, Upload, Link } from "lucide-react";
 
 export default function AddResourceModal({ isOpen, onClose, onSubmit }) {
+  console.log("AddResourceModal props:", {
+    isOpen,
+    onClose: !!onClose,
+    onSubmit: !!onSubmit,
+  });
+
   const [resourceType, setResourceType] = useState("pdf");
   const [formData, setFormData] = useState({
     course: "Machine Learning (CS 401)",
@@ -50,11 +56,23 @@ export default function AddResourceModal({ isOpen, onClose, onSubmit }) {
     onClose();
   };
 
-  if (!isOpen) return null;
+  console.log("AddResourceModal: isOpen =", isOpen);
+  if (!isOpen) {
+    console.log("AddResourceModal: Early return - modal not open");
+    return null;
+  }
 
+  console.log("AddResourceModal: Rendering modal");
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50"
+        onClick={onClose}
+      ></div>
+
+      {/* Modal Content */}
+      <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto relative z-10">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold text-white">Add New Resource</h2>

@@ -15,7 +15,8 @@ export default function StudentResource() {
   // Course data states
   const [completedCourses, setCompletedCourses] = useState([]);
   const [remainingCourses, setRemainingCourses] = useState([]);
-
+  const [runningCourses, setRunningCourses] = useState([]);
+  const [currentSemester, setCurrentSemester] = useState(null);
   // Hardcoded student ID - in a real app, this would come from authentication
   const studentId = "222-115-090";
 
@@ -138,88 +139,84 @@ export default function StudentResource() {
     }
   };
 
+  // Fetch running courses with resources
+  const fetchRunningCourses = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await studentCoursesAPI.getRunningCourses(studentId);
+      
+      // Transform the data to include sample resources based on course information
+      const coursesWithResources = data.running_courses.map(course => {
+        // Generate sample resources based on course data
+        const pdfResources = [
+          {
+            name: `${course.code}_Current_Materials.pdf`,
+            url: `/resources/${course.code}_current.pdf`,
+            description: `Current semester materials for ${course.title}`
+          },
+          {
+            name: `${course.code}_Assignments.pdf`, 
+            url: `/resources/${course.code}_assignments.pdf`,
+            description: `Current assignments and projects for ${course.title}`
+          },
+          {
+            name: `${course.code}_Schedule.pdf`,
+            url: `/resources/${course.code}_schedule.pdf`,
+            description: `Class schedule and important dates`
+          }
+        ];
+
+        const urlResources = [
+          {
+            name: `${course.title} - Online Classroom`,
+            url: `https://classroom.google.com/c/${course.code}`,
+            description: `Google Classroom for ${course.title}`,
+            type: 'link'
+          },
+          {
+            name: `${course.title} - Live Lectures`,
+            url: `https://zoom.us/j/${course.code}`,
+            description: `Join live lectures for ${course.title}`,
+            type: 'video'
+          },
+          {
+            name: `${course.title} - Discussion Forum`,
+            url: `https://discord.gg/${course.code}`,
+            description: `Student discussion forum`,
+            type: 'link'
+          }
+        ];
+
+        return {
+          ...course,
+          title: course.title || `${course.code} - Course`,
+          pdfResources,
+          urlResources
+        };
+      });
+
+      setRunningCourses(coursesWithResources);
+      
+      // Store current semester info if available
+      if (data.current_semester) {
+        setCurrentSemester(data.current_semester);
+      }
+    } catch (err) {
+      console.error('Error fetching running courses:', err);
+      setError('Failed to load running courses. Please try again.');
+      setRunningCourses([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Load data on component mount
   useEffect(() => {
     fetchCompletedCourses();
     fetchRemainingCourses();
+    fetchRunningCourses();
   }, []);
-
-  // Sample running courses data (since backend doesn't have current enrollment data)
-  const runningCourses = [
-    {
-      id: 3,
-      title: "CSE-301 - Artificial Intelligence",
-      instructor: "Lecturer: Limon Ahmed",
-      grade: "In Progress",
-      code: "CSE-301",
-      credits: 3,
-      semester: "current",
-      department: "Computer Science",
-      pdfResources: [
-        {
-          name: "AI_Lecture_Notes.pdf",
-          url: "/placeholder.pdf?query=ai-lecture-notes",
-          description: "Comprehensive AI lecture notes",
-        },
-        {
-          name: "Neural_Networks_Guide.pdf",
-          url: "/placeholder.pdf?query=neural-networks",
-          description: "Neural networks implementation guide",
-        },
-      ],
-      urlResources: [
-        {
-          name: "TensorFlow Tutorial",
-          url: "https://tensorflow.org/tutorials",
-          description: "Official TensorFlow tutorials",
-          type: "link",
-        },
-        {
-          name: "Machine Learning Course",
-          url: "https://coursera.org/learn/machine-learning",
-          description: "Andrew Ng's ML course",
-          type: "link",
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: "CSE-300 - Project 300",
-      instructor: "Lecturer: Various Faculty",
-      grade: "In Progress",
-      code: "CSE-300",
-      credits: 3,
-      semester: "current",
-      department: "Computer Science",
-      pdfResources: [
-        {
-          name: "Project_Guidelines.pdf",
-          url: "/placeholder.pdf?query=project-guidelines",
-          description: "Complete project guidelines and requirements",
-        },
-        {
-          name: "Documentation_Template.pdf",
-          url: "/placeholder.pdf?query=documentation-template",
-          description: "Standard documentation template",
-        },
-      ],
-      urlResources: [
-        {
-          name: "GitHub Repository Template",
-          url: "https://github.com/project-300-template",
-          description: "Standard project repository template",
-          type: "link",
-        },
-        {
-          name: "Project Management Tool",
-          url: "https://trello.com/project-300",
-          description: "Trello board for project management",
-          type: "link",
-        },
-      ],
-    },
-  ];
-
   // Loading component
   const LoadingSpinner = () => (
     <div className="flex justify-center items-center py-12">
@@ -266,7 +263,12 @@ export default function StudentResource() {
             )}
           </div>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              console.log("Add Resource button clicked!");
+              console.log("Current modal state:", isModalOpen);
+              setIsModalOpen(true);
+              console.log("Modal state after setting:", true);
+            }}
             className="px-6 py-3 bg-gradient-to-r from-purple-500 to-slate-900 hover:from-purple-600 hover:to-slate-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
           >
             <svg
@@ -333,13 +335,35 @@ export default function StudentResource() {
             </TabsContent>
 
             <TabsContent value="running" className="mt-0">
-              <div className="flex flex-col items-center space-y-4">
-                {runningCourses.map((course) => (
-                  <div key={course.id} className="w-full">
-                    <CourseCard course={course} />
-                  </div>
-                ))}
-              </div>
+              {currentSemester && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <h3 className="text-lg font-semibold text-green-800 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                    </svg>
+                    Current Semester: {currentSemester}
+                  </h3>
+                  <p className="text-green-600 text-sm mt-1">
+                    Access materials and resources for your currently enrolled courses.
+                  </p>
+                </div>
+              )}
+              {loading && activeTab === "running" ? (
+                <LoadingSpinner />
+              ) : error && activeTab === "running" ? (
+                <ErrorMessage 
+                  message={error} 
+                  onRetry={fetchRunningCourses} 
+                />
+              ) : runningCourses.length === 0 ? (
+                <EmptyState message="No running courses found. Enroll in some courses to see resources here." />
+              ) : (
+                <div className="space-y-4">
+                  {runningCourses.map((course) => (
+                    <CourseCard key={course.id} course={course} />
+                  ))}
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="remaining" className="mt-0">
