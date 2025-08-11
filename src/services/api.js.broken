@@ -57,17 +57,16 @@ export const adminDashboardAPI = {
 
   // Get all students for management
   getAllStudents: async () => {
-    return await adminApiCall('/students');
   },
 
-  // Get admin profile
+  // Get admin profile (fixed)
   getAdminProfile: async (adminId) => {
     return await adminApiCall(`/profile/${adminId}`);
+
   },
 
   // Create new student
   createStudent: async (studentData) => {
-    return await adminApiCall('/students', {
       method: 'POST',
       body: JSON.stringify(studentData),
     });
@@ -75,7 +74,6 @@ export const adminDashboardAPI = {
 
   // Update student
   updateStudent: async (studentId, studentData) => {
-    return await adminApiCall(`/students/${studentId}`, {
       method: 'PUT',
       body: JSON.stringify(studentData),
     });
@@ -83,7 +81,6 @@ export const adminDashboardAPI = {
 
   // Delete student
   deleteStudent: async (studentId) => {
-    return await adminApiCall(`/students/${studentId}`, {
       method: 'DELETE',
     });
   },
@@ -91,9 +88,10 @@ export const adminDashboardAPI = {
   // Get recent activities
   getRecentActivities: async () => {
     return await adminApiCall('/dashboard/recent-activities');
-  }
+  },
 };
 
+// Course API functions
 export const courseAPI = {
   // Get all courses
   getAllCourses: async () => {
@@ -154,7 +152,7 @@ export const courseAPI = {
   // Get course statistics
   getStats: async () => {
     return await apiCall('/stats');
-  }
+  },
 };
 
 // Student Notification API functions
@@ -190,7 +188,7 @@ export const studentNotificationAPI = {
       throw new Error('Failed to clear notifications');
     }
     return await response.json();
-  }
+  },
 };
 
 // Student Courses API functions
@@ -247,6 +245,7 @@ export const studentCoursesAPI = {
       throw new Error('Failed to fetch remaining courses with resources');
     }
     return await response.json();
-  }
+  },
 };
 
+export default { adminDashboardAPI, courseAPI, studentNotificationAPI, studentCoursesAPI };

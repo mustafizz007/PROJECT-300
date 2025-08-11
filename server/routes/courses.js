@@ -364,3 +364,194 @@ router.get('/stats', async (req, res) => {
 });
 
 export default router;
+
+// Get courses with advanced filtering
+router.get('/courses/filter', async (req, res) => {
+  const { department, status, instructor, semester, search } = req.query;
+  
+  try {
+    let whereConditions = [];
+    let params = [];
+    let paramCount = 0;
+
+    if (department && department !== 'all') {
+      paramCount++;
+      whereConditions.push(`c.department = $${paramCount}`);
+      params.push(department);
+    }
+
+    if (status && status !== 'all') {
+      paramCount++;
+      whereConditions.push(`c.status = $${paramCount}`);
+      params.push(status);
+    }
+
+    if (instructor) {
+      paramCount++;
+      whereConditions.push(`c.instructor ILIKE $${paramCount}`);
+      params.push(`%${instructor}%`);
+    }
+
+    if (semester) {
+      paramCount++;
+      whereConditions.push(`c.semester = $${paramCount}`);
+      params.push(semester);
+    }
+
+    if (search) {
+      paramCount++;
+      whereConditions.push(`(c.title ILIKE $${paramCount} OR c.course_code ILIKE $${paramCount} OR c.description ILIKE $${paramCount})`);
+      params.push(`%${search}%`);
+    }
+
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+
+    const coursesQuery = `
+      SELECT 
+        c.*,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'id', cm.id,
+              'title', cm.title,
+              'type', cm.type,
+              'url', cm.url,
+              'description', cm.description,
+              'created_at', cm.created_at
+            ) ORDER BY cm.created_at
+          ) FILTER (WHERE cm.id IS NOT NULL), 
+          '[]'::json
+        ) as materials
+      FROM courses c
+      LEFT JOIN course_materials cm ON c.id = cm.course_id
+      ${whereClause}
+      GROUP BY c.id
+      ORDER BY c.created_at DESC
+    `;
+    
+    const result = await pool.query(coursesQuery, params);
+    res.status(200).json({ courses: result.rows });
+  } catch (err) {
+    console.error('Filter courses error:', err);
+    res.status(500).json({ error: 'Server error while filtering courses' });
+  }
+});
+
+// Bulk operations
+router.post('/courses/bulk-status', async (req, res) => {
+  const { courseIds, status } = req.body;
+
+  try {
+    if (!courseIds || !Array.isArray(courseIds) || courseIds.length === 0) {
+      return res.status(400).json({ error: 'Course IDs array is required' });
+    }
+
+    if (!['active', 'inactive', 'scheduled', 'cancelled'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+
+    const placeholders = courseIds.map((_, index) => `$${index + 1}`).join(',');
+    const result = await pool.query(
+      `UPDATE courses SET status = $${courseIds.length + 1} WHERE id IN (${placeholders}) RETURNING title`,
+      [...courseIds, status]
+    );
+
+    // Add notification for students
+    await pool.query(
+      'INSERT INTO student_notifications (message, type) VALUES ($1, $2)',
+      [`${result.rowCount} courses status changed to ${status}`, 'info']
+    );
+
+    res.status(200).json({ 
+      message: `${result.rowCount} courses updated successfully`,
+      updatedCount: result.rowCount
+    });
+  } catch (err) {
+    console.error('Bulk status update error:', err);
+    res.status(500).json({ error: 'Server error while updating course status' });
+  }
+});
+
+// Get departments list
+router.get('/departments', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT DISTINCT department FROM courses ORDER BY department');
+    res.status(200).json({ departments: result.rows.map(row => row.department) });
+  } catch (err) {
+    console.error('Get departments error:', err);
+    res.status(500).json({ error: 'Server error while fetching departments' });
+  }
+});
+
+// Get instructors list
+router.get('/instructors', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT DISTINCT instructor FROM courses ORDER BY instructor');
+    res.status(200).json({ instructors: result.rows.map(row => row.instructor) });
+  } catch (err) {
+    console.error('Get instructors error:', err);
+    res.status(500).json({ error: 'Server error while fetching instructors' });
+  }
+});
+
+// Advanced statistics
+router.get('/stats/advanced', async (req, res) => {
+  try {
+    const stats = await Promise.all([
+      // Course counts by department
+      pool.query(`
+        SELECT department, COUNT(*) as count 
+        FROM courses 
+        GROUP BY department 
+        ORDER BY count DESC
+      `),
+      
+      // Course counts by status
+      pool.query(`
+        SELECT status, COUNT(*) as count 
+        FROM courses 
+        GROUP BY status
+      `),
+      
+      // Material counts by type
+      pool.query(`
+        SELECT type, COUNT(*) as count 
+        FROM course_materials 
+        GROUP BY type
+      `),
+      
+      // Recent activity
+      pool.query(`
+        SELECT 
+          c.title as course_title,
+          c.created_at,
+          'course_created' as activity_type
+        FROM courses c
+        WHERE c.created_at >= NOW() - INTERVAL '7 days'
+        
+        UNION ALL
+        
+        SELECT 
+          cm.title as course_title,
+          cm.created_at,
+          'material_added' as activity_type
+        FROM course_materials cm
+        WHERE cm.created_at >= NOW() - INTERVAL '7 days'
+        
+        ORDER BY created_at DESC
+        LIMIT 10
+      `)
+    ]);
+
+    res.status(200).json({
+      coursesByDepartment: stats[0].rows,
+      coursesByStatus: stats[1].rows,
+      materialsByType: stats[2].rows,
+      recentActivity: stats[3].rows
+    });
+  } catch (err) {
+    console.error('Get advanced stats error:', err);
+    res.status(500).json({ error: 'Server error while fetching advanced statistics' });
+  }
+});
+
