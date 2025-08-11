@@ -11,18 +11,20 @@ export default function StudentResource() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   // Course data states
   const [completedCourses, setCompletedCourses] = useState([]);
   const [remainingCourses, setRemainingCourses] = useState([]);
-  
+
   // Hardcoded student ID - in a real app, this would come from authentication
   const studentId = "222-115-090";
 
   const handleAddResource = (resourceData) => {
     console.log("New resource:", resourceData);
     // TODO: Send to backend API
-    alert("Resource uploaded! Backend upload functionality will be implemented soon.");
+    alert(
+      "Resource uploaded! Backend upload functionality will be implemented soon."
+    );
   };
 
   // Fetch completed courses with resources
@@ -31,21 +33,21 @@ export default function StudentResource() {
       setLoading(true);
       setError(null);
       const data = await studentCoursesAPI.getCompletedCourses(studentId);
-      
+
       // Transform the data to include sample resources based on course information
-      const coursesWithResources = data.completed_courses.map(course => {
+      const coursesWithResources = data.completed_courses.map((course) => {
         // Generate sample resources based on course data
         const pdfResources = [
           {
             name: `${course.code}_Syllabus.pdf`,
             url: `/resources/${course.code}_syllabus.pdf`,
-            description: `Course syllabus for ${course.title}`
+            description: `Course syllabus for ${course.title}`,
           },
           {
-            name: `${course.code}_Lecture_Notes.pdf`, 
+            name: `${course.code}_Lecture_Notes.pdf`,
             url: `/resources/${course.code}_notes.pdf`,
-            description: `Complete lecture notes for ${course.title}`
-          }
+            description: `Complete lecture notes for ${course.title}`,
+          },
         ];
 
         const urlResources = [
@@ -53,27 +55,27 @@ export default function StudentResource() {
             name: `${course.title} - Course Overview`,
             url: `https://example.com/courses/${course.code}`,
             description: `Online course overview and materials`,
-            type: 'link'
+            type: "link",
           },
           {
             name: `${course.title} - Video Lectures`,
             url: `https://youtube.com/playlist?list=${course.code}`,
             description: `Video lecture series`,
-            type: 'video'
-          }
+            type: "video",
+          },
         ];
 
         return {
           ...course,
           pdfResources,
-          urlResources
+          urlResources,
         };
       });
 
       setCompletedCourses(coursesWithResources);
     } catch (err) {
-      console.error('Error fetching completed courses:', err);
-      setError('Failed to load completed courses. Please try again.');
+      console.error("Error fetching completed courses:", err);
+      setError("Failed to load completed courses. Please try again.");
       setCompletedCourses([]);
     } finally {
       setLoading(false);
@@ -86,21 +88,21 @@ export default function StudentResource() {
       setLoading(true);
       setError(null);
       const data = await studentCoursesAPI.getRemainingCourses(studentId);
-      
+
       // Transform the data to include sample resources
-      const coursesWithResources = data.remaining_courses.map(course => {
+      const coursesWithResources = data.remaining_courses.map((course) => {
         // Generate sample resources for remaining courses
         const pdfResources = [
           {
             name: `${course.code}_Course_Information.pdf`,
             url: `/resources/${course.code}_info.pdf`,
-            description: `Course information and prerequisites`
+            description: `Course information and prerequisites`,
           },
           {
             name: `${course.code}_Sample_Materials.pdf`,
-            url: `/resources/${course.code}_samples.pdf`, 
-            description: `Sample course materials and assignments`
-          }
+            url: `/resources/${course.code}_samples.pdf`,
+            description: `Sample course materials and assignments`,
+          },
         ];
 
         const urlResources = [
@@ -108,28 +110,28 @@ export default function StudentResource() {
             name: `${course.title} - Prerequisites`,
             url: `https://example.com/prerequisites/${course.code}`,
             description: `Course prerequisites and requirements`,
-            type: 'link'
+            type: "link",
           },
           {
             name: `${course.title} - Course Demo`,
             url: `https://youtube.com/watch?v=${course.code}`,
             description: `Course introduction video`,
-            type: 'video'
-          }
+            type: "video",
+          },
         ];
 
         return {
           ...course,
           title: `${course.code} - ${course.title}`,
           pdfResources,
-          urlResources
+          urlResources,
         };
       });
 
       setRemainingCourses(coursesWithResources);
     } catch (err) {
-      console.error('Error fetching remaining courses:', err);
-      setError('Failed to load remaining courses. Please try again.');
+      console.error("Error fetching remaining courses:", err);
+      setError("Failed to load remaining courses. Please try again.");
       setRemainingCourses([]);
     } finally {
       setLoading(false);
@@ -157,12 +159,12 @@ export default function StudentResource() {
         {
           name: "AI_Lecture_Notes.pdf",
           url: "/placeholder.pdf?query=ai-lecture-notes",
-          description: "Comprehensive AI lecture notes"
+          description: "Comprehensive AI lecture notes",
         },
         {
           name: "Neural_Networks_Guide.pdf",
           url: "/placeholder.pdf?query=neural-networks",
-          description: "Neural networks implementation guide"
+          description: "Neural networks implementation guide",
         },
       ],
       urlResources: [
@@ -170,13 +172,13 @@ export default function StudentResource() {
           name: "TensorFlow Tutorial",
           url: "https://tensorflow.org/tutorials",
           description: "Official TensorFlow tutorials",
-          type: "link"
+          type: "link",
         },
         {
           name: "Machine Learning Course",
           url: "https://coursera.org/learn/machine-learning",
           description: "Andrew Ng's ML course",
-          type: "link"
+          type: "link",
         },
       ],
     },
@@ -193,26 +195,26 @@ export default function StudentResource() {
         {
           name: "Project_Guidelines.pdf",
           url: "/placeholder.pdf?query=project-guidelines",
-          description: "Complete project guidelines and requirements"
+          description: "Complete project guidelines and requirements",
         },
         {
           name: "Documentation_Template.pdf",
           url: "/placeholder.pdf?query=documentation-template",
-          description: "Standard documentation template"
+          description: "Standard documentation template",
         },
       ],
       urlResources: [
-        { 
-          name: "GitHub Repository Template", 
+        {
+          name: "GitHub Repository Template",
           url: "https://github.com/project-300-template",
           description: "Standard project repository template",
-          type: "link"
+          type: "link",
         },
         {
           name: "Project Management Tool",
           url: "https://trello.com/project-300",
           description: "Trello board for project management",
-          type: "link"
+          type: "link",
         },
       ],
     },
@@ -316,25 +318,26 @@ export default function StudentResource() {
               {loading && activeTab === "completed" ? (
                 <LoadingSpinner />
               ) : error && activeTab === "completed" ? (
-                <ErrorMessage 
-                  message={error} 
-                  onRetry={fetchCompletedCourses} 
-                />
+                <ErrorMessage message={error} onRetry={fetchCompletedCourses} />
               ) : completedCourses.length === 0 ? (
                 <EmptyState message="No completed courses found. Complete some courses to see resources here." />
               ) : (
-                <div className="space-y-4">
+                <div className="flex flex-col items-center space-y-4">
                   {completedCourses.map((course) => (
-                    <CourseCard key={course.id} course={course} />
+                    <div key={course.id} className="w-full">
+                      <CourseCard course={course} />
+                    </div>
                   ))}
                 </div>
               )}
             </TabsContent>
 
             <TabsContent value="running" className="mt-0">
-              <div className="space-y-4">
+              <div className="flex flex-col items-center space-y-4">
                 {runningCourses.map((course) => (
-                  <CourseCard key={course.id} course={course} />
+                  <div key={course.id} className="w-full">
+                    <CourseCard course={course} />
+                  </div>
                 ))}
               </div>
             </TabsContent>
@@ -343,16 +346,15 @@ export default function StudentResource() {
               {loading && activeTab === "remaining" ? (
                 <LoadingSpinner />
               ) : error && activeTab === "remaining" ? (
-                <ErrorMessage 
-                  message={error} 
-                  onRetry={fetchRemainingCourses} 
-                />
+                <ErrorMessage message={error} onRetry={fetchRemainingCourses} />
               ) : remainingCourses.length === 0 ? (
                 <EmptyState message="No remaining courses found. You have completed all available courses!" />
               ) : (
-                <div className="space-y-4">
+                <div className="flex flex-col items-center space-y-4">
                   {remainingCourses.map((course) => (
-                    <CourseCard key={course.id} course={course} />
+                    <div key={course.id} className="w-full">
+                      <CourseCard course={course} />
+                    </div>
                   ))}
                 </div>
               )}

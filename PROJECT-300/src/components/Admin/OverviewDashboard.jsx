@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { adminDashboardAPI } from "../../services/api";
 
-export default function OverviewDashboard() {
+export default function OverviewDashboard({ onNavigate }) {
   const [dashboardStats, setDashboardStats] = useState({
     totalStudents: 0,
     activeCourses: 0,
@@ -163,7 +163,7 @@ export default function OverviewDashboard() {
           return (
             <div
               key={index}
-              className="bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800 p-4 sm:p-5 lg:p-6 rounded-xl border border-gray-700 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.03] group"
+              className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 p-4 sm:p-5 lg:p-6 rounded-xl border border-gray-700 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.03] group"
             >
               <div className="flex items-center justify-between mb-3 lg:mb-4">
                 <div
@@ -200,14 +200,17 @@ export default function OverviewDashboard() {
             Quickly add new students, courses, or assessments
           </p>
           <div className="space-y-2">
-            <button className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded-lg hover:bg-blue-400 hover:bg-opacity-10 transition-all font-semibold">
+            <button
+              onClick={() => onNavigate && onNavigate("Student Management")}
+              className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded-lg hover:bg-blue-400 hover:bg-opacity-10 transition-all font-semibold"
+            >
               + Add Student
             </button>
-            <button className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded-lg hover:bg-blue-400 hover:bg-opacity-10 transition-all font-semibold">
+            <button
+              onClick={() => onNavigate && onNavigate("Course Management")}
+              className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded-lg hover:bg-blue-400 hover:bg-opacity-10 transition-all font-semibold"
+            >
               + Add Course
-            </button>
-            <button className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded-lg hover:bg-blue-400 hover:bg-opacity-10 transition-all font-semibold">
-              + Add Assessment
             </button>
           </div>
         </div>
