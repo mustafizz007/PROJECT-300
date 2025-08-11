@@ -19,7 +19,7 @@ export default function AdminSidebar({
       <aside
         className={`
         hidden md:block
-        w-64 lg:w-80 bg-gray-800 min-h-screen 
+        w-64 lg:w-80 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen 
         transition-all duration-300 ease-in-out
         ${isMobile ? "hidden" : "block"}
       `}
@@ -34,8 +34,8 @@ export default function AdminSidebar({
                   onClick={() => setActiveTab(item.id)}
                   className={`w-full flex items-center space-x-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg text-left transition-all duration-200 group ${
                     activeTab === item.id
-                      ? "bg-blue-600 text-white shadow-lg"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white hover:shadow-md"
+                      ? "bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 text-white shadow-lg"
+                      : "text-blue-100 hover:bg-gradient-to-r hover:from-blue-700 hover:via-cyan-700 hover:to-teal-700 hover:text-white hover:shadow-md"
                   }`}
                 >
                   <Icon
@@ -58,7 +58,7 @@ export default function AdminSidebar({
       {/* Mobile Sidebar */}
       <aside
         className={`
-        md:hidden fixed inset-y-0 left-0 z-30 w-64 bg-gray-800 
+        md:hidden fixed inset-y-0 left-0 z-30 w-64 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
       `}
@@ -75,8 +75,8 @@ export default function AdminSidebar({
                   onClick={() => setActiveTab(item.id)}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
                     activeTab === item.id
-                      ? "bg-blue-600 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                      ? "bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 text-white"
+                      : "text-blue-100 hover:bg-gradient-to-r hover:from-blue-700 hover:via-cyan-700 hover:to-teal-700 hover:text-white"
                   }`}
                 >
                   <Icon className="w-5 h-5" />

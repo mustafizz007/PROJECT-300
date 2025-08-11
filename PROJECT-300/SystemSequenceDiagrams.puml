@@ -1,0 +1,135 @@
+@startuml
+' System Sequence Diagrams for MuPortal - University Material Sharing Portal
+' Each diagram is separated by newpage for export as images
+
+' 1. Student Login/SignUp
+actor Student
+participant "Web App" as WebApp
+participant "Backend" as Backend
+participant "Database" as DB
+Student -> WebApp: Enter credentials/registration info
+WebApp -> Backend: POST /student/login or /student/signup
+Backend -> DB: Validate or create student record
+DB --> Backend: Success/Failure
+Backend --> WebApp: Auth token / error
+WebApp --> Student: Show dashboard or error
+@enduml
+
+@startuml
+' 2. Admin Login/SignUp
+actor Admin
+participant "Web App" as WebApp
+participant "Backend" as Backend
+participant "Database" as DB
+Admin -> WebApp: Enter credentials/registration info
+WebApp -> Backend: POST /admin/login or /admin/signup
+Backend -> DB: Validate or create admin record
+DB --> Backend: Success/Failure
+Backend --> WebApp: Auth token / error
+WebApp --> Admin: Show admin dashboard or error
+@enduml
+
+@startuml
+' 3. Course Management (Admin)
+actor Admin
+participant "Web App" as WebApp
+participant "Backend" as Backend
+participant "Database" as DB
+Admin -> WebApp: Add/Edit/Delete Course
+WebApp -> Backend: POST/PUT/DELETE /courses
+Backend -> DB: Update course tables
+DB --> Backend: Success/Failure
+Backend --> WebApp: Confirmation/Error
+WebApp --> Admin: Update UI
+@enduml
+
+@startuml
+' 4. Student Course Enrollment
+actor Student
+participant "Web App" as WebApp
+participant "Backend" as Backend
+participant "Database" as DB
+Student -> WebApp: Enroll in course
+WebApp -> Backend: POST /student-courses
+Backend -> DB: Add enrollment record
+DB --> Backend: Success/Failure
+Backend --> WebApp: Confirmation/Error
+WebApp --> Student: Update enrolled courses
+@enduml
+
+@startuml
+' 5. Resource Management (Admin)
+actor Admin
+participant "Web App" as WebApp
+participant "Backend" as Backend
+participant "Database" as DB
+Admin -> WebApp: Add/Edit/Delete Resource
+WebApp -> Backend: POST/PUT/DELETE /student-resources
+Backend -> DB: Update resources table
+DB --> Backend: Success/Failure
+Backend --> WebApp: Confirmation/Error
+WebApp --> Admin: Update UI
+@enduml
+
+@startuml
+' 6. Student Resource Access
+actor Student
+participant "Web App" as WebApp
+participant "Backend" as Backend
+participant "Database" as DB
+Student -> WebApp: View/Download Resource
+WebApp -> Backend: GET /student-resources
+Backend -> DB: Fetch resources
+DB --> Backend: Resource data
+Backend --> WebApp: Resource list
+WebApp --> Student: Show/download resource
+@enduml
+
+@startuml
+' 7. Results Management (Admin)
+actor Admin
+participant "Web App" as WebApp
+participant "Backend" as Backend
+participant "Database" as DB
+Admin -> WebApp: Add/Edit/Delete Student Results
+WebApp -> Backend: POST/PUT/DELETE /results
+Backend -> DB: Update results table
+DB --> Backend: Success/Failure
+Backend --> WebApp: Confirmation/Error
+WebApp --> Admin: Update UI
+@enduml
+
+@startuml
+' 8. Student Results Viewing
+actor Student
+participant "Web App" as WebApp
+participant "Backend" as Backend
+participant "Database" as DB
+Student -> WebApp: View Results
+WebApp -> Backend: GET /results
+Backend -> DB: Fetch results
+DB --> Backend: Results data
+Backend --> WebApp: Results info
+WebApp --> Student: Show results
+@enduml
+
+@startuml
+' 9. Notifications (Admin sends, Student views)
+actor Admin
+actor Student
+participant "Web App" as WebApp
+participant "Backend" as Backend
+participant "Database" as DB
+Admin -> WebApp: Send Notification
+WebApp -> Backend: POST /notifications
+Backend -> DB: Store notification
+DB --> Backend: Success/Failure
+Backend --> WebApp: Confirmation/Error
+WebApp --> Admin: Update UI
+Student -> WebApp: View Notifications
+WebApp -> Backend: GET /notifications
+Backend -> DB: Fetch notifications
+DB --> Backend: Notification data
+Backend --> WebApp: Notification list
+WebApp --> Student: Show notifications
+@enduml

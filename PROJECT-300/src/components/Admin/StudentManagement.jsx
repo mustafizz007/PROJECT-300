@@ -101,7 +101,7 @@ const StudentManagement = () => {
       }
 
       setShowStudentModal(false);
-      await fetchStudents(); 
+      await fetchStudents();
     } catch (err) {
       console.error("Error saving student:", err);
       alert(err.message || "Failed to save student. Please try again.");
@@ -156,7 +156,7 @@ const StudentManagement = () => {
   if (error) {
     return (
       <div className="mb-6">
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 text-left">
           Student Management
         </h1>
         <p className="text-red-400 text-sm sm:text-base mb-4">{error}</p>
@@ -171,11 +171,11 @@ const StudentManagement = () => {
   }
 
   return (
-    <>
+    <div className="w-full h-full max-h-[80vh] custom-scrollbar overflow-y-auto space-y-6 lg:space-y-8">
       <div className="mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ">
           <div>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 text-left">
               Student Management
             </h1>
             <p className="text-gray-300 text-sm sm:text-base">
@@ -409,7 +409,7 @@ const StudentManagement = () => {
                 }
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 text-sm sm:text-base"
                 required
-                disabled={selectedStudent} 
+                disabled={selectedStudent}
               />
               <select
                 value={studentFormData.department}
@@ -475,7 +475,7 @@ const StudentManagement = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

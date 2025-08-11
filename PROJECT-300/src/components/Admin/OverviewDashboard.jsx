@@ -145,7 +145,7 @@ export default function OverviewDashboard() {
   }
 
   return (
-    <div className="space-y-6 lg:space-y-8">
+    <div className="w-full h-full max-h-[80vh] custom-scrollbar overflow-y-auto space-y-6 lg:space-y-8">
       {/* Header */}
       <div className="mb-6 lg:mb-8">
         <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2">
@@ -163,21 +163,21 @@ export default function OverviewDashboard() {
           return (
             <div
               key={index}
-              className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all duration-200 hover:shadow-lg"
+              className="bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800 p-4 sm:p-5 lg:p-6 rounded-xl border border-gray-700 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.03] group"
             >
               <div className="flex items-center justify-between mb-3 lg:mb-4">
                 <div
-                  className={`p-2 lg:p-3 rounded-lg ${getColorClasses(
+                  className={`p-2 lg:p-3 rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-200 ${getColorClasses(
                     card.color
                   )}`}
                 >
                   <Icon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
                 </div>
               </div>
-              <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
+              <div className="text-lg sm:text-xl lg:text-2xl font-extrabold text-white mb-1 tracking-wide drop-shadow-sm">
                 {card.value}
               </div>
-              <div className="text-xs sm:text-sm text-gray-400">
+              <div className="text-xs sm:text-sm text-gray-300 tracking-wide">
                 {card.title}
               </div>
             </div>
@@ -187,12 +187,12 @@ export default function OverviewDashboard() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-        <div className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all duration-200">
+        <div className="bg-gradient-to-br from-blue-900 via-slate-900 to-blue-950 p-4 sm:p-5 lg:p-6 rounded-xl border border-blue-900 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.02] group">
           <div className="flex items-center mb-4">
-            <div className="p-2 lg:p-3 bg-blue-500 bg-opacity-20 rounded-lg mr-3">
+            <div className="p-2 lg:p-3 bg-blue-500 bg-opacity-20 rounded-lg mr-3 shadow-sm group-hover:scale-110 transition-transform duration-200">
               <UserPlus className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
             </div>
-            <h3 className="text-base sm:text-lg font-semibold text-white">
+            <h3 className="text-base sm:text-lg font-extrabold text-white tracking-wide drop-shadow-sm">
               Quick Add
             </h3>
           </div>
@@ -200,24 +200,24 @@ export default function OverviewDashboard() {
             Quickly add new students, courses, or assessments
           </p>
           <div className="space-y-2">
-            <button className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded hover:bg-blue-400 hover:bg-opacity-10 transition-all">
+            <button className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded-lg hover:bg-blue-400 hover:bg-opacity-10 transition-all font-semibold">
               + Add Student
             </button>
-            <button className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded hover:bg-blue-400 hover:bg-opacity-10 transition-all">
+            <button className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded-lg hover:bg-blue-400 hover:bg-opacity-10 transition-all font-semibold">
               + Add Course
             </button>
-            <button className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded hover:bg-blue-400 hover:bg-opacity-10 transition-all">
+            <button className="w-full text-left text-blue-400 hover:text-blue-300 text-sm sm:text-base py-1 px-2 rounded-lg hover:bg-blue-400 hover:bg-opacity-10 transition-all font-semibold">
               + Add Assessment
             </button>
           </div>
         </div>
 
-        <div className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all duration-200">
+        <div className="bg-gradient-to-br from-blue-900 via-slate-900 to-blue-950 p-4 sm:p-5 lg:p-6 rounded-xl border border-blue-900 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.02] group">
           <div className="flex items-center mb-4">
-            <div className="p-2 lg:p-3 bg-green-500 bg-opacity-20 rounded-lg mr-3">
+            <div className="p-2 lg:p-3 bg-green-500 bg-opacity-20 rounded-lg mr-3 shadow-sm group-hover:scale-110 transition-transform duration-200">
               <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
             </div>
-            <h3 className="text-base sm:text-lg font-semibold text-white">
+            <h3 className="text-base sm:text-lg font-extrabold text-white tracking-wide drop-shadow-sm">
               Performance
             </h3>
           </div>
@@ -226,30 +226,30 @@ export default function OverviewDashboard() {
           </p>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-gray-400 text-sm sm:text-base">
+              <span className="text-gray-400 text-sm sm:text-base font-medium">
                 Average CGPA
               </span>
-              <span className="text-white font-semibold text-sm sm:text-base">
+              <span className="text-white font-bold text-sm sm:text-base tracking-wide">
                 {dashboardStats.avgCgpa}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-gray-400 text-sm sm:text-base">
+              <span className="text-gray-400 text-sm sm:text-base font-medium">
                 Pass Rate
               </span>
-              <span className="text-white font-semibold text-sm sm:text-base">
+              <span className="text-white font-bold text-sm sm:text-base tracking-wide">
                 {dashboardStats.passRate}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all duration-200">
+        <div className="bg-gradient-to-br from-blue-900 via-slate-900 to-blue-950 p-4 sm:p-5 lg:p-6 rounded-xl border border-blue-900 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.02] group">
           <div className="flex items-center mb-4">
-            <div className="p-2 lg:p-3 bg-purple-500 bg-opacity-20 rounded-lg mr-3">
+            <div className="p-2 lg:p-3 bg-purple-500 bg-opacity-20 rounded-lg mr-3 shadow-sm group-hover:scale-110 transition-transform duration-200">
               <Award className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
             </div>
-            <h3 className="text-base sm:text-lg font-semibold text-white">
+            <h3 className="text-base sm:text-lg font-extrabold text-white tracking-wide drop-shadow-sm">
               Recent Activity
             </h3>
           </div>
@@ -261,13 +261,13 @@ export default function OverviewDashboard() {
               recentActivities.map((activity, index) => (
                 <div
                   key={index}
-                  className="text-gray-400 p-2 rounded hover:bg-gray-600 transition-colors"
+                  className="text-gray-300 p-2 rounded-lg hover:bg-purple-900 hover:bg-opacity-20 transition-colors font-medium tracking-wide"
                 >
                   {formatActivityText(activity)}
                 </div>
               ))
             ) : (
-              <div className="text-gray-400 p-2 rounded">
+              <div className="text-gray-400 p-2 rounded-lg">
                 No recent activities
               </div>
             )}
