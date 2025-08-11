@@ -34,6 +34,9 @@ export default function AdminLogin({ onNavigate, onLoginSuccess }) {
       const data = await response.json();
 
       if (response.ok) {
+        // Store admin data in localStorage for header to use
+        localStorage.setItem("adminLoginData", JSON.stringify(data));
+
         onLoginSuccess(formData.admin_id);
       } else {
         alert(data.error || "Admin login failed.");
