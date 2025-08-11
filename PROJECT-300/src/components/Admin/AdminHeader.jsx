@@ -35,9 +35,10 @@ export default function AdminHeader({
           <img
             src={logo}
             alt="MuPortal Logo"
-            className="h-6 sm:h-7 lg:h-8 w-auto cursor-pointer hover:scale-105 transition-transform duration-300"
+            className="h-12 w-auto transform group-hover:scale-110 transition-all duration-500 group-hover:rotate-3 group-hover:drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]"
             onClick={() => onNavigate && onNavigate("home")}
           />
+          
           <div className="text-base sm:text-lg lg:text-xl font-extrabold bg-gradient-to-r from-blue-600 via-blue-400 to-blue-700 bg-clip-text text-transparent drop-shadow-md">
             <span className="hidden sm:inline ml-2 font-extrabold text-transparent bg-gradient-to-r from-blue-600 via-blue-400 to-blue-700 bg-clip-text text-shadow-lg tracking-wide">
               Admin Panel
@@ -58,7 +59,7 @@ export default function AdminHeader({
               <div className="text-xs lg:text-sm font-bold bg-gradient-to-r from-blue-600 via-blue-400 to-blue-700 bg-clip-text text-transparent drop-shadow-sm tracking-wide">
                 Admin User
               </div>
-              <div className="inline-block mt-1 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-[10px] lg:text-xs font-semibold shadow-sm border border-blue-200">
+              <div className="inline-block mt-1 px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] lg:text-xs font-semibold shadow-sm border border-blue-200">
                 Administrator
               </div>
             </div>

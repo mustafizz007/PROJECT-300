@@ -19,11 +19,10 @@ const apiCall = async (endpoint, options = {}) => {
     }
 
     return await response.json();
+};
   } catch (error) {
     console.error('API Error:', error);
     throw error;
-  }
-};
 
 // Helper function for admin API calls
 const adminApiCall = async (endpoint, options = {}) => {
@@ -42,28 +41,24 @@ const adminApiCall = async (endpoint, options = {}) => {
     }
 
     return await response.json();
+};
   } catch (error) {
     console.error('Admin API Error:', error);
     throw error;
-  }
-};
 
 // Admin Dashboard APIs
 export const adminDashboardAPI = {
   // Get dashboard statistics
   getDashboardStats: async () => {
     return await adminApiCall('/dashboard/stats');
-  },
 
   // Get all students for management
   getAllStudents: async () => {
     return await adminApiCall('/students');
-  },
 
   // Get admin profile
   getAdminProfile: async (adminId) => {
     return await adminApiCall(`/profile/${adminId}`);
-  },
 
   // Create new student
   createStudent: async (studentData) => {
@@ -71,7 +66,6 @@ export const adminDashboardAPI = {
       method: 'POST',
       body: JSON.stringify(studentData),
     });
-  },
 
   // Update student
   updateStudent: async (studentId, studentData) => {
@@ -79,31 +73,24 @@ export const adminDashboardAPI = {
       method: 'PUT',
       body: JSON.stringify(studentData),
     });
-  },
 
   // Delete student
   deleteStudent: async (studentId) => {
     return await adminApiCall(`/students/${studentId}`, {
       method: 'DELETE',
     });
-  },
 
   // Get recent activities
   getRecentActivities: async () => {
     return await adminApiCall('/dashboard/recent-activities');
-  }
-};
-
 export const courseAPI = {
   // Get all courses
   getAllCourses: async () => {
     return await apiCall('/courses');
-  },
 
   // Get single course
   getCourse: async (id) => {
     return await apiCall(`/courses/${id}`);
-  },
 
   // Create new course
   createCourse: async (courseData) => {
@@ -111,7 +98,6 @@ export const courseAPI = {
       method: 'POST',
       body: JSON.stringify(courseData),
     });
-  },
 
   // Update course
   updateCourse: async (id, courseData) => {
@@ -119,14 +105,12 @@ export const courseAPI = {
       method: 'PUT',
       body: JSON.stringify(courseData),
     });
-  },
 
   // Delete course
   deleteCourse: async (id) => {
     return await apiCall(`/courses/${id}`, {
       method: 'DELETE',
     });
-  },
 
   // Add material to course
   addMaterial: async (courseId, materialData) => {
@@ -134,7 +118,6 @@ export const courseAPI = {
       method: 'POST',
       body: JSON.stringify(materialData),
     });
-  },
 
   // Update material
   updateMaterial: async (materialId, materialData) => {
@@ -142,20 +125,16 @@ export const courseAPI = {
       method: 'PUT',
       body: JSON.stringify(materialData),
     });
-  },
 
   // Delete material
   deleteMaterial: async (materialId) => {
     return await apiCall(`/materials/${materialId}`, {
       method: 'DELETE',
     });
-  },
 
   // Get course statistics
   getStats: async () => {
     return await apiCall('/stats');
-  }
-};
 
 // Student Notification API functions
 export const studentNotificationAPI = {
@@ -166,7 +145,7 @@ export const studentNotificationAPI = {
       throw new Error('Failed to fetch notifications');
     }
     return await response.json();
-  },
+};
 
   // Mark notification as read
   markAsRead: async (id) => {
@@ -178,7 +157,7 @@ export const studentNotificationAPI = {
       throw new Error('Failed to mark notification as read');
     }
     return await response.json();
-  },
+};
 
   // Clear all notifications
   clearAll: async () => {
@@ -190,7 +169,6 @@ export const studentNotificationAPI = {
       throw new Error('Failed to clear notifications');
     }
     return await response.json();
-  }
 };
 
 // Student Courses API functions
@@ -202,7 +180,7 @@ export const studentCoursesAPI = {
       throw new Error('Failed to fetch completed courses');
     }
     return await response.json();
-  },
+};
 
   // Get running courses for a student
   getRunningCourses: async (studentId) => {
@@ -211,7 +189,7 @@ export const studentCoursesAPI = {
       throw new Error('Failed to fetch running courses');
     }
     return await response.json();
-  },
+};
 
   // Get remaining courses for a student
   getRemainingCourses: async (studentId) => {
@@ -220,7 +198,7 @@ export const studentCoursesAPI = {
       throw new Error('Failed to fetch remaining courses');
     }
     return await response.json();
-  },
+};
 
   // Get course summary for a student
   getCourseSummary: async (studentId) => {
@@ -229,7 +207,7 @@ export const studentCoursesAPI = {
       throw new Error('Failed to fetch course summary');
     }
     return await response.json();
-  },
+};
 
   // Get completed courses with resources for a student
   getCompletedCoursesWithResources: async (studentId) => {
@@ -238,7 +216,7 @@ export const studentCoursesAPI = {
       throw new Error('Failed to fetch completed courses with resources');
     }
     return await response.json();
-  },
+};
 
   // Get remaining courses with resources for a student
   getRemainingCoursesWithResources: async (studentId) => {
@@ -247,6 +225,6 @@ export const studentCoursesAPI = {
       throw new Error('Failed to fetch remaining courses with resources');
     }
     return await response.json();
-  }
 };
 
+export { adminDashboardAPI, courseAPI, studentCoursesAPI };

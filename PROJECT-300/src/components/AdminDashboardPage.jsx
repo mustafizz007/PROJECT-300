@@ -44,7 +44,7 @@ export default function AdminDashboard({ onNavigate }) {
   const renderActiveComponent = () => {
     switch (activeTab) {
       case "Overview":
-        return <OverviewDashboard />;
+        return <OverviewDashboard onNavigate={handleTabChange} />;
       case "Student Management":
         return <StudentManagement />;
       case "Course Management":

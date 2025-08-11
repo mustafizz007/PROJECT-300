@@ -117,53 +117,57 @@ export default function ResultsManagement() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 mb-6">
-          <div className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all">
+          <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-4 sm:p-5 lg:p-6 rounded-xl border border-gray-800 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.03] group">
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 lg:p-3 bg-blue-500 bg-opacity-20 rounded-lg">
+              <div className="p-2 lg:p-3 bg-gray-600 rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-200">
                 <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
               </div>
             </div>
-            <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
+            <div className="text-lg sm:text-xl lg:text-2xl font-extrabold text-white mb-1 tracking-wide drop-shadow-sm">
               {results.length}
             </div>
-            <div className="text-xs sm:text-sm text-gray-400">
+            <div className="text-xs sm:text-sm text-gray-300 tracking-wide">
               Total Results
             </div>
           </div>
 
-          <div className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all">
+          <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-4 sm:p-5 lg:p-6 rounded-xl border border-gray-800 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.03] group">
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 lg:p-3 bg-green-500 bg-opacity-20 rounded-lg">
+              <div className="p-2 lg:p-3 bg-gray-600 rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-200">
                 <Award className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
               </div>
             </div>
-            <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
+            <div className="text-lg sm:text-xl lg:text-2xl font-extrabold text-white mb-1 tracking-wide drop-shadow-sm">
               {results.filter((r) => r.status === "published").length}
             </div>
-            <div className="text-xs sm:text-sm text-gray-400">Published</div>
+            <div className="text-xs sm:text-sm text-gray-300 tracking-wide">
+              Published
+            </div>
           </div>
 
-          <div className="bg-gray-700 p-4 sm:p-5 lg:p-6 rounded-lg border border-gray-600 hover:border-gray-500 transition-all">
+          <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-4 sm:p-5 lg:p-6 rounded-xl border border-gray-800 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.03] group">
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 lg:p-3 bg-purple-500 bg-opacity-20 rounded-lg">
+              <div className="p-2 lg:p-3 bg-gray-600 rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-200">
                 <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
               </div>
             </div>
-            <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1">
+            <div className="text-lg sm:text-xl lg:text-2xl font-extrabold text-white mb-1 tracking-wide drop-shadow-sm">
               {(
                 results.reduce((sum, r) => sum + r.gpa, 0) / results.length
               ).toFixed(2)}
             </div>
-            <div className="text-sm text-gray-400">Average GPA</div>
+            <div className="text-xs sm:text-sm text-gray-300 tracking-wide">
+              Average GPA
+            </div>
           </div>
 
-          <div className="bg-gray-700 p-4 md:p-6 rounded-lg border border-gray-600">
+          <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-4 sm:p-5 lg:p-6 rounded-xl border border-gray-800 shadow-md hover:shadow-xl transition-all duration-200 hover:scale-[1.03] group">
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 bg-yellow-500 bg-opacity-20 rounded-lg">
-                <Star className="w-5 h-5 text-yellow-400" />
+              <div className="p-2 lg:p-3 bg-gray-600 rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-200">
+                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
               </div>
             </div>
-            <div className="text-xl md:text-2xl font-bold text-white mb-1">
+            <div className="text-lg sm:text-xl lg:text-2xl font-extrabold text-white mb-1 tracking-wide drop-shadow-sm">
               {Math.round(
                 (results.reduce((sum, r) => sum + r.marks / r.totalMarks, 0) /
                   results.length) *
@@ -171,140 +175,151 @@ export default function ResultsManagement() {
               )}
               %
             </div>
-            <div className="text-sm text-gray-400">Pass Rate</div>
+            <div className="text-xs sm:text-sm text-gray-300 tracking-wide">
+              Pass Rate
+            </div>
           </div>
         </div>
 
         {/* Search and Filter */}
-        <div className="bg-gray-700 rounded-lg border border-gray-600 mb-6">
-          <div className="p-4 md:p-6 border-b border-gray-600">
+        <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl border border-gray-800 mb-6 shadow-md hover:shadow-xl transition-all duration-200">
+          <div className="p-4 md:p-6 border-b border-gray-600/50">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input
                     type="text"
-                    placeholder="Search results..."
+                    placeholder="Search results by student, ID, course..."
                     value={resultSearchTerm}
                     onChange={(e) => setResultSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-600/80 border border-gray-500/50 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium transition-all duration-200 hover:bg-gray-600"
                   />
                 </div>
               </div>
-              <select
-                value={resultFilterType}
-                onChange={(e) => setResultFilterType(e.target.value)}
-                className="px-4 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="all">All Results</option>
-                <option value="published">Published</option>
-                <option value="A+">Grade A+</option>
-                <option value="A">Grade A</option>
-                <option value="B+">Grade B+</option>
-              </select>
+              <div className="flex gap-3">
+                <select
+                  value={resultFilterType}
+                  onChange={(e) => setResultFilterType(e.target.value)}
+                  className="px-4 py-3 bg-gray-600/80 border border-gray-500/50 rounded-xl text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium transition-all duration-200 hover:bg-gray-600 min-w-[140px]"
+                >
+                  <option value="all">All Results</option>
+                  <option value="published">Published</option>
+                  <option value="A+">Grade A+</option>
+                  <option value="A">Grade A</option>
+                  <option value="B+">Grade B+</option>
+                </select>
+              </div>
             </div>
           </div>
 
           {/* Results Table */}
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-600">
+              <thead className="bg-gradient-to-r from-gray-600 to-gray-700">
                 <tr>
-                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th className="px-4 md:px-6 py-4 text-center text-xs font-extrabold text-white uppercase tracking-wider">
                     Student
                   </th>
-                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th className="px-4 md:px-6 py-4 text-center text-xs font-extrabold text-white uppercase tracking-wider">
                     Course
                   </th>
-                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th className="px-4 md:px-6 py-4 text-left text-xs font-extrabold text-white uppercase tracking-wider">
                     Semester
                   </th>
-                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th className="px-4 md:px-6 py-4 text-left text-xs font-extrabold text-white uppercase tracking-wider">
                     Marks
                   </th>
-                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th className="px-4 md:px-6 py-4 text-left text-xs font-extrabold text-white uppercase tracking-wider">
                     Grade
                   </th>
-                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th className="px-4 md:px-6 py-4 text-left text-xs font-extrabold text-white uppercase tracking-wider">
                     GPA
                   </th>
-                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th className="px-4 md:px-6 py-4 text-left text-xs font-extrabold text-white uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th className="px-4 md:px-6 py-4 text-left text-xs font-extrabold text-white uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-600">
+              <tbody className="divide-y divide-gray-600/50">
                 {filteredResults.map((result) => (
-                  <tr key={result.id} className="hover:bg-gray-600">
+                  <tr
+                    key={result.id}
+                    className="hover:bg-gradient-to-r hover:from-gray-600/30 hover:to-gray-700/30 transition-all duration-200"
+                  >
                     <td className="px-4 md:px-6 py-4">
                       <div>
-                        <div className="text-sm font-medium text-white">
+                        <div className="text-sm font-extrabold text-white tracking-wide">
                           {result.studentName}
                         </div>
-                        <div className="text-sm text-gray-400">
+                        <div className="text-sm text-gray-400 font-medium">
                           {result.studentId}
                         </div>
                       </div>
                     </td>
                     <td className="px-4 md:px-6 py-4">
                       <div>
-                        <div className="text-sm font-medium text-white">
+                        <div className="text-sm font-extrabold text-white tracking-wide">
                           {result.courseName}
                         </div>
-                        <div className="text-sm text-gray-400">
+                        <div className="text-sm text-gray-400 font-medium">
                           {result.courseCode}
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                    <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">
                       {result.semester}
                     </td>
-                    <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                      {result.marks}/{result.totalMarks}
+                    <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                      <span className="text-sm font-extrabold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        {result.marks}/{result.totalMarks}
+                      </span>
                     </td>
                     <td className="px-4 md:px-6 py-4 whitespace-nowrap">
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        className={`inline-flex px-3 py-1 text-xs font-extrabold rounded-full hover:scale-105 transition-transform duration-200 ${
                           result.grade === "A+"
-                            ? "bg-green-100 text-green-800"
+                            ? "bg-gradient-to-r from-green-400 to-green-600 text-white"
                             : result.grade === "A"
-                            ? "bg-blue-100 text-blue-800"
+                            ? "bg-gradient-to-r from-blue-400 to-blue-600 text-white"
                             : result.grade === "B+"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-gray-100 text-gray-800"
+                            ? "bg-gradient-to-r from-yellow-400 to-yellow-600 text-white"
+                            : "bg-gradient-to-r from-gray-400 to-gray-600 text-white"
                         }`}
                       >
                         {result.grade}
                       </span>
                     </td>
                     <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-white">
-                      <span className="font-semibold">{result.gpa}</span>
+                      <span className="font-extrabold tracking-wide">
+                        {result.gpa}
+                      </span>
                     </td>
                     <td className="px-4 md:px-6 py-4 whitespace-nowrap">
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        className={`inline-flex px-3 py-1 text-xs font-extrabold rounded-full hover:scale-105 transition-transform duration-200 ${
                           result.status === "published"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
+                            ? "bg-gradient-to-r from-green-400 to-green-600 text-white"
+                            : "bg-gradient-to-r from-yellow-400 to-yellow-600 text-white"
                         }`}
                       >
                         {result.status}
                       </span>
                     </td>
                     <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-3">
                         <button
                           onClick={() => handleResultEdit(result)}
-                          className="text-blue-400 hover:text-blue-300"
+                          className="p-2 text-blue-400 hover:text-white hover:bg-blue-500 rounded-lg transition-all duration-200 hover:scale-110"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleResultDelete(result.id)}
-                          className="text-red-400 hover:text-red-300"
+                          className="p-2 text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition-all duration-200 hover:scale-110"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
