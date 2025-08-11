@@ -90,6 +90,16 @@ router.post('/courses', async (req, res) => {
   } = req.body;
 
   try {
+    // Check if course code already exists
+    const existingCourse = await pool.query(
+      'SELECT course_code FROM courses WHERE course_code = $1',
+      [course_code]
+    );
+
+    if (existingCourse.rows.length > 0) {
+      return res.status(400).json({ error: 'Course code already exists' });
+    }
+
     const result = await pool.query(
       `INSERT INTO courses (course_code, title, department, credits, instructor, max_capacity, semester, description, status)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
@@ -132,6 +142,16 @@ router.put('/courses/:id', async (req, res) => {
   } = req.body;
 
   try {
+    // Check if course code already exists (excluding current course)
+    const existingCourse = await pool.query(
+      'SELECT course_code FROM courses WHERE course_code = $1 AND id != $2',
+      [course_code, id]
+    );
+
+    if (existingCourse.rows.length > 0) {
+      return res.status(400).json({ error: 'Course code already exists' });
+    }
+
     const result = await pool.query(
       `UPDATE courses 
        SET course_code = $1, title = $2, department = $3, credits = $4, 

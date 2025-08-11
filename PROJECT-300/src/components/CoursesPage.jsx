@@ -1,76 +1,114 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { studentCoursesAPI } from "../services/api";
 
-export function CoursesPage({ onCourseSelect }) {
-  const [activeTab, setActiveTab] = useState("running");
+export function CoursesPage({ onCourseSelect, studentId = "222-115-090" }) {
+  const [activeTab, setActiveTab] = useState("completed");
+  const [coursesData, setCoursesData] = useState({
+    completed: [],
+    running: [],
+    remaining: [],
+  });
+  const [loading, setLoading] = useState({
+    completed: false,
+    running: false,
+    remaining: false,
+  });
+  const [error, setError] = useState({
+    completed: null,
+    running: null,
+    remaining: null,
+  });
 
-  const coursesData = {
-    completed: [
-      {
-        id: 1,
-        title: "Introduction to Programming",
-        instructor: "Lecturer: Khudeja Khanom Anwara",
-        grade: "A+",
-        code: "CSE 101",
-        credits: 3,
-      },
-      {
-        id: 2,
-        title: "Discrete Mathematics",
-        instructor: "Lecturer: Limon Ahmed",
-        grade: "A",
-        code: "MATH 201",
-        credits: 3,
-      },
-    ],
-    running: [
-      {
-        id: 3,
-        title: "Artificial intelligence",
-        instructor: "Lecturer: Limon Ahmed",
-        grade: "A",
-        code: "CSE 301",
-        credits: 3,
-      },
-      {
-        id: 4,
-        title: "Compiler construction",
-        instructor: "Lecturer: Srabanti Choudhury",
-        grade: "A",
-        code: "CSE 401",
-        credits: 3,
-      },
-      {
-        id: 5,
-        title: "Project 300",
-        instructor: "Lecturer: Dewan Ahmed Muhtasim",
-        grade: "A",
-        code: "CSE 300",
-        credits: 3,
-      },
-    ],
-    remaining: [
-      {
-        id: 6,
-        title: "Bioinformatics",
-        instructor: "Lecturer: Limon Ahmed",
-        grade: null,
-        code: "CSE 501",
-        credits: 3,
-      },
-      {
-        id: 7,
-        title: "Computer Networks",
-        instructor: "Lecturer: Rafi Islam",
-        grade: null,
-        code: "CSE 421",
-        credits: 4,
-      },
-    ],
+  // Fetch completed courses
+  const fetchCompletedCourses = async () => {
+    setLoading(prev => ({ ...prev, completed: true }));
+    setError(prev => ({ ...prev, completed: null }));
+    
+    try {
+      const response = await studentCoursesAPI.getCompletedCourses(studentId);
+      setCoursesData(prev => ({ 
+        ...prev, 
+        completed: response.completed_courses || [] 
+      }));
+    } catch (err) {
+      console.error('Error fetching completed courses:', err);
+      setError(prev => ({ 
+        ...prev, 
+        completed: 'Failed to load completed courses. Please try again.' 
+      }));
+    } finally {
+      setLoading(prev => ({ ...prev, completed: false }));
+    }
   };
+
+  // Fetch running courses
+  const fetchRunningCourses = async () => {
+    setLoading(prev => ({ ...prev, running: true }));
+    setError(prev => ({ ...prev, running: null }));
+    
+    try {
+      const response = await studentCoursesAPI.getRunningCourses(studentId);
+      setCoursesData(prev => ({ 
+        ...prev, 
+        running: response.running_courses || [] 
+      }));
+    } catch (err) {
+      console.error('Error fetching running courses:', err);
+      setError(prev => ({ 
+        ...prev, 
+        running: 'Failed to load running courses. Please try again.' 
+      }));
+    } finally {
+      setLoading(prev => ({ ...prev, running: false }));
+    }
+  };
+
+  // Fetch remaining courses
+  const fetchRemainingCourses = async () => {
+    setLoading(prev => ({ ...prev, remaining: true }));
+    setError(prev => ({ ...prev, remaining: null }));
+    
+    try {
+      const response = await studentCoursesAPI.getRemainingCourses(studentId);
+      setCoursesData(prev => ({ 
+        ...prev, 
+        remaining: response.remaining_courses || [] 
+      }));
+    } catch (err) {
+      console.error('Error fetching remaining courses:', err);
+      setError(prev => ({ 
+        ...prev, 
+        remaining: 'Failed to load remaining courses. Please try again.' 
+      }));
+    } finally {
+      setLoading(prev => ({ ...prev, remaining: false }));
+    }
+  };
+
+  // Load data based on active tab
+  useEffect(() => {
+    switch (activeTab) {
+      case 'completed':
+        if (coursesData.completed.length === 0) {
+          fetchCompletedCourses();
+        }
+        break;
+      case 'running':
+        if (coursesData.running.length === 0) {
+          fetchRunningCourses();
+        }
+        break;
+      case 'remaining':
+        if (coursesData.remaining.length === 0) {
+          fetchRemainingCourses();
+        }
+        break;
+    }
+  }, [activeTab, studentId]);
 
   const CourseCard = ({ course }) => (
     <Card
@@ -86,7 +124,17 @@ export function CoursesPage({ onCourseSelect }) {
             <p className="text-gray-700 mb-1">{course.instructor}</p>
             {course.grade && (
               <p className="text-violet-700 font-semibold">
-                Grade: {course.grade}
+                Grade: {course.grade} {course.gpa && `(${course.gpa})`}
+              </p>
+            )}
+            {course.semester && (
+              <p className="text-blue-600 text-sm">
+                Semester: {course.semester}
+              </p>
+            )}
+            {course.department && (
+              <p className="text-gray-600 text-sm">
+                Department: {course.department}
               </p>
             )}
           </div>
@@ -103,9 +151,64 @@ export function CoursesPage({ onCourseSelect }) {
     </Card>
   );
 
+  const LoadingSpinner = () => (
+    <div className="flex justify-center items-center p-8">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <span className="ml-2 text-gray-600">Loading courses...</span>
+    </div>
+  );
+
+  const ErrorMessage = ({ message, onRetry }) => (
+    <div className="text-center p-8">
+      <p className="text-red-600 mb-4">{message}</p>
+      <button 
+        onClick={onRetry}
+        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        Retry
+      </button>
+    </div>
+  );
+
+  const EmptyState = ({ tabName }) => (
+    <div className="text-center p-8">
+      <p className="text-gray-600">No {tabName.toLowerCase()} courses found.</p>
+    </div>
+  );
+
+  const renderTabContent = (tabType, courses, isLoading, errorMessage) => {
+    if (isLoading) return <LoadingSpinner />;
+    
+    if (errorMessage) {
+      const retryFunctions = {
+        completed: fetchCompletedCourses,
+        running: fetchRunningCourses,
+        remaining: fetchRemainingCourses,
+      };
+      return <ErrorMessage message={errorMessage} onRetry={retryFunctions[tabType]} />;
+    }
+    
+    if (courses.length === 0) {
+      return <EmptyState tabName={tabType} />;
+    }
+
+    return (
+      <div className="space-y-4">
+        {courses.map((course) => (
+          <CourseCard key={course.id} course={course} />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="w-full h-full bg-gradient-to-br from-gray-200 via-blue-100 to-gray-100 p-4 md:p-8 flex justify-center items-start custom-scrollbar overflow-y-auto">
       <div className="w-full max-w-6xl bg-white/80 rounded-3xl shadow-2xl p-0 md:p-8 backdrop-blur-md border border-gray-200">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Course Management</h1>
+          <p className="text-gray-600">Student ID: {studentId}</p>
+        </div>
+        
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
@@ -116,45 +219,48 @@ export function CoursesPage({ onCourseSelect }) {
               value="completed"
               className="text-gray-600 border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:text-blue-700 bg-transparent rounded-none py-4 px-6 text-lg font-semibold tracking-wide transition-colors"
             >
-              Completed Courses
+              Completed Courses ({coursesData.completed.length})
             </TabsTrigger>
             <TabsTrigger
               value="running"
               className="text-gray-600 border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:text-blue-700 bg-transparent rounded-none py-4 px-6 text-lg font-semibold tracking-wide transition-colors"
             >
-              Running Courses
+              Running Courses ({coursesData.running.length})
             </TabsTrigger>
             <TabsTrigger
               value="remaining"
               className="text-gray-600 border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:text-blue-700 bg-transparent rounded-none py-4 px-6 text-lg font-semibold tracking-wide transition-colors"
             >
-              Remaining Courses
+              Remaining Courses ({coursesData.remaining.length})
             </TabsTrigger>
           </TabsList>
 
           <div className="mt-8">
             <TabsContent value="completed" className="mt-0">
-              <div className="space-y-4">
-                {coursesData.completed.map((course) => (
-                  <CourseCard key={course.id} course={course} />
-                ))}
-              </div>
+              {renderTabContent(
+                'completed', 
+                coursesData.completed, 
+                loading.completed, 
+                error.completed
+              )}
             </TabsContent>
 
             <TabsContent value="running" className="mt-0">
-              <div className="space-y-4">
-                {coursesData.running.map((course) => (
-                  <CourseCard key={course.id} course={course} />
-                ))}
-              </div>
+              {renderTabContent(
+                'running', 
+                coursesData.running, 
+                loading.running, 
+                error.running
+              )}
             </TabsContent>
 
             <TabsContent value="remaining" className="mt-0">
-              <div className="space-y-4">
-                {coursesData.remaining.map((course) => (
-                  <CourseCard key={course.id} course={course} />
-                ))}
-              </div>
+              {renderTabContent(
+                'remaining', 
+                coursesData.remaining, 
+                loading.remaining, 
+                error.remaining
+              )}
             </TabsContent>
           </div>
         </Tabs>

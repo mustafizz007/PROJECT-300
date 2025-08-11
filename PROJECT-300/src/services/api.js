@@ -189,4 +189,61 @@ export const studentNotificationAPI = {
   },
 };
 
-export default { adminDashboardAPI, courseAPI, studentNotificationAPI };
+// Student Courses API functions
+export const studentCoursesAPI = {
+  // Get completed courses for a student
+  getCompletedCourses: async (studentId) => {
+    const response = await fetch(`http://localhost:3000/api/student-courses/completed/${studentId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch completed courses');
+    }
+    return await response.json();
+  },
+
+  // Get running courses for a student
+  getRunningCourses: async (studentId) => {
+    const response = await fetch(`http://localhost:3000/api/student-courses/running/${studentId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch running courses');
+    }
+    return await response.json();
+  },
+
+  // Get remaining courses for a student
+  getRemainingCourses: async (studentId) => {
+    const response = await fetch(`http://localhost:3000/api/student-courses/remaining/${studentId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch remaining courses');
+    }
+    return await response.json();
+  },
+
+  // Get course summary for a student
+  getCourseSummary: async (studentId) => {
+    const response = await fetch(`http://localhost:3000/api/student-courses/summary/${studentId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch course summary');
+    }
+    return await response.json();
+  },
+
+  // Get completed courses with resources for a student
+  getCompletedCoursesWithResources: async (studentId) => {
+    const response = await fetch(`http://localhost:3000/api/student-resources/completed/${studentId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch completed courses with resources');
+    }
+    return await response.json();
+  },
+
+  // Get remaining courses with resources for a student
+  getRemainingCoursesWithResources: async (studentId) => {
+    const response = await fetch(`http://localhost:3000/api/student-resources/remaining/${studentId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch remaining courses with resources');
+    }
+    return await response.json();
+  },
+};
+
+export default { adminDashboardAPI, courseAPI, studentNotificationAPI, studentCoursesAPI };

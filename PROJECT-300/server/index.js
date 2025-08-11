@@ -5,6 +5,8 @@ import pool from './db.js';
 import studentRoutes from './routes/student.js';
 import adminRoutes from './routes/admin.js';
 import courseRoutes from './routes/courses.js';
+import studentCoursesRoutes from './routes/courses-api/student-courses.js';
+import studentResourcesRoutes from './routes/courses-api/student-resources.js';
 
 const app = express();
 const PORT = 3000;
@@ -28,6 +30,12 @@ app.use((req, res, next) => {
 
 // Mount student routes
 app.use('/api/student', studentRoutes);
+
+// Mount student courses routes
+app.use('/api/student-courses', studentCoursesRoutes);
+
+// Mount student resources routes
+app.use('/api/student-resources', studentResourcesRoutes);
 
 // Mount admin routes
 app.use('/admin', adminRoutes);
