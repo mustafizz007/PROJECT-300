@@ -13,9 +13,6 @@ import {
   Link,
   Upload,
   ChevronUp,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
 import { courseAPI } from "../../services/api";
 
@@ -79,23 +76,8 @@ export default function CourseManagement() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const scrollToBottom = () => {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-  };
 
-  const scrollLeft = () => {
-    const container = document.querySelector(".overflow-x-auto");
-    if (container) {
-      container.scrollBy({ left: -200, behavior: "smooth" });
-    }
-  };
 
-  const scrollRight = () => {
-    const container = document.querySelector(".overflow-x-auto");
-    if (container) {
-      container.scrollBy({ left: 200, behavior: "smooth" });
-    }
-  };
 
   const loadData = async () => {
     try {
@@ -278,37 +260,6 @@ export default function CourseManagement() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-              {/* Scroll Control Buttons */}
-              <div className="flex items-center justify-center space-x-1 bg-gray-700 rounded-lg p-1">
-                <button
-                  onClick={scrollToTop}
-                  className="p-1.5 sm:p-2 text-gray-400 hover:text-white hover:bg-gray-600 rounded transition-colors"
-                  title="Scroll to top"
-                >
-                  <ChevronUp className="w-3 h-3 sm:w-4 sm:h-4" />
-                </button>
-                <button
-                  onClick={scrollToBottom}
-                  className="p-1.5 sm:p-2 text-gray-400 hover:text-white hover:bg-gray-600 rounded transition-colors"
-                  title="Scroll to bottom"
-                >
-                  <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
-                </button>
-                <button
-                  onClick={scrollLeft}
-                  className="p-1.5 sm:p-2 text-gray-400 hover:text-white hover:bg-gray-600 rounded transition-colors"
-                  title="Scroll left"
-                >
-                  <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
-                </button>
-                <button
-                  onClick={scrollRight}
-                  className="p-1.5 sm:p-2 text-gray-400 hover:text-white hover:bg-gray-600 rounded transition-colors"
-                  title="Scroll right"
-                >
-                  <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
-                </button>
-              </div>
 
               <button
                 onClick={handleCourseCreate}
