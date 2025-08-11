@@ -12,7 +12,7 @@ import { CourseDetailPage } from "./course-details-page";
 import StudentResource from "./StudentResource";
 import SemesterResultsTable from "./semester-wise-result";
 import NotificationBell from "./ui/NotificationBell";
-import { studentNotificationAPI } from "../services/api";
+import { studentNotificationAPI, studentCoursesAPI } from "../services/api";
 import {
   Award,
   CalendarDays,
@@ -89,6 +89,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   const [cgpa, setCgpa] = useState("Loading...");
   const [totalCredits, setTotalCredits] = useState(null);
   const [semesters, setSemesters] = useState([]);
+  const [currentSemester, setCurrentSemester] = useState(null);
   const [academicYears, setAcademicYears] = useState([]);
   const [dashboardView, setDashboardView] = useState("dashboard");
   const [selectedCourseId, setSelectedCourseId] = useState(null);
@@ -185,6 +186,22 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
     };
 
     if (studentId) fetchSemesters();
+  }, [studentId]);
+
+  // Fetch current semester from API
+  useEffect(() => {
+    const fetchCurrentSemester = async () => {
+      try {
+        const response = await studentCoursesAPI.getCurrentSemester(studentId);
+        setCurrentSemester(response);
+        console.log("Current semester response:", response);
+      } catch (error) {
+        console.error("Failed to fetch current semester:", error);
+        setCurrentSemester(null);
+      }
+    };
+
+    if (studentId) fetchCurrentSemester();
   }, [studentId]);
 
   // Fetch student notifications
@@ -337,7 +354,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
           </div>
           <Button
             variant="outline"
-            className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 shadow-2xl hover:from-gray-700 hover:to-purple-900 text-white hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center gap-2 border-0 shadow-lg transition-all duration-300"
+            className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 hover:from-gray-700 hover:to-purple-900 text-white hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center gap-2 border-0 shadow-2xl transition-all duration-300"
             onClick={onLogout}
           >
             Logout
@@ -466,12 +483,14 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                   <InfoCard
                     title="Current Semester"
                     value={
-                      semesters.length > 0 ? `${semesters.length}th` : "N/A"
+                      currentSemester
+                        ? `${currentSemester.year}-${currentSemester.term}`
+                        : "Loading..."
                     }
                     subtitle={
-                      semesters.length > 0
-                        ? `Year ${semesters[semesters.length - 1]}`
-                        : "No semesters available"
+                      currentSemester
+                        ? `Year ${currentSemester.year}, Term ${currentSemester.term}`
+                        : "Calculating current semester"
                     }
                     icon={CalendarDays}
                     bgColor="bg-gradient-to-br from-pink-600 via-pink-700 to-purple-600 hover:from-pink-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-pink-500/30"
@@ -523,7 +542,9 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                     <div className="flex justify-between">
                       <span>Current Year:</span>
                       <span className="font-bold">
-                        {semesters.length > 0
+                        {currentSemester
+                          ? `Year ${currentSemester.year}, Term ${currentSemester.term}`
+                          : semesters.length > 0
                           ? (() => {
                               const [year, sem] =
                                 semesters[semesters.length - 1].split("-");
@@ -534,11 +555,13 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                     </div>
                     <div className="flex justify-between">
                       <span>This Semester:</span>
-                      <span className="font-bold">10 Courses</span>
+                      <span className="font-bold">
+                        {currentSemester ? `${currentSemester.current_semester} Semester` : "Loading..."}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Credits Next Semester:</span>
-                      <span className="font-bold">8 credits</span>
+                      <span>Completed Semesters:</span>
+                      <span className="font-bold">{semesters.length} semesters</span>
                     </div>
                   </div>
                   <div className="bg-teal-500 rounded-lg p-4">

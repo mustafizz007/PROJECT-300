@@ -227,6 +227,15 @@ export const studentCoursesAPI = {
     return await response.json();
   },
 
+  // Get current semester for a student
+  getCurrentSemester: async (studentId) => {
+    const response = await fetch(`http://localhost:3000/api/student/current-semester/${studentId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch current semester');
+    }
+    return await response.json();
+  },
+
   // Get completed courses with resources for a student
   getCompletedCoursesWithResources: async (studentId) => {
     const response = await fetch(`http://localhost:3000/api/student-resources/completed/${studentId}`);

@@ -11,6 +11,7 @@ export function CoursesPage({ onCourseSelect, studentId = "222-115-090" }) {
     completed: [],
     running: [],
     remaining: [],
+    currentSemester: null,
   });
   const [loading, setLoading] = useState({
     completed: false,
@@ -56,6 +57,14 @@ export function CoursesPage({ onCourseSelect, studentId = "222-115-090" }) {
         ...prev, 
         running: response.running_courses || [] 
       }));
+      
+      // Store current semester info if available
+      if (response.current_semester) {
+        setCoursesData(prev => ({ 
+          ...prev, 
+          currentSemester: response.current_semester
+        }));
+      }
     } catch (err) {
       console.error('Error fetching running courses:', err);
       setError(prev => ({ 
@@ -110,7 +119,7 @@ export function CoursesPage({ onCourseSelect, studentId = "222-115-090" }) {
     }
   }, [activeTab, studentId]);
 
-  const CourseCard = ({ course }) => (
+  const CourseCard = ({ course, tabType }) => (
     <Card
       className="bg-white/90 border border-gray-200 shadow-lg hover:shadow-xl hover:scale-[1.025] transition-all duration-200 cursor-pointer rounded-2xl"
       onClick={() => onCourseSelect && onCourseSelect(course.id)}
@@ -136,6 +145,24 @@ export function CoursesPage({ onCourseSelect, studentId = "222-115-090" }) {
               <p className="text-gray-600 text-sm">
                 Department: {course.department}
               </p>
+            )}
+            {tabType === 'running' && course.status === 'ongoing' && (
+              <div className="mt-2">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  Currently Enrolled
+                </span>
+              </div>
+            )}
+            {tabType === 'remaining' && course.is_departmental !== undefined && (
+              <div className="mt-2">
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  course.is_departmental 
+                    ? 'bg-blue-100 text-blue-800' 
+                    : 'bg-purple-100 text-purple-800'
+                }`}>
+                  {course.is_departmental ? 'Departmental' : 'Interdisciplinary'}
+                </span>
+              </div>
             )}
           </div>
           <div className="text-right">
@@ -195,7 +222,7 @@ export function CoursesPage({ onCourseSelect, studentId = "222-115-090" }) {
     return (
       <div className="space-y-4">
         {courses.map((course) => (
-          <CourseCard key={course.id} course={course} />
+          <CourseCard key={course.id} course={course} tabType={tabType} />
         ))}
       </div>
     );
@@ -246,6 +273,16 @@ export function CoursesPage({ onCourseSelect, studentId = "222-115-090" }) {
             </TabsContent>
 
             <TabsContent value="running" className="mt-0">
+              {coursesData.currentSemester && (
+                <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <h3 className="text-lg font-semibold text-green-800">
+                    Current Semester: {coursesData.currentSemester}
+                  </h3>
+                  <p className="text-green-600 text-sm">
+                    These are the courses you are currently enrolled in for this semester.
+                  </p>
+                </div>
+              )}
               {renderTabContent(
                 'running', 
                 coursesData.running, 

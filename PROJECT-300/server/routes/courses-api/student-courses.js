@@ -94,42 +94,111 @@ router.get('/completed/:studentId', async (req, res) => {
 
 /**
  * GET /api/student-courses/running/:studentId
- * Fetch currently running courses for a student
- * Note: This is a placeholder since we don't have current enrollment data
+ * Fetch currently running courses for a student based on current semester
  */
 router.get('/running/:studentId', async (req, res) => {
   const { studentId } = req.params;
   
   try {
-    // For now, return sample running courses
-    // In a real system, you'd have an enrollment or current_semester table
-    const runningCourses = [
-      {
-        id: 1,
-        title: "Artificial Intelligence",
-        instructor: "Lecturer: Limon Ahmed",
-        grade: null, // No grade yet for running courses
-        code: "CSE 301",
-        credits: 3,
-        semester: "current",
-        department: "Computer Science",
-        status: "ongoing"
-      },
-      {
-        id: 2,
-        title: "Compiler Construction",
-        instructor: "Lecturer: Srabanti Choudhury",
-        grade: null,
-        code: "CSE 401",
-        credits: 3,
-        semester: "current",
-        department: "Computer Science",
-        status: "ongoing"
+    // First, get the current semester (highest semester + 1)
+    const semesterResult = await pool.query(
+      'SELECT MAX(semester) as highest_semester FROM student_result WHERE student_id = $1',
+      [studentId]
+    );
+
+    const highestSemester = semesterResult.rows[0].highest_semester;
+    
+    let currentSemester;
+    if (!highestSemester) {
+      currentSemester = '1-1'; // First semester if no completed courses
+    } else {
+      const [year, term] = highestSemester.split('-').map(num => parseInt(num));
+      let nextYear = year;
+      let nextTerm = term + 1;
+      
+      if (nextTerm > 3) {
+        nextYear = year + 1;
+        nextTerm = 1;
       }
-    ];
+      
+      currentSemester = `${nextYear}-${nextTerm}`;
+    }
+
+    // Get student's department to filter relevant courses
+    const studentResult = await pool.query(
+      'SELECT department FROM student_info WHERE student_id = $1',
+      [studentId]
+    );
+
+    if (studentResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+
+    const studentDepartment = studentResult.rows[0].department;
+
+    // Get completed course codes to exclude them
+    const completedResult = await pool.query(
+      'SELECT DISTINCT course_id FROM student_result WHERE student_id = $1',
+      [studentId]
+    );
+
+    const completedCourseIds = completedResult.rows.map(row => row.course_id);
+
+    // Get available courses for the current semester (not yet completed)
+    let query, params;
+    if (completedCourseIds.length > 0) {
+      query = `SELECT 
+         id,
+         course_code,
+         title,
+         instructor,
+         credits,
+         department,
+         description,
+         semester as course_semester
+       FROM courses 
+       WHERE department = $1 
+       AND course_code NOT IN (${completedCourseIds.map((_, index) => `$${index + 2}`).join(', ')})
+       AND status = 'active'
+       ORDER BY course_code
+       LIMIT 6`; // Limit to reasonable number of running courses
+      params = [studentDepartment, ...completedCourseIds];
+    } else {
+      query = `SELECT 
+         id,
+         course_code,
+         title,
+         instructor,
+         credits,
+         department,
+         description,
+         semester as course_semester
+       FROM courses 
+       WHERE department = $1 
+       AND status = 'active'
+       ORDER BY course_code
+       LIMIT 6`;
+      params = [studentDepartment];
+    }
+
+    const coursesResult = await pool.query(query, params);
+
+    const runningCourses = coursesResult.rows.map((course, index) => ({
+      id: index + 1,
+      title: course.title,
+      instructor: `Lecturer: ${course.instructor}`,
+      grade: null, // No grade yet for running courses
+      code: course.course_code,
+      credits: course.credits,
+      semester: currentSemester,
+      department: course.department,
+      status: "ongoing",
+      description: course.description
+    }));
 
     res.json({
       student_id: studentId,
+      current_semester: currentSemester,
       running_courses: runningCourses,
       summary: {
         total_courses: runningCourses.length,

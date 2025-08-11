@@ -155,6 +155,56 @@ router.get('/semesters/:studentId', async (req, res) => {
   }
 });
 
+// NEW API: GET /api/student/current-semester/:studentId - Get the current semester (highest semester + 1)
+router.get('/current-semester/:studentId', async (req, res) => {
+  const { studentId } = req.params;
+  try {
+    // Get the highest semester for the student
+    const result = await pool.query(
+      'SELECT MAX(semester) as highest_semester FROM student_result WHERE student_id = $1',
+      [studentId]
+    );
+
+    const highestSemester = result.rows[0].highest_semester;
+    
+    if (!highestSemester) {
+      // Student has no completed courses, so current semester is 1-1
+      return res.json({ 
+        student_id: studentId,
+        current_semester: '1-1',
+        year: 1,
+        term: 1
+      });
+    }
+
+    // Parse the highest semester (format: "year-term")
+    const [year, term] = highestSemester.split('-').map(num => parseInt(num));
+    
+    // Calculate next semester
+    let nextYear = year;
+    let nextTerm = term + 1;
+    
+    // If term exceeds 3, move to next year
+    if (nextTerm > 3) {
+      nextYear = year + 1;
+      nextTerm = 1;
+    }
+    
+    const currentSemester = `${nextYear}-${nextTerm}`;
+    
+    res.json({
+      student_id: studentId,
+      current_semester: currentSemester,
+      year: nextYear,
+      term: nextTerm,
+      highest_completed_semester: highestSemester
+    });
+  } catch (err) {
+    console.error('Error fetching current semester:', err);
+    res.status(500).json({ error: 'Server error while fetching current semester' });
+  }
+});
+
 // NEW API: GET /api/student/semester-results/:studentId - Fetch semester-wise results
 router.get('/semester-results/:studentId', async (req, res) => {
   const { studentId } = req.params;
