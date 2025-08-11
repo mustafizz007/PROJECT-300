@@ -202,7 +202,7 @@ export function CoursesPage({ onCourseSelect, studentId = "222-115-090" }) {
   };
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-gray-200 via-blue-100 to-gray-100 p-4 md:p-8 flex justify-center items-start custom-scrollbar overflow-y-auto">
+    <div className="w-full h-full bg-gradient-to-br from-purple-200 via-blue-200 to-gray-200 p-4 md:p-8 flex justify-center items-start custom-scrollbar overflow-y-auto">
       <div className="w-full max-w-6xl bg-white/80 rounded-3xl shadow-2xl p-0 md:p-8 backdrop-blur-md border border-gray-200">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">Course Management</h1>

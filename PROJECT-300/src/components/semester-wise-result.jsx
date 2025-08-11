@@ -141,7 +141,7 @@ export default function SemesterResultsTable({ onNavigate, studentId = "222-115-
   }
 
   return (
-    <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <div className="p-8 bg-gradient-to-br from-purple-200 via-blue-200 to-gray-200 min-h-screen">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
           <div className="bg-gradient-to-r from-gray-600 to-indigo-600 px-8 py-6">

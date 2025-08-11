@@ -253,7 +253,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   };
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-gray-900 via-white-900 to-gray-900 page-reload-animation relative overflow-hidden">
+  <div className="w-full h-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 page-reload-animation relative overflow-hidden">
       {/* Animated background blobs matching homepage - Slower animations */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow"></div>
@@ -337,7 +337,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
           </div>
           <Button
             variant="outline"
-            className="bg-gradient-to-r from-gray-800 to-gray-600 hover:from-gray-700 hover:to-gray-900 text-white hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center gap-2 border-0 shadow-lg transition-all duration-300"
+            className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 shadow-2xl hover:from-gray-700 hover:to-purple-900 text-white hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center gap-2 border-0 shadow-lg transition-all duration-300"
             onClick={onLogout}
           >
             Logout
@@ -437,7 +437,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                 className="text-center mb-8 lg:mb-12 animate-slide-up-slow"
                 style={{ animationDelay: "0.3s" }}
               >
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white-300 via-gray-300 to-white-300 bg-clip-text text-transparent mb-2 lg:mb-4">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white-200 via-purple-300 to-white-400 bg-clip-text text-transparent mb-2 lg:mb-4">
                   Welcome back, {studentName}!
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-300 font-light">

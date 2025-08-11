@@ -39,7 +39,7 @@ export default function HomePage({ onNavigate }) {
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span className="relative z-10">{item.name}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-600/20 to-gray-600/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-lg"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-purple-600/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-lg"></div>
                   <div className="absolute inset-0 bg-white/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-lg"></div>
                 </button>
               ))}
@@ -48,20 +48,20 @@ export default function HomePage({ onNavigate }) {
             <div className="flex space-x-4">
               <button
                 onClick={() => onNavigate("login")}
-                className="relative px-6 py-2.5 bg-transparent border-2 border-gray-900/50 text-gray-900 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-gray-300 hover:shadow-lg hover:shadow-gray-100/25"
+                className="relative px-6 py-2.5 bg-transparent border-2 border-purple-900/50 text-purple-900 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-purple-300 hover:shadow-lg hover:shadow-purple-100/25"
               >
                 <span className="relative z-10 group-hover:text-white transition-colors duration-300">
                   Login
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-600 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-700 via-purple-900 to-gray-800 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
               </button>
 
               <button
                 onClick={() => onNavigate("signup")}
-                className="relative px-6 py-2.5 bg-gradient-to-r from-gray-800 to-gray-800 text-white font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-gray-900/50 hover:scale-105"
+                className="relative px-6 py-2.5 bg-gradient-to-r from-slate-700 via-purple-900 to-gray-800 text-white font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-gray-900/50 hover:scale-105"
               >
                 <span className="relative z-10">Sign Up</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-600 to-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-900 to-purple-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute inset-0 bg-white/20 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
               </button>
             </div>
@@ -70,7 +70,7 @@ export default function HomePage({ onNavigate }) {
       </header>
 
       {/* Hero Section */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-br from-black via-zinc-900 to-slate-900 min-h-screen">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-br from-slate-900 via-purple-900/50 to-slate-900 shadow-2xl min-h-screen">
         <div className="max-w-7xl mx-auto w-full">
           <div className="text-center">
             {/* Hero Title */}
@@ -90,9 +90,9 @@ export default function HomePage({ onNavigate }) {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animation-delay-600">
               <button
                 onClick={() => onNavigate("login")}
-                className="group relative px-8 py-4 bg-gradient-to-r from-slate-900 via-white-700 to-gray-800 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-gray-500/25 transform hover:scale-105 transition-all duration-300 ease-out overflow-hidden min-w-[200px]"
+                className="group relative px-8 py-4 bg-gradient-to-r from-slate-900 via-purple-900 to-gray-800 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-gray-500/25 transform hover:scale-105 transition-all duration-300 ease-out overflow-hidden min-w-[200px]"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 via-purple-900 to-zinc-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <span className="relative z-10 flex items-center justify-center">
                   <svg
@@ -135,32 +135,6 @@ export default function HomePage({ onNavigate }) {
                     />
                   </svg>
                   Admin Login
-                </span>
-              </button>
-
-              <button className="group relative px-8 py-4 bg-gradient-to-r from-gray-600 to-gray-800 text-white font-bold text-lg rounded-2xl shadow-lg hover:shadow-gray-500/25 transform hover:scale-105 transition-all duration-300 ease-out overflow-hidden min-w-[200px]">
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <span className="relative z-10 flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                  Guest Access
                 </span>
               </button>
             </div>

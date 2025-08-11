@@ -107,7 +107,7 @@ export default function StudentSignup({ onNavigate }) {
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span className="relative z-10">{item.name}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-600/20 to-gray-600/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-lg"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-purple-600/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-lg"></div>
                   <div className="absolute inset-0 bg-white/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-lg"></div>
                 </button>
               ))}
@@ -117,20 +117,20 @@ export default function StudentSignup({ onNavigate }) {
             <div className="flex space-x-4">
               <button
                 onClick={() => onNavigate("login")}
-                className="relative px-6 py-2.5 bg-transparent border-2 border-gray-900/50 text-black-900 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-gray-300 hover:shadow-lg hover:shadow-gray-100/25"
+                className="relative px-6 py-2.5 bg-transparent border-2 border-purple-900/50 text-purple-900 font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:border-purple-300 hover:shadow-lg hover:shadow-purple-100/25"
               >
                 <span className="relative z-10 group-hover:text-white transition-colors duration-300">
                   Login
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-600 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-700 via-purple-900 to-gray-800 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
               </button>
 
               <button
                 onClick={() => onNavigate("signup")}
-                className="relative px-6 py-2.5 bg-gradient-to-r from-gray-800 to-gray-800 text-white font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-gray-900/50 hover:scale-105"
+                className="relative px-6 py-2.5 bg-gradient-to-r from-slate-700 via-purple-900 to-gray-800 text-white font-semibold rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-gray-900/50 hover:scale-105"
               >
                 <span className="relative z-10">Sign Up</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-600 to-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-900 to-purple-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute inset-0 bg-white/20 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
               </button>
             </div>
@@ -139,7 +139,7 @@ export default function StudentSignup({ onNavigate }) {
       </header>
 
       {/* Signup Form */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-br from-black via-zinc-900 to-slate-900">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
         <div className="max-w-lg w-full space-y-8">
           <div className="bg-white/10 backdrop-blur-md rounded-3xl p-10 shadow-2xl border border-white/20 hover:shadow-gray-500/20 transition-all duration-500 animate-fade-in-up">
             <div className="text-left">
@@ -245,9 +245,9 @@ export default function StudentSignup({ onNavigate }) {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="group relative w-full px-8 py-4 bg-gradient-to-r from-gray-600 via-white-600 to-gray-600 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-gray-500/25 transform hover:scale-105 transition-all duration-300 ease-out overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative w-full px-8 py-4 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-gray-500/25 transform hover:scale-105 transition-all duration-300 ease-out overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-700 via-white-700 to-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-900 via-slate-900 to-purple-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <span className="relative z-10 flex items-center justify-center">
                   <svg
@@ -265,7 +265,7 @@ export default function StudentSignup({ onNavigate }) {
                   </svg>
                   {isLoading ? "Creating Account..." : "Create Account"}
                 </span>
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-gray-400/20 to-cyan-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
               </button>
             </form>
 

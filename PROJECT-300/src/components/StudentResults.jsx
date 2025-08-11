@@ -297,7 +297,7 @@ export function StudentResults({ studentId, selectedSemester, onNavigate }) {
   }
 
   return (
-    <div className="w-full h-full p-8 bg-gradient-to-br from-blue-50 via-teal-50 to-purple-100 custom-scrollbar overflow-y-auto">
+    <div className="w-full h-full p-8 bg-gradient-to-br from-purple-200 via-blue-200 to-gray-200 custom-scrollbar overflow-y-auto">
       <div className="bg-white rounded-3xl p-10 shadow-xl max-w-8xl mx-auto hover:shadow-2xl hover:shadow-blue-200/30 transition-shadow duration-500">
         {/* Back Button */}
         <div className="mb-8">
