@@ -266,7 +266,12 @@ export default function StudentResource() {
             )}
           </div>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              console.log("Add Resource button clicked!");
+              console.log("Current modal state:", isModalOpen);
+              setIsModalOpen(true);
+              console.log("Modal state after setting:", true);
+            }}
             className="px-6 py-3 bg-gradient-to-r from-purple-500 to-slate-900 hover:from-purple-600 hover:to-slate-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
           >
             <svg

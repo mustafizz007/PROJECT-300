@@ -19,9 +19,13 @@ import {
   Users,
   Award,
   Bell,
+  GraduationCap,
+  Star,
+  MapPin,
+  ExternalLink,
 } from "lucide-react";
 
-export function CourseDetailPage({ courseId, onBack }) {
+export function CourseDetailPage({ courseId, courseData, onBack }) {
   // Course data based on courseId
   const allCoursesData = {
     1: {
@@ -179,7 +183,10 @@ export function CourseDetailPage({ courseId, onBack }) {
     },
   };
 
-  const [courseData] = useState(allCoursesData[courseId] || allCoursesData[3]);
+  // Use passed courseData prop or fallback to allCoursesData based on courseId
+  const selectedCourseData =
+    courseData || allCoursesData[courseId] || allCoursesData[3];
+  const [currentCourseData] = useState(selectedCourseData);
 
   // Assignments data based on courseId
   const allAssignmentsData = {
@@ -400,44 +407,84 @@ export function CourseDetailPage({ courseId, onBack }) {
   };
 
   return (
-    <div className="w-full h-full  bg-gradient-to-br from-violet-100 to-blue-100 p-4 md:p-8 flex justify-center items-start overflow-auto">
-      <div className="w-full max-w-8xl bg-white/80 rounded-3xl shadow-2xl p-0 md:p-8 backdrop-blur-md border border-gray-200">
-        {/* Sticky Header */}
-        <div className="top-0 z-10 bg-gradient-to-r from-violet-200/80 to-blue-200/80 rounded-t-3xl px-4 md:px-8 pt-6 pb-2 border-b border-gray-300 mb-6">
+    <div className="w-full h-full bg-gradient-to-br from-purple-200 via-blue-200 to-gray-200 p-4 md:p-8 flex justify-center items-start overflow-auto">
+      <div className="w-full max-w-8xl bg-gray-300/90 to-gray-300/90 rounded-3xl shadow-2xl p-0 md:p-8 backdrop-blur-lg border border-gray-600">
+        {/* Enhanced Sticky Header */}
+        <div className="top-0 z-10 bg-gradient-to-r from-slate-800/80 to-violet-800/80 rounded-t-3xl px-4 md:px-8 pt-6 pb-4 border-b border-gray-600 mb-8">
           <Button
             variant="ghost"
-            className="text-gray-800 hover:bg-gray-700 mb-4"
+            className="text-white hover:bg-white/20 mb-6 backdrop-blur-sm border border-white/20 transition-all duration-300"
             onClick={onBack}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Courses
           </Button>
-          <div className="flex items-center justify-between mb-2">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-1">
-                {courseData.code}: {courseData.title}
-              </h1>
-              <p className="text-gray-600 text-lg">{courseData.instructor}</p>
+
+          {/* Enhanced Course Header */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-6">
+              <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-4 rounded-xl shadow-lg">
+                <GraduationCap className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight">
+                  {currentCourseData.code}: {currentCourseData.title}
+                </h1>
+                <p className="text-gray-300 text-lg font-medium text-left">
+                  {currentCourseData.instructor}
+                </p>
+                <div className="flex items-center space-x-4 mt-2 text-sm text-gray-400">
+                  <div className="flex items-center">
+                    <BookOpen className="w-4 h-4 mr-1" />
+                    {currentCourseData.department || "Computer Science"}
+                  </div>
+                  <div className="flex items-center">
+                    <Award className="w-4 h-4 mr-1" />
+                    {currentCourseData.credits} Credits
+                  </div>
+                  <div className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-1" />
+                    {currentCourseData.semester}
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-gray-900">
-                {courseData.currentGrade}
+              <div className="bg-gradient-to-br from-green-400 to-emerald-500 text-white px-6 py-3 rounded-xl shadow-lg">
+                <div className="text-3xl font-bold">
+                  {currentCourseData.currentGrade ||
+                    currentCourseData.grade ||
+                    "A"}
+                </div>
+                <p className="text-green-100 text-sm">
+                  {isCompletedCourse(courseId)
+                    ? "Final Grade"
+                    : "Current Grade"}
+                </p>
               </div>
-              <p className="text-gray-600">
-                {isCompletedCourse(courseId) ? "Final Grade" : "Current Grade"}
-              </p>
+              {currentCourseData.gpa && (
+                <div className="mt-2 text-white/80">
+                  <div className="text-lg font-semibold">
+                    GPA: {currentCourseData.gpa}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
-        {/* Course Stats Cards */}
+        {/* Enhanced Course Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-blue-600/90 text-white border-0 rounded-2xl shadow-lg">
+          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
             <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-2">
-                <BookOpen className="w-6 h-6" />
-                <span className="text-2xl font-bold">{courseData.credits}</span>
+              <div className="flex items-center">
+                <Award className="w-8 h-8 text-blue-100 mr-4" />
+                <div>
+                  <p className="text-blue-100 text-sm font-medium">Credits</p>
+                  <p className="text-2xl font-bold">
+                    {currentCourseData.credits}
+                  </p>
+                </div>
               </div>
-              <p className="text-sm opacity-90">Credits</p>
             </CardContent>
           </Card>
           {isRemainingCourse(courseId) ? (
@@ -447,7 +494,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <div className="flex items-center justify-between mb-2">
                     <Calendar className="w-6 h-6" />
                     <span className="text-lg font-bold">
-                      {courseData.semester}
+                      {currentCourseData.semester}
                     </span>
                   </div>
                   <p className="text-sm opacity-90">Semester</p>
@@ -488,7 +535,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <div className="flex items-center justify-between mb-2">
                     <Users className="w-6 h-6" />
                     <span className="text-2xl font-bold">
-                      {courseData.attendance}%
+                      {currentCourseData.attendance}%
                     </span>
                   </div>
                   <p className="text-sm opacity-90">Final Attendance</p>
@@ -513,7 +560,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <div className="flex items-center justify-between mb-2">
                     <Users className="w-6 h-6" />
                     <span className="text-2xl font-bold">
-                      {courseData.attendance}%
+                      {currentCourseData.attendance}%
                     </span>
                   </div>
                   <p className="text-sm opacity-90">Attendance</p>
@@ -524,7 +571,7 @@ export function CourseDetailPage({ courseId, onBack }) {
                   <div className="flex items-center justify-between mb-2">
                     <Award className="w-6 h-6" />
                     <span className="text-2xl font-bold">
-                      {courseData.progress}%
+                      {currentCourseData.progress}%
                     </span>
                   </div>
                   <p className="text-sm opacity-90">Progress</p>
@@ -545,99 +592,139 @@ export function CourseDetailPage({ courseId, onBack }) {
           )}
         </div>
 
-        {/* Course Progress - only show for running/completed courses */}
+        {/* Enhanced Course Progress - only show for running/completed courses */}
         {!isRemainingCourse(courseId) && (
-          <Card className="bg-gray-800 border-gray-700 mb-8">
+          <Card className="bg-gradient-to-br from-gray-800/70 to-gray-900/70 backdrop-blur-lg border border-white/10 mb-8 shadow-2xl">
             <CardHeader>
-              <CardTitle className="text-white">
+              <CardTitle className="text-white text-xl font-bold flex items-center">
+                <CheckCircle className="w-6 h-6 mr-3 text-green-400" />
                 {isCompletedCourse(courseId)
                   ? "Course Summary"
                   : "Course Progress"}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between text-white">
-                  <span>
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-300 font-medium text-lg">
                     {isCompletedCourse(courseId)
                       ? "Final Progress"
                       : "Overall Progress"}
                   </span>
-                  <span>{courseData.progress}%</span>
+                  <span className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+                    {currentCourseData.progress || 0}%
+                  </span>
                 </div>
-                <Progress value={courseData.progress} className="h-3" />
-                <p className="text-gray-400 text-sm">
+                <div className="relative">
+                  <Progress
+                    value={currentCourseData.progress || 0}
+                    className="h-4 bg-gray-700/50 rounded-full overflow-hidden"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full"></div>
+                </div>
+                <p className="text-gray-300 text-sm leading-relaxed bg-gray-800/50 p-4 rounded-lg border border-gray-700/50">
                   {isCompletedCourse(courseId)
-                    ? "Course completed successfully! Well done."
-                    : "You're doing great! Keep up the excellent work."}
+                    ? "🎉 Course completed successfully! Excellent work on achieving your learning goals."
+                    : "🚀 You're making great progress! Keep up the excellent work and stay focused on your objectives."}
                 </p>
               </div>
             </CardContent>
           </Card>
         )}
 
-        {/* Tabs for different sections */}
+        {/* Enhanced Tabs for different sections */}
         <Tabs defaultValue="overview" className="w-full">
           {isRemainingCourse(courseId) ? (
             // For remaining courses, show only overview
-            <TabsList className="grid w-full grid-cols-1 bg-gray-800">
-              <TabsTrigger value="overview" className="text-white">
+            <TabsList className="grid w-full grid-cols-1 bg-gradient-to-r from-gray-800/80 to-gray-900/80 backdrop-blur-lg border border-white/10 rounded-xl p-2">
+              <TabsTrigger
+                value="overview"
+                className="text-white font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              >
+                <BookOpen className="w-4 h-4 mr-2" />
                 Course Overview
               </TabsTrigger>
             </TabsList>
           ) : (
             // For running/completed courses, show all tabs
-            <TabsList className="grid w-full grid-cols-5 bg-gray-800">
-              <TabsTrigger value="overview" className="text-white">
+            <TabsList className="grid w-full grid-cols-5 bg-gradient-to-r from-gray-800/80 to-gray-900/80 backdrop-blur-lg border border-white/10 rounded-xl p-2 gap-1">
+              <TabsTrigger
+                value="overview"
+                className="text-white font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              >
+                <BookOpen className="w-4 h-4 mr-1" />
                 Overview
               </TabsTrigger>
-              <TabsTrigger value="assignments" className="text-white">
+              <TabsTrigger
+                value="assignments"
+                className="text-white font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              >
+                <FileText className="w-4 h-4 mr-1" />
                 Assignments
               </TabsTrigger>
-              <TabsTrigger value="materials" className="text-white">
+              <TabsTrigger
+                value="materials"
+                className="text-white font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-emerald-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              >
+                <Download className="w-4 h-4 mr-1" />
                 Materials
               </TabsTrigger>
-              <TabsTrigger value="schedule" className="text-white">
+              <TabsTrigger
+                value="schedule"
+                className="text-white font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-600 data-[state=active]:to-red-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              >
+                <Calendar className="w-4 h-4 mr-1" />
                 Schedule
               </TabsTrigger>
-              <TabsTrigger value="announcements" className="text-white">
+              <TabsTrigger
+                value="announcements"
+                className="text-white font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600 data-[state=active]:to-purple-600 data-[state=active]:text-white transition-all duration-300 rounded-lg"
+              >
+                <Bell className="w-4 h-4 mr-1" />
                 Announcements
               </TabsTrigger>
             </TabsList>
           )}
 
-          <TabsContent value="overview" className="mt-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="bg-gray-800 border-gray-700">
+          <TabsContent value="overview" className="mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <Card className="bg-gradient-to-br from-gray-800/70 to-gray-900/70 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="text-white">
+                  <CardTitle className="text-white text-xl font-bold flex items-center">
+                    <BookOpen className="w-6 h-6 mr-3 text-blue-400" />
                     Course Description
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-300 leading-relaxed">
-                    {courseData.description}
+                  <p className="text-gray-300 leading-relaxed text-base">
+                    {currentCourseData.description}
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-gradient-to-br from-gray-800/70 to-gray-900/70 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="text-white">
+                  <CardTitle className="text-white text-xl font-bold flex items-center">
+                    <Award className="w-6 h-6 mr-3 text-green-400" />
                     Learning Objectives
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-2">
-                    {courseData.objectives.map((objective, index) => (
+                  <ul className="space-y-3">
+                    {currentCourseData.objectives?.map((objective, index) => (
                       <li
                         key={index}
-                        className="flex items-start gap-2 text-gray-300"
+                        className="flex items-start gap-3 text-gray-300 p-3 rounded-lg bg-gray-800/30 border border-gray-700/30 hover:bg-gray-700/30 transition-colors duration-200"
                       >
-                        <CheckCircle className="w-4 h-4 text-green-500 mt-1 flex-shrink-0" />
-                        {objective}
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                        <span className="text-base">{objective}</span>
                       </li>
-                    ))}
+                    )) || (
+                      <li className="text-gray-400 text-center py-8">
+                        <Award className="w-12 h-12 mx-auto mb-3 text-gray-600" />
+                        No learning objectives specified
+                      </li>
+                    )}
                   </ul>
                 </CardContent>
               </Card>
@@ -647,41 +734,44 @@ export function CourseDetailPage({ courseId, onBack }) {
           {/* Only show other tabs for running/completed courses */}
           {!isRemainingCourse(courseId) && (
             <>
-              <TabsContent value="assignments" className="mt-6">
-                <div className="space-y-4">
+              <TabsContent value="assignments" className="mt-8">
+                <div className="space-y-6">
                   {assignments.map((assignment) => (
                     <Card
                       key={assignment.id}
-                      className="bg-gray-800 border-gray-700"
+                      className="bg-gradient-to-br from-gray-800/70 to-gray-900/70 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
                     >
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
-                            {getStatusIcon(assignment.status)}
+                            <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20">
+                              {getStatusIcon(assignment.status)}
+                            </div>
                             <div>
-                              <h3 className="text-white font-semibold">
+                              <h3 className="text-white font-bold text-lg mb-1">
                                 {assignment.title}
                               </h3>
-                              <p className="text-gray-400 text-sm">
+                              <p className="text-gray-400 text-sm flex items-center">
+                                <Calendar className="w-4 h-4 mr-1" />
                                 Due: {assignment.dueDate}
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-6">
                             <Badge
                               className={`${getStatusColor(
                                 assignment.status
-                              )} text-white`}
+                              )} text-white font-semibold px-4 py-2 text-sm`}
                             >
                               {assignment.status}
                             </Badge>
                             {assignment.grade && (
-                              <div className="text-right">
-                                <div className="text-white font-bold">
+                              <div className="text-right bg-gradient-to-br from-green-500/20 to-emerald-500/20 p-3 rounded-lg border border-green-500/30">
+                                <div className="text-white font-bold text-xl">
                                   {assignment.grade}
                                 </div>
                                 <div className="text-gray-400 text-sm">
-                                  /{assignment.totalMarks}
+                                  /{assignment.totalMarks} points
                                 </div>
                               </div>
                             )}
@@ -693,124 +783,198 @@ export function CourseDetailPage({ courseId, onBack }) {
                 </div>
               </TabsContent>
 
-              <TabsContent value="materials" className="mt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[
-                    {
-                      name: "Lecture 1: Introduction to Data Structures",
-                      type: "PDF",
-                      size: "2.5 MB",
-                    },
-                    {
-                      name: "Lab Manual - Arrays and Linked Lists",
-                      type: "PDF",
-                      size: "1.8 MB",
-                    },
-                    {
-                      name: "Sample Code - Binary Trees",
-                      type: "ZIP",
-                      size: "450 KB",
-                    },
-                    {
-                      name: "Midterm Study Guide",
-                      type: "PDF",
-                      size: "1.2 MB",
-                    },
-                    {
-                      name: "Assignment Templates",
-                      type: "ZIP",
-                      size: "800 KB",
-                    },
-                    {
-                      name: "Reference Book - Chapter 5",
-                      type: "PDF",
-                      size: "3.1 MB",
-                    },
-                  ].map((material, index) => (
-                    <Card
-                      key={index}
-                      className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-colors"
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3">
-                          <FileText className="w-8 h-8 text-blue-400" />
-                          <div className="flex-1">
-                            <h4 className="text-white font-medium text-sm">
-                              {material.name}
-                            </h4>
-                            <p className="text-gray-400 text-xs">
-                              {material.type} • {material.size}
-                            </p>
-                          </div>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="text-blue-400 hover:text-blue-300"
-                          >
-                            <Download className="w-4 h-4" />
-                          </Button>
+              <TabsContent value="materials" className="mt-8">
+                <div className="space-y-8">
+                  {/* PDF Resources */}
+                  {currentCourseData.pdfResources &&
+                    currentCourseData.pdfResources.length > 0 && (
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                          <FileText className="w-6 h-6 mr-2 text-blue-400" />
+                          PDF Resources
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {currentCourseData.pdfResources.map(
+                            (resource, index) => (
+                              <Card
+                                key={index}
+                                className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-colors"
+                              >
+                                <CardContent className="p-4">
+                                  <div className="flex items-center gap-3">
+                                    <FileText className="w-8 h-8 text-blue-400" />
+                                    <div className="flex-1">
+                                      <h4 className="text-white font-medium text-sm">
+                                        {resource.name}
+                                      </h4>
+                                      {resource.description && (
+                                        <p className="text-gray-400 text-xs">
+                                          {resource.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      className="text-blue-400 hover:text-blue-300"
+                                      onClick={() =>
+                                        window.open(resource.url, "_blank")
+                                      }
+                                    >
+                                      <Download className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            )
+                          )}
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                      </div>
+                    )}
+
+                  {/* URL Resources */}
+                  {currentCourseData.urlResources &&
+                    currentCourseData.urlResources.length > 0 && (
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                          <ExternalLink className="w-6 h-6 mr-2 text-green-400" />
+                          Online Resources
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {currentCourseData.urlResources.map(
+                            (resource, index) => (
+                              <Card
+                                key={index}
+                                className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-colors"
+                              >
+                                <CardContent className="p-4">
+                                  <div className="flex items-center gap-3">
+                                    <ExternalLink className="w-8 h-8 text-green-400" />
+                                    <div className="flex-1">
+                                      <h4 className="text-white font-medium text-sm">
+                                        {resource.name}
+                                      </h4>
+                                      {resource.description && (
+                                        <p className="text-gray-400 text-xs">
+                                          {resource.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      className="text-green-400 hover:text-green-300"
+                                      onClick={() =>
+                                        window.open(resource.url, "_blank")
+                                      }
+                                    >
+                                      <ExternalLink className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                  {/* Fallback for when no resources are available */}
+                  {(!currentCourseData.pdfResources ||
+                    currentCourseData.pdfResources.length === 0) &&
+                    (!currentCourseData.urlResources ||
+                      currentCourseData.urlResources.length === 0) && (
+                      <div className="text-center py-12">
+                        <BookOpen className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                        <h3 className="text-xl font-bold text-white mb-2">
+                          No Materials Available
+                        </h3>
+                        <p className="text-gray-400">
+                          Course materials will be available soon.
+                        </p>
+                      </div>
+                    )}
                 </div>
               </TabsContent>
 
-              <TabsContent value="schedule" className="mt-6">
-                <Card className="bg-gray-800 border-gray-700">
+              <TabsContent value="schedule" className="mt-8">
+                <Card className="bg-gradient-to-br from-gray-800/70 to-gray-900/70 backdrop-blur-lg border border-white/10 shadow-xl">
                   <CardHeader>
-                    <CardTitle className="text-white">Class Schedule</CardTitle>
+                    <CardTitle className="text-white text-xl font-bold flex items-center">
+                      <Calendar className="w-6 h-6 mr-3 text-orange-400" />
+                      Class Schedule
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-4">
-                        <Calendar className="w-5 h-5 text-blue-400" />
-                        <div>
-                          <p className="text-white font-medium">
-                            Days: {courseData.schedule.days.join(", ")}
-                          </p>
-                          <p className="text-gray-400 text-sm">
-                            Time: {courseData.schedule.time}
-                          </p>
-                          <p className="text-gray-400 text-sm">
-                            Location: {courseData.schedule.room}
-                          </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 p-6 rounded-xl border border-blue-500/30">
+                        <div className="flex items-center mb-3">
+                          <Calendar className="w-5 h-5 text-blue-400 mr-2" />
+                          <h4 className="text-white font-semibold">
+                            Class Days
+                          </h4>
                         </div>
+                        <p className="text-gray-200 text-lg font-medium">
+                          {currentCourseData.schedule?.days?.join(", ") ||
+                            "TBD"}
+                        </p>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 p-6 rounded-xl border border-green-500/30">
+                        <div className="flex items-center mb-3">
+                          <Clock className="w-5 h-5 text-green-400 mr-2" />
+                          <h4 className="text-white font-semibold">Time</h4>
+                        </div>
+                        <p className="text-gray-200 text-lg font-medium">
+                          {currentCourseData.schedule?.time || "TBD"}
+                        </p>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 p-6 rounded-xl border border-purple-500/30">
+                        <div className="flex items-center mb-3">
+                          <MapPin className="w-5 h-5 text-purple-400 mr-2" />
+                          <h4 className="text-white font-semibold">Location</h4>
+                        </div>
+                        <p className="text-gray-200 text-lg font-medium">
+                          {currentCourseData.schedule?.room || "TBD"}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </TabsContent>
 
-              <TabsContent value="announcements" className="mt-6">
-                <div className="space-y-4">
+              <TabsContent value="announcements" className="mt-8">
+                <div className="space-y-6">
                   {announcements.map((announcement) => (
                     <Card
                       key={announcement.id}
-                      className="bg-gray-800 border-gray-700"
+                      className="bg-gradient-to-br from-gray-800/70 to-gray-900/70 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
                     >
                       <CardContent className="p-6">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <Bell className="w-5 h-5 text-blue-400" />
-                            <h3 className="text-white font-semibold">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-4">
+                            <div className="p-2 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20">
+                              <Bell className="w-6 h-6 text-indigo-400" />
+                            </div>
+                            <h3 className="text-white font-bold text-lg">
                               {announcement.title}
                             </h3>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <Badge
-                              className={getPriorityColor(
+                              className={`${getPriorityColor(
                                 announcement.priority
-                              )}
+                              )} font-semibold px-3 py-1`}
                             >
                               {announcement.priority}
                             </Badge>
-                            <span className="text-gray-400 text-sm">
+                            <span className="text-gray-400 text-sm bg-gray-800/50 px-3 py-1 rounded-lg">
                               {announcement.date}
                             </span>
                           </div>
                         </div>
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-gray-300 leading-relaxed text-base bg-gray-800/30 p-4 rounded-lg border border-gray-700/30">
                           {announcement.content}
                         </p>
                       </CardContent>
