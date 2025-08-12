@@ -15,116 +15,76 @@ export default function App() {
   const [studentId, setStudentId] = useState(null);
   const [_adminId, setAdminId] = useState(null);
 
-  // Function to get current page from URL
-  const getPageFromUrl = () => {
-    const path = window.location.pathname.slice(1); // Remove leading slash
-    return path || "home";
-  };
-
-  // Function to update URL when page changes
-  const updateUrl = (page) => {
-    const url = page === "home" ? "/" : `/${page}`;
-    window.history.pushState(null, "", url);
-  };
-
-  // Enhanced setCurrentPage that also updates URL
-  const navigateToPage = (page) => {
-    setCurrentPage(page);
-    updateUrl(page);
-  };
-
+  // On mount, check for existing studentId but do NOT auto-navigate to dashboard
   useEffect(() => {
-    // Get initial page from URL
-    const urlPage = getPageFromUrl();
-    
     const storedId = localStorage.getItem("studentId");
     const storedAdminId = localStorage.getItem("adminId");
-    
     if (storedId) {
       setStudentId(storedId);
-      // If there's a stored student ID and we're on home page, go to dashboard
-      if (urlPage === "home") {
-        navigateToPage("dashboard");
-      } else {
-        setCurrentPage(urlPage);
-      }
-    } else if (storedAdminId) {
-      setAdminId(storedAdminId);
-      // If there's a stored admin ID and we're on home page, go to admin dashboard
-      if (urlPage === "home") {
-        navigateToPage("admin-dashboard");
-      } else {
-        setCurrentPage(urlPage);
-      }
-    } else {
-      // No stored IDs, use URL page
-      setCurrentPage(urlPage);
+      // Do not setCurrentPage("dashboard")
     }
-
-    // Handle browser back/forward buttons
-    const handlePopState = () => {
-      const page = getPageFromUrl();
-      setCurrentPage(page);
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
+    if (storedAdminId) {
+      setAdminId(storedAdminId);
+      // Do not setCurrentPage("admin-dashboard")
+    }
   }, []);
 
+  // Logout handler
   const handleLogout = () => {
     localStorage.removeItem("studentId");
     localStorage.removeItem("adminId");
     setStudentId(null);
     setAdminId(null);
-    navigateToPage("home");
+    setCurrentPage("home");
   };
 
+  // Page rendering logic
   const renderPage = () => {
     switch (currentPage) {
       case "home":
-        return <HomePage onNavigate={navigateToPage} />;
+        return <HomePage onNavigate={setCurrentPage} />;
       case "about":
-        return <AboutPage onNavigate={navigateToPage} />;
+        return <AboutPage onNavigate={setCurrentPage} />;
       case "contact":
-        return <ContactPage onNavigate={navigateToPage} />;
+        return <ContactPage onNavigate={setCurrentPage} />;
       case "login":
         return (
           <StudentLogin
-            onNavigate={navigateToPage}
+            onNavigate={setCurrentPage}
             onLoginSuccess={(id) => {
               localStorage.setItem("studentId", id);
               setStudentId(id);
-              navigateToPage("dashboard");
+              setCurrentPage("dashboard");
             }}
           />
         );
       case "signup":
-        return <StudentSignup onNavigate={navigateToPage} />;
+        return <StudentSignup onNavigate={setCurrentPage} />;
       case "dashboard":
         return (
           <StudentDashboard
             studentId={studentId}
             onLogout={handleLogout}
-            onNavigate={navigateToPage}
+            onNavigate={setCurrentPage}
           />
         );
       case "admin-login":
         return (
           <AdminLogin
-            onNavigate={navigateToPage}
+            onNavigate={setCurrentPage}
             onLoginSuccess={(id) => {
               localStorage.setItem("adminId", id);
               setAdminId(id);
-              navigateToPage("admin-dashboard");
+              setCurrentPage("admin-dashboard");
             }}
           />
         );
       case "admin-signup":
-        return <AdminSignup onNavigate={navigateToPage} />;
+        return <AdminSignup onNavigate={setCurrentPage} />;
       case "admin-dashboard":
-        return <AdminDashboardPage onNavigate={navigateToPage} />;
+        return <AdminDashboardPage onNavigate={setCurrentPage} />;
       default:
-        return <HomePage onNavigate={navigateToPage} />;
+        return <HomePage onNavigate={setCurrentPage} />;
     }
   };
 
