@@ -1,24 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import CourseCard from "./course-card";
 import AddResourceModal from "./AddResourceModal";
 import { studentCoursesAPI } from "../services/api";
 
-export default function StudentResource() {
+export default function StudentResource({ studentId: studentIdProp }) {
   const [activeTab, setActiveTab] = useState("completed");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // Per-tab loading & error
+  const [loadingCompleted, setLoadingCompleted] = useState(false);
+  const [errorCompleted, setErrorCompleted] = useState(null);
+  const [loadingRunning, setLoadingRunning] = useState(false);
+  const [errorRunning, setErrorRunning] = useState(null);
+  const [loadingRemaining, setLoadingRemaining] = useState(false);
+  const [errorRemaining, setErrorRemaining] = useState(null);
 
   // Course data states
   const [completedCourses, setCompletedCourses] = useState([]);
   const [remainingCourses, setRemainingCourses] = useState([]);
   const [runningCourses, setRunningCourses] = useState([]);
   const [currentSemester, setCurrentSemester] = useState(null);
-  // Hardcoded student ID - in a real app, this would come from authentication
-  const studentId = "222-115-090";
+  // Prefer prop, then localStorage; fall back to previous hardcoded only if missing
+  const studentId =
+    studentIdProp || localStorage.getItem("studentId") || "222-115-090";
 
   const handleAddResource = (resourceData) => {
     console.log("New resource:", resourceData);
@@ -29,10 +35,10 @@ export default function StudentResource() {
   };
 
   // Fetch completed courses with resources
-  const fetchCompletedCourses = async () => {
+  const fetchCompletedCourses = useCallback(async () => {
     try {
-      setLoading(true);
-      setError(null);
+      setLoadingCompleted(true);
+      setErrorCompleted(null);
       const data = await studentCoursesAPI.getCompletedCourses(studentId);
 
       // Transform the data to include sample resources based on course information
@@ -76,18 +82,18 @@ export default function StudentResource() {
       setCompletedCourses(coursesWithResources);
     } catch (err) {
       console.error("Error fetching completed courses:", err);
-      setError("Failed to load completed courses. Please try again.");
+      setErrorCompleted("Failed to load completed courses. Please try again.");
       setCompletedCourses([]);
     } finally {
-      setLoading(false);
+      setLoadingCompleted(false);
     }
-  };
+  }, [studentId]);
 
   // Fetch remaining courses with resources
-  const fetchRemainingCourses = async () => {
+  const fetchRemainingCourses = useCallback(async () => {
     try {
-      setLoading(true);
-      setError(null);
+      setLoadingRemaining(true);
+      setErrorRemaining(null);
       const data = await studentCoursesAPI.getRemainingCourses(studentId);
 
       // Transform the data to include sample resources
@@ -132,39 +138,39 @@ export default function StudentResource() {
       setRemainingCourses(coursesWithResources);
     } catch (err) {
       console.error("Error fetching remaining courses:", err);
-      setError("Failed to load remaining courses. Please try again.");
+      setErrorRemaining("Failed to load remaining courses. Please try again.");
       setRemainingCourses([]);
     } finally {
-      setLoading(false);
+      setLoadingRemaining(false);
     }
-  };
+  }, [studentId]);
 
   // Fetch running courses with resources
-  const fetchRunningCourses = async () => {
+  const fetchRunningCourses = useCallback(async () => {
     try {
-      setLoading(true);
-      setError(null);
+      setLoadingRunning(true);
+      setErrorRunning(null);
       const data = await studentCoursesAPI.getRunningCourses(studentId);
-      
+
       // Transform the data to include sample resources based on course information
-      const coursesWithResources = data.running_courses.map(course => {
+      const coursesWithResources = data.running_courses.map((course) => {
         // Generate sample resources based on course data
         const pdfResources = [
           {
             name: `${course.code}_Current_Materials.pdf`,
             url: `/resources/${course.code}_current.pdf`,
-            description: `Current semester materials for ${course.title}`
+            description: `Current semester materials for ${course.title}`,
           },
           {
-            name: `${course.code}_Assignments.pdf`, 
+            name: `${course.code}_Assignments.pdf`,
             url: `/resources/${course.code}_assignments.pdf`,
-            description: `Current assignments and projects for ${course.title}`
+            description: `Current assignments and projects for ${course.title}`,
           },
           {
             name: `${course.code}_Schedule.pdf`,
             url: `/resources/${course.code}_schedule.pdf`,
-            description: `Class schedule and important dates`
-          }
+            description: `Class schedule and important dates`,
+          },
         ];
 
         const urlResources = [
@@ -172,51 +178,51 @@ export default function StudentResource() {
             name: `${course.title} - Online Classroom`,
             url: `https://classroom.google.com/c/${course.code}`,
             description: `Google Classroom for ${course.title}`,
-            type: 'link'
+            type: "link",
           },
           {
             name: `${course.title} - Live Lectures`,
             url: `https://zoom.us/j/${course.code}`,
             description: `Join live lectures for ${course.title}`,
-            type: 'video'
+            type: "video",
           },
           {
             name: `${course.title} - Discussion Forum`,
             url: `https://discord.gg/${course.code}`,
             description: `Student discussion forum`,
-            type: 'link'
-          }
+            type: "link",
+          },
         ];
 
         return {
           ...course,
           title: course.title || `${course.code} - Course`,
           pdfResources,
-          urlResources
+          urlResources,
         };
       });
 
       setRunningCourses(coursesWithResources);
-      
+
       // Store current semester info if available
       if (data.current_semester) {
         setCurrentSemester(data.current_semester);
       }
     } catch (err) {
-      console.error('Error fetching running courses:', err);
-      setError('Failed to load running courses. Please try again.');
+      console.error("Error fetching running courses:", err);
+      setErrorRunning("Failed to load running courses. Please try again.");
       setRunningCourses([]);
     } finally {
-      setLoading(false);
+      setLoadingRunning(false);
     }
-  };
+  }, [studentId]);
 
   // Load data on component mount
   useEffect(() => {
     fetchCompletedCourses();
     fetchRemainingCourses();
     fetchRunningCourses();
-  }, []);
+  }, [fetchCompletedCourses, fetchRemainingCourses, fetchRunningCourses]);
   // Loading component
   const LoadingSpinner = () => (
     <div className="flex justify-center items-center py-12">
@@ -256,11 +262,6 @@ export default function StudentResource() {
             <p className="text-gray-600 text-lg">
               Access and manage your course materials
             </p>
-            {error && (
-              <div className="mt-2 text-sm text-red-600 bg-red-50 px-3 py-1 rounded-md">
-                {error}
-              </div>
-            )}
           </div>
           <button
             onClick={() => {
@@ -317,10 +318,13 @@ export default function StudentResource() {
 
           <div className="mt-8">
             <TabsContent value="completed" className="mt-0">
-              {loading && activeTab === "completed" ? (
+              {loadingCompleted && activeTab === "completed" ? (
                 <LoadingSpinner />
-              ) : error && activeTab === "completed" ? (
-                <ErrorMessage message={error} onRetry={fetchCompletedCourses} />
+              ) : errorCompleted && activeTab === "completed" ? (
+                <ErrorMessage
+                  message={errorCompleted}
+                  onRetry={fetchCompletedCourses}
+                />
               ) : completedCourses.length === 0 ? (
                 <EmptyState message="No completed courses found. Complete some courses to see resources here." />
               ) : (
@@ -338,22 +342,31 @@ export default function StudentResource() {
               {currentSemester && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                   <h3 className="text-lg font-semibold text-green-800 flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Current Semester: {currentSemester}
                   </h3>
                   <p className="text-green-600 text-sm mt-1">
-                    Access materials and resources for your currently enrolled courses.
+                    Access materials and resources for your currently enrolled
+                    courses.
                   </p>
                 </div>
               )}
-              {loading && activeTab === "running" ? (
+              {loadingRunning && activeTab === "running" ? (
                 <LoadingSpinner />
-              ) : error && activeTab === "running" ? (
-                <ErrorMessage 
-                  message={error} 
-                  onRetry={fetchRunningCourses} 
+              ) : errorRunning && activeTab === "running" ? (
+                <ErrorMessage
+                  message={errorRunning}
+                  onRetry={fetchRunningCourses}
                 />
               ) : runningCourses.length === 0 ? (
                 <EmptyState message="No running courses found. Enroll in some courses to see resources here." />
@@ -367,10 +380,13 @@ export default function StudentResource() {
             </TabsContent>
 
             <TabsContent value="remaining" className="mt-0">
-              {loading && activeTab === "remaining" ? (
+              {loadingRemaining && activeTab === "remaining" ? (
                 <LoadingSpinner />
-              ) : error && activeTab === "remaining" ? (
-                <ErrorMessage message={error} onRetry={fetchRemainingCourses} />
+              ) : errorRemaining && activeTab === "remaining" ? (
+                <ErrorMessage
+                  message={errorRemaining}
+                  onRetry={fetchRemainingCourses}
+                />
               ) : remainingCourses.length === 0 ? (
                 <EmptyState message="No remaining courses found. You have completed all available courses!" />
               ) : (

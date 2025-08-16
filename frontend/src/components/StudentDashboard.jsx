@@ -270,7 +270,7 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
   };
 
   return (
-  <div className="w-full h-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 page-reload-animation relative overflow-hidden">
+    <div className="w-full h-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 page-reload-animation relative overflow-hidden">
       {/* Animated background blobs matching homepage - Slower animations */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-slow"></div>
@@ -556,12 +556,16 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
                     <div className="flex justify-between">
                       <span>This Semester:</span>
                       <span className="font-bold">
-                        {currentSemester ? `${currentSemester.current_semester} Semester` : "Loading..."}
+                        {currentSemester
+                          ? `${currentSemester.current_semester} Semester`
+                          : "Loading..."}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Completed Semesters:</span>
-                      <span className="font-bold">{semesters.length} semesters</span>
+                      <span className="font-bold">
+                        {semesters.length} semesters
+                      </span>
                     </div>
                   </div>
                   <div className="bg-teal-500 rounded-lg p-4">
@@ -641,7 +645,9 @@ export function StudentDashboard({ studentId, onLogout, onNavigate }) {
               onCourseSelect={handleCourseSelect}
             />
           )}
-          {dashboardView === "resources" && <StudentResource />}
+          {dashboardView === "resources" && (
+            <StudentResource studentId={studentId} />
+          )}
           {dashboardView === "courseDetail" && selectedCourseId && (
             <CourseDetailPage
               courseId={selectedCourseId}
