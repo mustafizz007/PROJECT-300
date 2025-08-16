@@ -36,28 +36,23 @@ export default function App() {
   useEffect(() => {
     // Get initial page from URL
     const urlPage = getPageFromUrl();
-    
+
     const storedId = localStorage.getItem("studentId");
     const storedAdminId = localStorage.getItem("adminId");
-    
-    if (storedId) {
-      setStudentId(storedId);
-      // If there's a stored student ID and we're on home page, go to dashboard
-      if (urlPage === "home") {
-        navigateToPage("dashboard");
-      } else {
-        setCurrentPage(urlPage);
-      }
-    } else if (storedAdminId) {
-      setAdminId(storedAdminId);
-      // If there's a stored admin ID and we're on home page, go to admin dashboard
-      if (urlPage === "home") {
-        navigateToPage("admin-dashboard");
-      } else {
-        setCurrentPage(urlPage);
-      }
+
+    // Restore session state but do not auto-redirect from home
+    if (storedId) setStudentId(storedId);
+    if (storedAdminId) setAdminId(storedAdminId);
+
+    // Guard protected routes when not authenticated
+    if (urlPage === "dashboard" && !storedId) {
+      setCurrentPage("login");
+      updateUrl("login");
+    } else if (urlPage === "admin-dashboard" && !storedAdminId) {
+      setCurrentPage("admin-login");
+      updateUrl("admin-login");
     } else {
-      // No stored IDs, use URL page
+      // Honor the URL (including home) without forcing a redirect
       setCurrentPage(urlPage);
     }
 

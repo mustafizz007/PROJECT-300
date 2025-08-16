@@ -8,23 +8,60 @@ export default function NotificationBell({
   onMarkAsRead,
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({
+  const [dropdownStyle, setDropdownStyle] = useState({
     top: 0,
-    right: 0,
+    left: 0,
+    width: 320,
+    maxHeight: 400,
   });
   const buttonRef = useRef(null);
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
-  // Calculate dropdown position when opening
+  // Calculate dropdown position & size with viewport awareness
   useEffect(() => {
-    if (showDropdown && buttonRef.current) {
+    if (!showDropdown) return;
+
+    const computePosition = () => {
+      if (!buttonRef.current) return;
       const rect = buttonRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + 8, // 8px below the button
-        right: window.innerWidth - rect.right, // Align to right edge of button
-      });
-    }
+
+      const MARGIN = 8; // safe margin from edges
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      // Responsive width (max 320px, never exceed viewport - margins)
+      const width = Math.min(320, vw - MARGIN * 2);
+
+      // Responsive height (cap at 400px, never exceed viewport - margins)
+      const maxHeight = Math.min(400, vh - MARGIN * 2);
+
+      // Prefer below the button if space allows; else position above
+      let top = rect.bottom + MARGIN;
+      if (top + maxHeight > vh - MARGIN) {
+        top = Math.max(MARGIN, rect.top - maxHeight - MARGIN);
+      }
+
+      // Align right edge to button's right, but clamp within viewport
+      let left = Math.min(
+        Math.max(rect.right - width, MARGIN),
+        vw - width - MARGIN
+      );
+
+      setDropdownStyle({ top, left, width, maxHeight });
+    };
+
+    computePosition();
+    // Recompute on resize and scroll to stay anchored
+    const onResize = () => computePosition();
+    // Use capture to catch scroll on ancestors too
+    const onScroll = () => computePosition();
+    window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onScroll, true);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onScroll, true);
+    };
   }, [showDropdown]);
 
   const handleClearAll = () => {
@@ -73,12 +110,13 @@ export default function NotificationBell({
 
             {/* Dropdown positioned absolutely to viewport */}
             <div
-              className="fixed w-80 bg-white border-2 border-gray-300 rounded-lg shadow-2xl"
+              className="fixed bg-white border-2 border-gray-300 rounded-lg shadow-2xl"
               style={{
                 zIndex: 99999,
-                top: `${dropdownPosition.top}px`,
-                right: `${dropdownPosition.right}px`,
-                maxHeight: "400px",
+                top: `${dropdownStyle.top}px`,
+                left: `${dropdownStyle.left}px`,
+                width: `${dropdownStyle.width}px`,
+                maxHeight: `${dropdownStyle.maxHeight}px`,
               }}
             >
               {/* Header */}
@@ -107,7 +145,10 @@ export default function NotificationBell({
               </div>
 
               {/* Content */}
-              <div className="max-h-64 overflow-y-auto bg-white">
+              <div
+                className="overflow-y-auto bg-white"
+                style={{ maxHeight: `${dropdownStyle.maxHeight - 48}px` }}
+              >
                 {notifications.length > 0 ? (
                   notifications.map((notification) => (
                     <div
